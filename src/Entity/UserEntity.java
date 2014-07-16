@@ -1,4 +1,4 @@
-package db;
+package Entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -17,7 +17,7 @@ public class UserEntity {
     private String buylist;
     private String information;
 
-    public UserEntity() {    }
+    public UserEntity() {}
 
     public UserEntity(String login, String password, String email) {
         this.login = login;
@@ -38,7 +38,7 @@ public class UserEntity {
     }
 
     public void setId(int id) {
-        this.id = id;
+       this.id = id;
     }
 
     @Column(name = "login")

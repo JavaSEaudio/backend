@@ -1,12 +1,13 @@
-package db;
+package Entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "audiofile")
-public class AudiofileEntity {
+public class AudioEntity {
     private int id;
     private String name;
     private String artist;
@@ -18,12 +19,15 @@ public class AudiofileEntity {
     private String type;
     private int bitrate;
     private int hashcode;
-    private int length;
-    private String size;
+    private int length; // seconds
+    private int size; //byte
     private int userid;
     private int access;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "upload_date")
+    private Date upload_date;
 
-    public AudiofileEntity(String name, String artist, String album, String genre){
+    public AudioEntity(String name, String artist, String album, String genre){
         this.name = name;
         this.album = album;
         this.artist = artist;
@@ -35,12 +39,12 @@ public class AudiofileEntity {
         this.bitrate = 254;
         this.hashcode = hashCode();
         this.length = 100; //in second
-        this.size = "";
+        this.size = 1000;
         this.userid = 999; //id users
         this.access = 0;
     }
 
-    public AudiofileEntity() {
+    public AudioEntity() {
     }
 
     @Id
@@ -51,6 +55,17 @@ public class AudiofileEntity {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getUpload_date() {
+        return upload_date;
+    }
+
+    public void setUpload_date(Date upload_date) {
+        this.upload_date = upload_date;
+    }
 
     @Column(name = "name")
     public String getName() {
@@ -162,11 +177,11 @@ public class AudiofileEntity {
     }
 
     @Column(name = "size")
-    public String getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(int size) {
         this.size = size;
         this.hashcode = hashCode();
     }
@@ -196,7 +211,7 @@ public class AudiofileEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AudiofileEntity that = (AudiofileEntity) o;
+        AudioEntity that = (AudioEntity) o;
 
         if (access != that.access) return false;
         if (bitrate != that.bitrate) return false;
@@ -205,12 +220,12 @@ public class AudiofileEntity {
         if (length != that.length) return false;
         if (userid != that.userid) return false;
         if (year != that.year) return false;
+        if (size != that.size) return false;
         if (album != null ? !album.equals(that.album) : that.album != null) return false;
         if (artist != null ? !artist.equals(that.artist) : that.artist != null) return false;
         if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
         if (genre != null ? !genre.equals(that.genre) : that.genre != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (size != null ? !size.equals(that.size) : that.size != null) return false;
         if (tags != null ? !tags.equals(that.tags) : that.tags != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
 
@@ -228,9 +243,9 @@ public class AudiofileEntity {
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + year;
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + bitrate;\
+        result = 31 * result + bitrate;
         result = 31 * result + length;
-        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + size;
         result = 31 * result + userid;
         result = 31 * result + access;
         return result;

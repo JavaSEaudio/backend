@@ -1,19 +1,20 @@
-package db;
+package DAO;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import Entity.AudioEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-public class UserOperation {
+public class AudioDAO {
 
     private SessionFactory ourSessionFactory;
 
-    public UserOperation() {
+    public AudioDAO() {
         Configuration configuration = new Configuration();
         configuration.configure();
 
@@ -21,14 +22,31 @@ public class UserOperation {
         ourSessionFactory = configuration.buildSessionFactory(serviceRegistry);
     }
 
+    /**
+     * НЕ ЮЗАТЬ!!! НЕ РАБОТАЕТ!!!
+     */
+    public void change(AudioEntity audio) {
+        Session session = null;
+
+        try {
+            session = ourSessionFactory.openSession();
+            session.beginTransaction();
+            session.update(audio);
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+
+    }
 
 
-    public void add(UserEntity user) {
+    public void add(AudioEntity audio) {
         Session session = null;
         try {
             session = ourSessionFactory.openSession();
             session.beginTransaction();
-            session.save(user);
+            session.save(audio);
             session.getTransaction().commit();
         } finally {
             if (session != null && session.isOpen())
@@ -36,12 +54,12 @@ public class UserOperation {
         }
     }
 
-    public void delete(UserEntity user) {
+    public void delete(AudioEntity audio) {
         Session session = null;
         try {
             session = ourSessionFactory.openSession();
             session.beginTransaction();
-            session.delete(user);
+            session.delete(audio);
             session.getTransaction().commit();
         } finally {
             if (session != null && session.isOpen())
@@ -50,12 +68,12 @@ public class UserOperation {
     }
 
     //@SuppressWarnings("unchecked")
-    public List<UserEntity> getAll() {
+    public List<AudioEntity> getAll() {
         Session session = null;
-        List<UserEntity> user = new ArrayList<UserEntity>();
+        List<AudioEntity> user = new ArrayList<AudioEntity>();
         try {
             session = ourSessionFactory.openSession();
-            user = (List<UserEntity>) session.createCriteria(UserEntity.class).list();
+            user = (List<AudioEntity>) session.createCriteria(AudioEntity.class).list();
         } finally {
             if (session != null && session.isOpen())
                 session.close();
@@ -63,12 +81,15 @@ public class UserOperation {
         return user;
     }
 
-    public UserEntity getById(long id) {
+    /**
+     * МОГУТ ВОЗНИКАТЬ ОШИБКИ
+     */
+    public AudioEntity getById(long id) {
         Session session = null;
-        UserEntity res = null;
+        AudioEntity res = null;
         try {
             session = ourSessionFactory.openSession();
-            res = (UserEntity) session.get(UserEntity.class, id);
+            res = (AudioEntity) session.get(AudioEntity.class, id);
         } finally {
             if (session != null && session.isOpen())
                 session.close();
