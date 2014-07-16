@@ -1,12 +1,11 @@
 package db;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
-/**
- * Created by Степанов on 15.07.2014.
- */
 @Entity
-@Table(name = "audiofile", schema = "", catalog = "project_0.1")
+@Table(name = "audiofile")
 public class AudiofileEntity {
     private int id;
     private String name;
@@ -24,17 +23,35 @@ public class AudiofileEntity {
     private int userid;
     private int access;
 
+    public AudiofileEntity(String name, String artist, String album, String genre){
+        this.name = name;
+        this.album = album;
+        this.artist = artist;
+        this.genre = genre;
+        this.comment = "";
+        this.tags = "";
+        this.type = "";
+        this.year = 2000;
+        this.bitrate = 254;
+        this.hashcode = hashCode();
+        this.length = 100; //in second
+        this.size = "";
+        this.userid = 999; //id users
+        this.access = 0;
+    }
+
+    public AudiofileEntity() {
+    }
+
     @Id
+    @GeneratedValue(generator="increment")
+    @GenericGenerator(name="increment", strategy = "increment")
     @Column(name = "id")
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    @Basic
     @Column(name = "name")
     public String getName() {
         return name;
@@ -42,9 +59,9 @@ public class AudiofileEntity {
 
     public void setName(String name) {
         this.name = name;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "artist")
     public String getArtist() {
         return artist;
@@ -52,9 +69,9 @@ public class AudiofileEntity {
 
     public void setArtist(String artist) {
         this.artist = artist;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "album")
     public String getAlbum() {
         return album;
@@ -62,9 +79,9 @@ public class AudiofileEntity {
 
     public void setAlbum(String album) {
         this.album = album;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "genre")
     public String getGenre() {
         return genre;
@@ -72,9 +89,9 @@ public class AudiofileEntity {
 
     public void setGenre(String genre) {
         this.genre = genre;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "comment")
     public String getComment() {
         return comment;
@@ -82,9 +99,9 @@ public class AudiofileEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "tags")
     public String getTags() {
         return tags;
@@ -92,9 +109,9 @@ public class AudiofileEntity {
 
     public void setTags(String tags) {
         this.tags = tags;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "year")
     public int getYear() {
         return year;
@@ -102,9 +119,9 @@ public class AudiofileEntity {
 
     public void setYear(int year) {
         this.year = year;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "type")
     public String getType() {
         return type;
@@ -112,9 +129,9 @@ public class AudiofileEntity {
 
     public void setType(String type) {
         this.type = type;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "bitrate")
     public int getBitrate() {
         return bitrate;
@@ -122,9 +139,9 @@ public class AudiofileEntity {
 
     public void setBitrate(int bitrate) {
         this.bitrate = bitrate;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "hashcode")
     public int getHashcode() {
         return hashcode;
@@ -134,7 +151,6 @@ public class AudiofileEntity {
         this.hashcode = hashcode;
     }
 
-    @Basic
     @Column(name = "length")
     public int getLength() {
         return length;
@@ -142,9 +158,9 @@ public class AudiofileEntity {
 
     public void setLength(int length) {
         this.length = length;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "size")
     public String getSize() {
         return size;
@@ -152,9 +168,9 @@ public class AudiofileEntity {
 
     public void setSize(String size) {
         this.size = size;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "userid")
     public int getUserid() {
         return userid;
@@ -162,9 +178,9 @@ public class AudiofileEntity {
 
     public void setUserid(int userid) {
         this.userid = userid;
+        this.hashcode = hashCode();
     }
 
-    @Basic
     @Column(name = "access")
     public int getAccess() {
         return access;
@@ -172,6 +188,7 @@ public class AudiofileEntity {
 
     public void setAccess(int access) {
         this.access = access;
+        this.hashcode = hashCode();
     }
 
     @Override
@@ -211,8 +228,7 @@ public class AudiofileEntity {
         result = 31 * result + (tags != null ? tags.hashCode() : 0);
         result = 31 * result + year;
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + bitrate;
-        result = 31 * result + hashcode;
+        result = 31 * result + bitrate;\
         result = 31 * result + length;
         result = 31 * result + (size != null ? size.hashCode() : 0);
         result = 31 * result + userid;

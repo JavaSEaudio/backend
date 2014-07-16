@@ -19,7 +19,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="mysql-connector-java-5.1.18-bin" level="project" />
-    <orderEntry type="library" name="libraries" level="project" />
+    <orderEntry type="library" name="Hibarnate" level="project" />
   </component>
 </module>
 
