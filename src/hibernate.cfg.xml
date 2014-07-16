@@ -11,11 +11,11 @@
 	<property name="connection.pool_size">20</property>
   	<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
     	<property name="show_sql">true</property>
-    	<property name="hbm2ddl.auto">update</property>
+    	<property name="hbm2ddl.auto">create</property>
     	<property name="hibernate.connection.autocommit">false</property>
     	<property name="current_session_context_class">thread</property>
-        <mapping class="db.AudiofileEntity"/>
-        <mapping class="db.UserEntity"/>
+        <mapping class="Entity.AudioEntity"/>
+        <mapping class="Entity.UserEntity"/>
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>
