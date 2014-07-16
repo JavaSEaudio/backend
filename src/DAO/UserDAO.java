@@ -95,7 +95,7 @@ public class UserDAO {
     /**
      * МОГУТ ВОЗНИКАТЬ ОШИБКИ
      */
-    public UserEntity getById(long id) {
+    public UserEntity getById(int id) {
         Session session = null;
         UserEntity res = null;
         try {

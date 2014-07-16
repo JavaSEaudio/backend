@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="2070336762">
+    <data-source source="LOCAL" name="hibernate.cfg.xml" uuid="003c2b1f-e103-4c56-827d-3fd9983fee1b">
+      <driver-ref>mysql</driver-ref>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/project_0.1</jdbc-url>
+      <user-name>root</user-name>
+      <user-password>df99df9bdf9adf9fdf93df9f</user-password>
+      <libraries>
+        <library>
+          <url>file://C:\Users\Dmytry\WD\backend\lib\jboss-logging-annotations-1.2.0.Beta1.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="db:hibernate.cfg.xml" uuid="3b053e1c-c39e-4086-9bff-c5289fb70cb5">
+      <driver-ref>mysql</driver-ref>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/project_0.1</jdbc-url>
+      <user-name>root</user-name>
+      <user-password>dfd0dfc1dfd3dfc9dfcfdfdddfdfdfcc</user-password>
+      <libraries>
+        <library>
+          <url>file://C:\Users\Dmytry\WD\backend\lib\jboss-logging-annotations-1.2.0.Beta1.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="MySQL - @localhost" uuid="fca9a1ea-e30e-40be-aa23-cf646230eaab">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
+      <driver-properties>
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
+        <property name="tinyInt1isBit" value="false" />
+      </driver-properties>
+      <libraries />
+    </data-source>
+  </component>
+</project>
+
