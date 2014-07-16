@@ -16,19 +16,11 @@ public class UserDAO {
     /**
      * НЕ ЮЗАТЬ!!! НЕ РАБОТАЕТ!!!
      */
-    public void change(UserEntity user) {
-        Session session = null;
-
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(user);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-
+    public void change(UserEntity endUser, int id) {
+        this.delete(id);
+        this.add(new UserEntity(endUser, id));
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        ((UserEntity) session.get(UserEntity.class, id)).setId(id);
     }
 
     public void add(UserEntity user) {
@@ -46,6 +38,20 @@ public class UserDAO {
 
     public void delete(UserEntity user) {
         Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.delete(user);
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+    }
+
+    public void delete(int id) {
+        Session session = null;
+        UserEntity user = this.getById(id);
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -92,15 +98,14 @@ public class UserDAO {
         return user;
     }
 
-    /**
-     * МОГУТ ВОЗНИКАТЬ ОШИБКИ
-     */
-    public UserEntity getById(long id) {
+    public UserEntity getById(int id) {
         Session session = null;
         UserEntity res = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            res = (UserEntity) session.get(UserEntity.class, id);
+
+            res = ((UserEntity) session.get(UserEntity.class, id));
+
         } finally {
             if (session != null && session.isOpen())
                 session.close();

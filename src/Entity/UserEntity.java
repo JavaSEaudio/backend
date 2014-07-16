@@ -28,6 +28,16 @@ public class UserEntity {
         this.buylist = "";
         this.information = "";
     }
+    public UserEntity(UserEntity oldUser, int id) {
+        this.id = id;
+        this.login = oldUser.login;
+        this.password = oldUser.password;
+        this.email = oldUser.email;
+        this.money = 1000;
+        this.access = 0;
+        this.buylist = "";
+        this.information = "";
+    }
 
     @Id
     @GeneratedValue(generator="increment")
@@ -134,5 +144,14 @@ public class UserEntity {
         result = 31 * result + (buylist != null ? buylist.hashCode() : 0);
         result = 31 * result + (information != null ? information.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

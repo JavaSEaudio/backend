@@ -84,12 +84,12 @@ public class AudioDAO {
     /**
      * МОГУТ ВОЗНИКАТЬ ОШИБКИ
      */
-    public AudioEntity getById(long id) {
+    public AudioEntity getById(int id) {
         Session session = null;
         AudioEntity res = null;
         try {
             session = ourSessionFactory.openSession();
-            res = (AudioEntity) session.get(AudioEntity.class, id);
+            res = ((AudioEntity) session.get(AudioEntity.class, id));
         } finally {
             if (session != null && session.isOpen())
                 session.close();
