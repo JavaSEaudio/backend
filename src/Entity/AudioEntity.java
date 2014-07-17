@@ -24,7 +24,6 @@ public class AudioEntity {
     private int userid;
     private int access;
     @Temporal(TemporalType.DATE)
-    @Column(name = "upload_date")
     private Date upload_date;
 
     public AudioEntity(String name, String artist, String album, String genre){
@@ -50,7 +49,7 @@ public class AudioEntity {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
-    @Column(name = "id")
+    @Column(name = "id", unique = true)
     public int getId() {
         return id;
     }
@@ -59,12 +58,15 @@ public class AudioEntity {
         this.id = id;
     }
 
+
+    @Column(name = "upload_date")
     public Date getUpload_date() {
         return upload_date;
     }
 
     public void setUpload_date(Date upload_date) {
         this.upload_date = upload_date;
+        this.hashcode = hashCode();
     }
 
     @Column(name = "name")
@@ -157,7 +159,7 @@ public class AudioEntity {
         this.hashcode = hashCode();
     }
 
-    @Column(name = "hashcode")
+    @Column(name = "hashcode", unique = true)
     public int getHashcode() {
         return hashcode;
     }

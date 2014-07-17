@@ -4,9 +4,6 @@ import DAO.UserDAO;
 import Entity.UserEntity;
 import util.Factory;
 
-/**
- * Created by Dmytry on 7/17/2014.
- */
 public class UserLogic {
     private static UserDAO uDao = Factory.getInstance().getUserDAO();
     public UserLogic() {

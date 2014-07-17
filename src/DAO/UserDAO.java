@@ -2,7 +2,6 @@ package DAO;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import Entity.UserEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -67,14 +66,12 @@ public class UserDAO {
         Session session = null;
         UserEntity user = null;
         try {
-
             session = HibernateUtil.getSessionFactory().openSession();
-
-            Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
-
-            query.setString("login", login);
-            query.setString("pass", password);
-
+            session.beginTransaction();
+                Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
+                query.setString("login", login);
+                query.setString("pass", password);
+            session.getTransaction().commit();
             user = (UserEntity) query.uniqueResult();
             if(user != null) return user.getId();
         } catch (Exception e){
@@ -105,9 +102,7 @@ public class UserDAO {
         UserEntity res = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-
             res = ((UserEntity) session.get(UserEntity.class, id));
-
         } finally {
             if (session != null && session.isOpen())
                 session.close();

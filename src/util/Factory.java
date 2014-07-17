@@ -2,11 +2,13 @@ package util;
 
 import DAO.AudioDAO;
 import DAO.UserDAO;
+import DAO.SessionDAO;
 
 public class Factory {
     private static Factory instance = null;
     private static AudioDAO audioDAO = null;
     private static UserDAO userDAO = null;
+    private static SessionDAO sessionDAO = null;
 
     public static synchronized Factory getInstance(){
         if (instance == null){
@@ -25,5 +27,11 @@ public class Factory {
             userDAO = new UserDAO();
         }
         return userDAO;
+    }
+    public SessionDAO getSessionDAO(){
+        if (sessionDAO == null){
+            sessionDAO = new SessionDAO();
+        }
+        return sessionDAO;
     }
 }

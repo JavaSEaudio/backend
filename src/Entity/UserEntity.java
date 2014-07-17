@@ -42,7 +42,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
-    @Column(name = "id")
+    @Column(name = "id", unique = true)
     public int getId() {
         return id;
     }
@@ -51,7 +51,7 @@ public class UserEntity {
        this.id = id;
     }
 
-    @Column(name = "login")
+    @Column(name = "login", unique = true)
     public String getLogin() {
         return login;
     }
@@ -69,7 +69,7 @@ public class UserEntity {
         this.password = password;
     }
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     public String getEmail() {
         return email;
     }
