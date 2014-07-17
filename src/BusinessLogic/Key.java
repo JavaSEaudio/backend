@@ -1,11 +1,8 @@
-package Key;
+package BusinessLogic;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
-/**
- * Created by Администратор on 17.07.2014.
- */
 public class Key {
     private final String value;
 
@@ -17,13 +14,13 @@ public class Key {
     private String generate(){
         String temp = "";
         for(int i=0; i<64;i++){
-           int vubor =(int) (Math.random()*3+1);
+            int vubor =(int) (Math.random()*3+1);
             switch (vubor){
                 case 1:{//генирируем Большие букви
                     temp += (char) ((int)(Math.random()*25+65));
                 }
                 break;
-                case 2:{ //генирируем цыфры
+                case 2:{ //генирируем цифры
                     temp += (char) ((int)(Math.random()*9+48));
                     break;
                 }
@@ -35,7 +32,7 @@ public class Key {
         }
         return temp;
     }
-  // Генерация с помощью случайного рендома в виде числа
+    // Генерация с помощью случайного рендома в виде числа
     private String generateSecure(){
         String temp = new BigInteger(130,new SecureRandom()).toString();
         return temp;
@@ -64,10 +61,8 @@ public class Key {
     }
 
     public static void main(String [] args){
-        char r = (char) 65;
         Key s = new Key();
         System.out.println(s.getValue());
 
     }
-
 }

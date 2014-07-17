@@ -1,9 +1,11 @@
 package DAO;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import Entity.AudioEntity;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import util.HibernateUtil;
@@ -89,5 +91,26 @@ public class AudioDAO {
                 session.close();
         }
         return res;
+    }
+    public Collection<AudioEntity> getLastTenAudio() {
+        Session session = null;
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        List<AudioEntity> result = new ArrayList<AudioEntity>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            SQLQuery query = session.createSQLQuery("select * from audiofile" + " limit 10");
+            query.addEntity(AudioEntity.class);
+            audio = query.list();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        for (int i = audio.size() - 1; i > audio.size() - 11; i --) {
+            if (i < 0) return result;
+            else {
+                result.add(audio.get(i));
+            }
+        }
+        return result;
     }
 }

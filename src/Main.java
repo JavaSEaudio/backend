@@ -1,8 +1,9 @@
+import BusinessLogic.UserLogic;
+import util.Factory;
 import DAO.AudioDAO;
 import DAO.UserDAO;
 import Entity.AudioEntity;
 import Entity.UserEntity;
-import util.HibernateUtil;
 
 import java.util.List;
 
@@ -86,6 +87,12 @@ public class Main {
             for (AudioEntity c : listA)
                 System.out.println(c.getArtist() + " " + c.getAlbum());
         }
+
+        UserLogic ul = new UserLogic();
+        UserEntity u = new UserEntity();
+        u = ul.login("user1", "pass1");
+        String uid = ul.uid();
+        System.out.println(u.getLogin());
 
         return;
     }
