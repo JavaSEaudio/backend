@@ -1,8 +1,8 @@
-package BusinessLogic;
+package businessLogic;
 
-import DAO.UserDAO;
+import dao.UserDAO;
 import Entity.UserEntity;
-import util.Factory;
+import utilit.Factory;
 
 public class UserLogic {
     private static UserDAO uDao = Factory.getInstance().getUserDAO();

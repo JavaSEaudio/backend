@@ -1,4 +1,4 @@
-package BusinessLogic;
+package businessLogic;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

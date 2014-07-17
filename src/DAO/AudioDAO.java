@@ -1,12 +1,13 @@
-package DAO;
+package dao;
+
+import Entity.AudioEntity;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import utilit.HibernateUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import Entity.AudioEntity;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import util.HibernateUtil;
 
 public class AudioDAO {
 

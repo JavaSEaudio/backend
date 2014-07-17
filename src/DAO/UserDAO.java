@@ -1,11 +1,12 @@
-package DAO;
+package dao;
 
-import java.util.ArrayList;
-import java.util.List;
 import Entity.UserEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import util.HibernateUtil;
+import utilit.HibernateUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
 

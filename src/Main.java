@@ -1,23 +1,33 @@
-import BusinessLogic.UserLogic;
-import DAO.AudioDAO;
-import DAO.SessionDAO;
-import DAO.UserDAO;
+import businessLogic.UserLogic;
+import dao.AudioDAO;
+import dao.SessionDAO;
+import dao.UserDAO;
 import Entity.AudioEntity;
 import Entity.SessionEntity;
 import Entity.UserEntity;
-import util.Factory;
+import utilit.Factory;
 
 import java.util.List;
 
 public class Main {
 
     public static void main(final String[] args) throws Exception {
+//        String login = "user2";
+//        String password = "pass2";
+//
+//        UserLogic ul = new UserLogic();
+//        if(ul.login(login, password) != null ) {
+//            System.out.println("ok");
+//
+//        } else {
+//            System.out.println("bad");
+//        }
         /**
          * При работе с ДАО обращатся только через фабрику!!!
          * Не забываем менять create на update при повторном запуске,
          * а также дисконектить после выполнения
          */
-        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+       /* AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         UserDAO uDao = Factory.getInstance().getUserDAO();
         SessionDAO sDao = Factory.getInstance().getSessionDAO();
 
@@ -27,9 +37,10 @@ public class Main {
         SessionEntity sess = new SessionEntity(1, "UniQueKey10001");
         aDAO.add(audio);
         uDao.add(user);
-        sDao.add(sess);
+        sDao.add(sess);*/
 
         // Использовать при создании таблицы
+
 /*
 
         uDao.add(new UserEntity("user2", "pass2", "us2@m.com"));
@@ -47,6 +58,7 @@ public class Main {
         aDAO.add(new AudioEntity("Name7", "Artist7", "Album7","cheta7"));
         aDAO.add(new AudioEntity("Name8", "Artist8", "Album8","cheta8"));
         sDao.add(new SessionEntity(2, "UniQueKey10002"));
+
 */
 
 
@@ -54,20 +66,20 @@ public class Main {
          * Запрос проверки пароля и логина
          */
         {
-            System.out.println(uDao.loginPassword("usdfgder1", "pass1"));
+            //System.out.println(uDao.loginPassword("usdfgder1", "pass1"));
         }
 
         /**
          * Изменение записей
          */
         {
-            user = uDao.getById(5);
+            /*user = uDao.getById(5);
             user.setLogin("Changed!!!");
             uDao.change(user);
             //------------------------
             audio = aDAO.getById(2);
             audio.setArtist("Changed!!!");
-            aDAO.change(audio);
+            aDAO.change(audio);*/
         }
         /**
          * Удаление записей
@@ -86,7 +98,7 @@ public class Main {
          * Вывод базы данных в консоль
          */
         {
-            List<UserEntity> listU;
+            /*List<UserEntity> listU;
             List<AudioEntity> listA;
             List<SessionEntity> listS;
             listU = uDao.getAll();
@@ -97,7 +109,7 @@ public class Main {
                 System.out.println(c.getArtist() + " " + c.getAlbum());
             listS = sDao.getAll();
             for (SessionEntity c : listS)
-                System.out.println(c.getUserId() + " " + c.getKey());
+                System.out.println(c.getUserId() + " " + c.getKey());*/
 
 
         }

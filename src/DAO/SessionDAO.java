@@ -1,9 +1,10 @@
-package DAO;
+package dao;
 
 import Entity.SessionEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import util.HibernateUtil;
+import utilit.HibernateUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
