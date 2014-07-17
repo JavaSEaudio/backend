@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import util.HibernateUtil;
 
 public class AudioDAO {
 
@@ -22,14 +23,10 @@ public class AudioDAO {
         ourSessionFactory = configuration.buildSessionFactory(serviceRegistry);
     }
 
-    /**
-     * НЕ ЮЗАТЬ!!! НЕ РАБОТАЕТ!!!
-     */
     public void change(AudioEntity audio) {
-        Session session = null;
-
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            session = ourSessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.update(audio);
             session.getTransaction().commit();
@@ -37,7 +34,6 @@ public class AudioDAO {
             if (session != null && session.isOpen())
                 session.close();
         }
-
     }
 
 
@@ -81,9 +77,6 @@ public class AudioDAO {
         return user;
     }
 
-    /**
-     * МОГУТ ВОЗНИКАТЬ ОШИБКИ
-     */
     public AudioEntity getById(int id) {
         Session session = null;
         AudioEntity res = null;

@@ -37,10 +37,8 @@ public class Main {
         uDao.add(user5);
         uDao.add(user6);*/
 
-        aDAO.add(audio);
-        uDao.add(user);
-
-
+        //aDAO.add(audio);
+        //uDao.add(user);
         {
             List<UserEntity> listU;
             List<AudioEntity> listA;
@@ -52,9 +50,7 @@ public class Main {
                 System.out.println(c.getArtist() + " " + c.getAlbum());
         }
         {
-            user = uDao.getById(1);
-            user.setMoney(1000000);
-            uDao.change(user, 1);
+            System.out.println(uDao.loginPassword("usdfgder1", "pass1"));
         }
         List<UserEntity> listU = uDao.getAll();
         for (UserEntity c : listU)

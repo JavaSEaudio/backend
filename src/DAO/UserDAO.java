@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Entity.UserEntity;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -11,16 +13,21 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import util.HibernateUtil;
 
+import javax.swing.text.html.parser.Entity;
+
 public class UserDAO {
 
-    /**
-     * НЕ ЮЗАТЬ!!! НЕ РАБОТАЕТ!!!
-     */
-    public void change(UserEntity endUser, int id) {
-        this.delete(id);
-        this.add(new UserEntity(endUser, id));
+    public void change(UserEntity endUser) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        ((UserEntity) session.get(UserEntity.class, id)).setId(id);
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.update(endUser);
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
     }
 
     public void add(UserEntity user) {
@@ -67,21 +74,27 @@ public class UserDAO {
     /**
      * НЕ ЮЗАТЬ!!! НЕ РАБОТАЕТ!!!
      */
-    public boolean loginPassword(String login, String password) {
+    public int loginPassword(String login, String password) {
         Session session = null;
-        String query = "SELECT id FROM user WHERE login = "+login+" AND password = "+password;
-        List<Integer> id = null;
+        UserEntity user = null;
         try {
+
             session = HibernateUtil.getSessionFactory().openSession();
-            id = (List<Integer>) session.createQuery(query).list();
-            if(id != null) return true;
+
+            Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
+
+            query.setString("login", login);
+            query.setString("pass", password);
+
+            user = (UserEntity) query.uniqueResult();
+            if(user != null) return user.getId();
         } catch (Exception e){
             System.out.println("Trouble");
         } finally {
             if (session != null && session.isOpen())
                 session.close();
         }
-        return false;
+        return -1;
     }
 
     //@SuppressWarnings("unchecked")
