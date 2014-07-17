@@ -6,22 +6,9 @@ import java.util.List;
 import Entity.AudioEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import util.HibernateUtil;
 
 public class AudioDAO {
-
-    private SessionFactory ourSessionFactory;
-
-    public AudioDAO() {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-        ourSessionFactory = configuration.buildSessionFactory(serviceRegistry);
-    }
 
     public void change(AudioEntity audio) {
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -40,7 +27,7 @@ public class AudioDAO {
     public void add(AudioEntity audio) {
         Session session = null;
         try {
-            session = ourSessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(audio);
             session.getTransaction().commit();
@@ -53,7 +40,21 @@ public class AudioDAO {
     public void delete(AudioEntity audio) {
         Session session = null;
         try {
-            session = ourSessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.delete(audio);
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+    }
+
+    public void delete(int id) {
+        Session session = null;
+        AudioEntity audio = this.getById(id);
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.delete(audio);
             session.getTransaction().commit();
@@ -68,7 +69,7 @@ public class AudioDAO {
         Session session = null;
         List<AudioEntity> user = new ArrayList<AudioEntity>();
         try {
-            session = ourSessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             user = (List<AudioEntity>) session.createCriteria(AudioEntity.class).list();
         } finally {
             if (session != null && session.isOpen())
@@ -81,7 +82,7 @@ public class AudioDAO {
         Session session = null;
         AudioEntity res = null;
         try {
-            session = ourSessionFactory.openSession();
+            session = HibernateUtil.getSessionFactory().openSession();
             res = ((AudioEntity) session.get(AudioEntity.class, id));
         } finally {
             if (session != null && session.isOpen())

@@ -5,15 +5,8 @@ import java.util.List;
 
 import Entity.UserEntity;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import util.HibernateUtil;
-
-import javax.swing.text.html.parser.Entity;
 
 public class UserDAO {
 
@@ -70,10 +63,6 @@ public class UserDAO {
         }
     }
 
-
-    /**
-     * НЕ ЮЗАТЬ!!! НЕ РАБОТАЕТ!!!
-     */
     public int loginPassword(String login, String password) {
         Session session = null;
         UserEntity user = null;
