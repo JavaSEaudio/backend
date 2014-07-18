@@ -1,4 +1,4 @@
-package businessLogic;
+package BusinessLogic;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -39,7 +39,7 @@ public class Key {
     }
 
     public String getValue() {
-        return value;
+        return generate();
     }
 
     @Override

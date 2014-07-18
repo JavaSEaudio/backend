@@ -1,12 +1,11 @@
-package dao;
-
-import Entity.UserEntity;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import utilit.HibernateUtil;
+package DAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import Entity.UserEntity;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import util.HibernateUtil;
 
 public class UserDAO {
 
@@ -76,7 +75,7 @@ public class UserDAO {
             user = (UserEntity) query.uniqueResult();
             if(user != null) return user.getId();
         } catch (Exception e){
-            System.out.println("Trouble");
+            //System.out.println("Trouble");
         } finally {
             if (session != null && session.isOpen())
                 session.close();

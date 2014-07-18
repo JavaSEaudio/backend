@@ -7,7 +7,7 @@ import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtil {
     private static SessionFactory ourSessionFactory;
-
+    private HibernateUtil(){}
     static {
         try {
             Configuration configuration = new Configuration();
