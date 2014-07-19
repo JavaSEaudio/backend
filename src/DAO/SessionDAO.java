@@ -1,10 +1,9 @@
-package dao;
+package DAO;
 
 import Entity.SessionEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import utilit.HibernateUtil;
-
+import util.HibernateUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +60,24 @@ public class SessionDAO {
                 sessionEntity = (SessionEntity) query.uniqueResult();
             session.getTransaction().commit();
             return sessionEntity;
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+    }
+
+    public int haveKey(String key) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+                Query query = session.createQuery("FROM SessionEntity WHERE key = :key");
+                query.setString("key", key);
+                SessionEntity sessionEntity = null;
+                sessionEntity = (SessionEntity) query.uniqueResult();
+            session.getTransaction().commit();
+            if(sessionEntity == null) return -1;
+            return sessionEntity.getUserId();
         } finally {
             if (session != null && session.isOpen())
                 session.close();

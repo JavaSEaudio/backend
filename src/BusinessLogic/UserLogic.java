@@ -1,17 +1,15 @@
-package businessLogic;
+package BusinessLogic;
 
-import dao.UserDAO;
+import DAO.SessionDAO;
+import DAO.UserDAO;
 import Entity.UserEntity;
-import utilit.Factory;
+import util.Factory;
 
 public class UserLogic {
     private static UserDAO uDao = Factory.getInstance().getUserDAO();
-    public UserLogic() {
+    public UserLogic() {}
 
-    }
-
-    public static UserEntity login(String login, String pass) {
-        UserEntity user;
+    public static UserEntity authorization(String login, String pass) {
         int id = uDao.loginPassword(login, pass);
         if (id == -1) {
             return null;
@@ -19,6 +17,12 @@ public class UserLogic {
         else {
             return uDao.getById(id);
         }
+    }
+
+    public static int haveKey(String key) {
+        SessionDAO sDao = Factory.getInstance().getSessionDAO();
+        return sDao.haveKey(key);
+
     }
 
     public static String uid() {

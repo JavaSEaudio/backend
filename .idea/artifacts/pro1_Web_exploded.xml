@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact name="pro1:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/pro1_Web_exploded</output-path>
+    <properties id="ant-preprocessing">
+      <options enabled="true" />
+    </properties>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="pro1/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="pro1" />
+        </element>
+      </element>
+      <element id="artifact" artifact-name="unnamed" />
+      <element id="library" level="project" name="antlr-2.7.7" />
+    </root>
+  </artifact>
+</component>

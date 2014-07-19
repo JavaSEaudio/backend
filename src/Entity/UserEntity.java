@@ -12,14 +12,16 @@ public class UserEntity {
     private String login;
     private String password;
     private String email;
+    private String information;
+    private String name;
     private int money;
     private int access;
     private String buylist;
-    private String information;
+
 
     public UserEntity() {}
 
-    public UserEntity(String login, String password, String email) {
+    public UserEntity(String login, String password, String email, String name, String info) {
         this.login = login;
         this.password = password;
         this.email = email;
@@ -67,6 +69,15 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Column(name = "email", unique = true)
@@ -149,7 +160,7 @@ public class UserEntity {
     @Override
     public String toString() {
         return "UserEntity{" +
-                ", login='" + login + '\'' +
+                ", authorization='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
