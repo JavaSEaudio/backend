@@ -26,14 +26,14 @@ public class Main {
 //        UserEntity user = new UserEntity("user17", "pass17", "us17@m.com", "", "");
 //        AudioEntity audio = new AudioEntity("Name17", "Artist17", "Album16","cheta6");
 //        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
-
+//
 //        aDAO.add(audio);
 //        uDao.add(user);
 //        sDao.add(sess);
 
-        // Использовать при создании таблицы
+//        Использовать при создании таблицы
 
-//
+
 //        uDao.add(new UserEntity("user2", "pass2", "us2@m.com", "", ""));
 //        uDao.add(new UserEntity("user3", "pass3", "us3@m.com", "", ""));
 //        uDao.add(new UserEntity("user4", "pass4", "us4@m.com", "", ""));
@@ -49,7 +49,7 @@ public class Main {
 //        aDAO.add(new AudioEntity("Name7", "Artist7", "Album7","cheta7"));
 //        aDAO.add(new AudioEntity("Name8", "Artist8", "Album8","cheta8"));
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
-//
+
 
         /**
          * Запрос проверки пароля и логина

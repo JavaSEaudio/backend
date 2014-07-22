@@ -75,7 +75,7 @@ public class UserDAO {
             user = (UserEntity) query.uniqueResult();
             if(user != null) return user.getId();
         } catch (Exception e){
-            //System.out.println("Trouble");
+            System.out.println("Trouble");
         } finally {
             if (session != null && session.isOpen())
                 session.close();
