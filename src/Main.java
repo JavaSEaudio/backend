@@ -7,7 +7,11 @@ import Entity.SessionEntity;
 import Entity.UserEntity;
 import util.Factory;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Main {
 
@@ -118,6 +122,8 @@ public class Main {
         System.out.println("noooooooooooooooo");
 
         System.out.println("login = " +uDao.getById(1).getLogin());
+
+
         return;
     }
 }

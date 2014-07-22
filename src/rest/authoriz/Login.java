@@ -4,7 +4,9 @@ import BusinessLogic.*;
 import DAO.SessionDAO;
 import Entity.SessionEntity;
 import Entity.UserEntity;
+import sun.rmi.runtime.Log;
 import util.Factory;
+import util.Logs;
 import util.StringUtil;
 
 import javax.transaction.Transactional;
@@ -28,6 +30,7 @@ public class Login {
         UserEntity user = UserLogic.authorization(login, password);
         if(user != null ) {
             System.out.println("user login");
+            Logs.setLog("user:"+ login+ "singed in");
             String uid = UserLogic.uid();
             try {
                 SessionEntity sess = new SessionEntity(user.getId(), uid);
