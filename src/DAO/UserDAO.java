@@ -69,13 +69,15 @@ public class UserDAO {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
-                query.setString("login", login);
-                query.setString("pass", password);
+                query.setText("login", login);
+                query.setText("pass", password);
+
             session.getTransaction().commit();
             user = (UserEntity) query.uniqueResult();
+
             if(user != null) {
                 if(user.getLogin().equals(login)){
-                    if(user.getPassword().equals(password)) {
+                    if(user.getPassword().equals(password)){
                         return user.getId();
                     }
                 }

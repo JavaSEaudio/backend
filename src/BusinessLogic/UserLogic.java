@@ -25,7 +25,6 @@ public class UserLogic {
 
     }
 
-
     public static String uid() {
         Key key = new Key();
         return key.getValue();

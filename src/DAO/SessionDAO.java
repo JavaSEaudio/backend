@@ -1,6 +1,8 @@
 package DAO;
 
+import Entity.AudioEntity;
 import Entity.SessionEntity;
+import Entity.UserEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import util.HibernateUtil;
@@ -49,6 +51,25 @@ public class SessionDAO {
         }
     }
 
+    public void delete(String key) {
+        Session session = null;
+        SessionEntity audio = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+                Query query = session.createQuery("FROM SessionEntity WHERE skey = :skey");
+                query.setText("skey", key);
+                audio = (SessionEntity) query.uniqueResult();
+            session.getTransaction().commit();
+            session.beginTransaction();
+                session.delete(audio);
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+    }
+
     public SessionEntity getByUserId(int userId) {
         Session session = null;
         try {
@@ -71,7 +92,7 @@ public class SessionDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-                Query query = session.createQuery("FROM SessionEntity WHERE key = :key");
+                Query query = session.createQuery("FROM SessionEntity WHERE skey = :key");
                 query.setString("key", key);
                 SessionEntity sessionEntity = null;
                 sessionEntity = (SessionEntity) query.uniqueResult();
