@@ -73,9 +73,15 @@ public class UserDAO {
                 query.setString("pass", password);
             session.getTransaction().commit();
             user = (UserEntity) query.uniqueResult();
-            if(user != null) return user.getId();
+            if(user != null) {
+                if(user.getLogin().equals(login)){
+                    if(user.getPassword().equals(password)) {
+                        return user.getId();
+                    }
+                }
+            }
         } catch (Exception e){
-            System.out.println("Trouble");
+            //System.out.println("Trouble");
         } finally {
             if (session != null && session.isOpen())
                 session.close();

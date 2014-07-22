@@ -12,8 +12,12 @@ public class StringUtil {
         private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$");
 
         public static boolean minLength(String str, int len)  { //throws IllegalArgumentException
-            if(str != null && !str.isEmpty()) {
-                if (str.length() < len) {
+            Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
+            Matcher matcher = pattern.matcher(str);
+            boolean found = matcher.find();
+
+            if(!found && !str.contains(" ")) {
+                if (str.length() > len) {
             return true;    //throw new IllegalArgumentException();
                 }
             }
@@ -21,8 +25,12 @@ public class StringUtil {
         }
 //
         public static boolean maxLength(String str, int len)  {
-            if(str != null && !str.isEmpty()) {
-                if (str.length() > len) {
+            Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
+            Matcher matcher = pattern.matcher(str);
+            boolean found = matcher.find();
+
+            if(!found && !str.contains(" ")) {
+                if (str.length() < len) {
                     return true;    //throw new IllegalArgumentException();
                 }
             }
@@ -30,7 +38,7 @@ public class StringUtil {
         }
 
     public static boolean minMaxLength(String str, int minLen, int maxLen)  {       //@return true if string is valid
-        Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
+        Pattern pattern = Pattern.compile("\\s");                                   //----contain whitespace
         Matcher matcher = pattern.matcher(str);
         boolean found = matcher.find();
 
@@ -43,14 +51,33 @@ public class StringUtil {
         }
         return false;
     }
+        // @return true if email is valid
+        public static boolean validEmail(String email)  {
 
-//        public static void validEmail(String email) throws IllegalArgumentException {
-//            minLength(email, 4);
-//            maxLength(email, 255);
-//            if (!email.contains("@") || StringUtils.containsWhitespace(email)) {
-//                throw new IllegalArgumentException();
-//            }
-//        }
+            if( !minMaxLength(email, 4 , 225)){
+                return false;
+            }  else
+            if (!email.contains("@") ) {
+                return false;
+            }  else
+            return true;
+        }
+
+        public static boolean validRegistration(String login, String passOne, String passTwo, String email){
+         if (!passOne.equals(passTwo)){
+             return false;
+         } else
+         if (!StringUtil.minMaxLength(passOne, 2 , 225)){
+             return false;
+         } else
+         if (!StringUtil.minMaxLength(login, 2 , 225)){
+             return false;
+         } else
+         if (!StringUtil.validEmail(email)){
+             return false;
+            }
+            return true;
+        }
 
         public static boolean isValidUuid(String uuid) {
             return UUID_PATTERN.matcher(uuid).matches();

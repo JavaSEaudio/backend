@@ -15,16 +15,16 @@ import javax.ws.rs.core.Response;
 
 
 
-@Path("/")
+@Path("/Login")
 public class Login {
     @POST
-    @Path("Login")
+    //@Path("Login")
    // @Consumes("text/html")
     public Response login(@FormParam("login") String login,
                           @FormParam("password") String password) {
 
         System.out.println(login + " " + password);
-        if (!StringUtil.minMaxLength(login , 2 , 17)  ||  !StringUtil.minMaxLength(password , 3 , 257))
+        if (!StringUtil.minMaxLength(login , 2 , 225)  ||  !StringUtil.minMaxLength(password , 3 , 225))
         {
             System.out.println("not valid length or type   - login $$ password");
             return Response.status(400).build();
@@ -51,16 +51,16 @@ public class Login {
 //        userRepository.save(newUser);
 //        return token;
 //    }
-        @POST
-        @Path("/add")
-        public Response addUser(
-                @FormParam("name") String name,
-                @FormParam("age") int age) {
-
-            return Response.status(200)
-                    .entity("addUser is called, name : " + name + ", age : " + age)
-                    .build();
-
-        }
+//        @POST
+//        @Path("/add")
+//        public Response addUser(
+//                @FormParam("name") String name,
+//                @FormParam("age") int age) {
+//
+//            return Response.status(200)
+//                    .entity("addUser is called, name : " + name + ", age : " + age)
+//                    .build();
+//
+//        }
 
 }
