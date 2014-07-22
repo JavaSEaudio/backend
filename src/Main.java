@@ -23,17 +23,17 @@ public class Main {
         SessionDAO sDao = Factory.getInstance().getSessionDAO();
 
         //Желательно изменять при каждом новом вызове или комментить
-        UserEntity user = new UserEntity("user17", "pass17", "us17@m.com", "", "");
-        AudioEntity audio = new AudioEntity("Name17", "Artist17", "Album16","cheta6");
-        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
+          UserEntity user = new UserEntity("Ямакаси300", "Зass300", "us17@m.com", "", "");
+//        AudioEntity audio = new AudioEntity("Name17", "Artist17", "Album16","cheta6");
+//        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
-        aDAO.add(audio);
-        uDao.add(user);
-        sDao.add(sess);
+//        aDAO.add(audio);
+//          uDao.add(user);
+//        sDao.add(sess);
 
         // Использовать при создании таблицы
 
-
+//
 //        uDao.add(new UserEntity("user2", "pass2", "us2@m.com", "", ""));
 //        uDao.add(new UserEntity("user3", "pass3", "us3@m.com", "", ""));
 //        uDao.add(new UserEntity("user4", "pass4", "us4@m.com", "", ""));
@@ -49,13 +49,13 @@ public class Main {
 //        aDAO.add(new AudioEntity("Name7", "Artist7", "Album7","cheta7"));
 //        aDAO.add(new AudioEntity("Name8", "Artist8", "Album8","cheta8"));
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
-
+//
 
         /**
          * Запрос проверки пароля и логина
          */
         {
-            System.out.println(uDao.loginPassword("user1", "pass1"));
+            System.out.println(uDao.loginPassword("user2", "pass2"));
         }
 
         /**
@@ -97,16 +97,27 @@ public class Main {
                 System.out.println(c.getArtist() + " " + c.getAlbum());
             listS = sDao.getAll();
             for (SessionEntity c : listS)
-                System.out.println(c.getUserId() + " " + c.getKey());
+                System.out.println(c.getUserId() + " " + c.getSkey());
 
 
         }
 
 
+        String login = "ямакаси300";
+        String password = "зass300";
+        System.out.println(login + " " + password);
+
         UserLogic ul = new UserLogic();
-        UserEntity u = ul.authorization("user2", "pass2");
-        String uid = ul.uid();
-        System.out.println(u.getLogin()+ ", "+uid);
+        user = ul.authorization(login, password);
+        if(user != null ) {
+            System.out.println("yeeeeeeeeeees");
+            System.out.println(user.getLogin());
+        }
+
+        else
+        System.out.println("noooooooooooooooo");
+
+        System.out.println("login = " +uDao.getById(1).getLogin());
         return;
     }
 }

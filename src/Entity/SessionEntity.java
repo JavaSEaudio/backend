@@ -10,13 +10,13 @@ public class SessionEntity {
 
     private int id;
     private int userId;
-    private String key;
+    private String skey;
 
     public  SessionEntity(){}
 
     public SessionEntity(int userId, String key) {
         this.userId = userId;
-        this.key = key;
+        this.skey = key;
     }
 
     @Id
@@ -39,16 +39,16 @@ public class SessionEntity {
 
     @Basic
     @Column(name = "skey", unique = true)
-    public String getKey() {
-        return key;
+    public String getSkey() {
+        return skey;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSkey(String key) {
+        this.skey = key;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class SessionEntity {
 
         if (id != that.id) return false;
         if (userId != that.userId) return false;
-        if (!key.equals(that.key)) return false;
+        if (!skey.equals(that.skey)) return false;
 
         return true;
     }
@@ -68,7 +68,7 @@ public class SessionEntity {
     @Override
     public int hashCode() {
         int result = userId;
-        result = 31 * result + key.hashCode();
+        result = 31 * result + skey.hashCode();
         return result;
     }
 }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> test </title>
+</head>
+<body>
+
+<h2> Логинимся </h2>
+
+<form action="rest/Login" method="POST">
+    login: <input type="text" name="login"><br>
+    password: <input type="text" name="password">
+    <input type="submit"  value="OK!" name="submit"/>
+</form>
+
+<h2> Регистрируемся </h2>
+
+<form action="rest/Registration" method="POST">
+    login: <input type="text" name="login"><br>
+    enter password: <input type="text" name="passwordOne"><br>
+    reenter password: <input type="text" name="passwordTwo"><br>
+    enter email:<input type="text" name = "email">
+    <input type="submit"  value="OK!" name="submit"/>
+</form>
+
+<h1>Пробуем грузить файлы</h1>
+
+<form action="UploadDownloadFileServlet" method="post" enctype="multipart/form-data">
+    Select File to Upload:<input type="file" name="fileName">
+    <br>
+    <input type="submit" value="Upload">
+</form>
+
+
+</body>
+</html>
