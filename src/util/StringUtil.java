@@ -1,11 +1,7 @@
 package util;
 
-/**
- * Created by Андрей on 21.07.2014.
- */
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class StringUtil {
 
@@ -23,7 +19,7 @@ public class StringUtil {
             }
             return false;
         }
-//
+    
         public static boolean maxLength(String str, int len)  {
             Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
             Matcher matcher = pattern.matcher(str);
