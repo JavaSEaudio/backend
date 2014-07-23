@@ -69,8 +69,8 @@ public class UserDAO {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
-                query.setText("login", login);
-                query.setText("pass", password);
+                query.setString("login", login);
+                query.setString("pass", password);
 
             session.getTransaction().commit();
             user = (UserEntity) query.uniqueResult();
@@ -91,7 +91,6 @@ public class UserDAO {
         return -1;
     }
 
-    //@SuppressWarnings("unchecked")
     public List<UserEntity> getAll() {
         Session session = null;
         List<UserEntity> user = new ArrayList<UserEntity>();
@@ -116,5 +115,23 @@ public class UserDAO {
                 session.close();
         }
         return res;
+    }
+    public UserEntity getByLogin(String login) {
+        Session session = null;
+        UserEntity user = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM UserEntity WHERE login = :login");
+            query.setString("login", login);
+            session.getTransaction().commit();
+            user = (UserEntity) query.uniqueResult();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return user;
     }
 }

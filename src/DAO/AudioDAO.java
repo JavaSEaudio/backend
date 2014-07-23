@@ -1,9 +1,11 @@
 package DAO;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import Entity.AudioEntity;
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import util.HibernateUtil;
@@ -26,6 +28,8 @@ public class AudioDAO {
 
     public void add(AudioEntity audio) {
         Session session = null;
+        Calendar calendar = Calendar.getInstance();
+        audio.setUpload_date(calendar.getTime());
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -64,7 +68,6 @@ public class AudioDAO {
         }
     }
 
-    //@SuppressWarnings("unchecked")
     public List<AudioEntity> getAll() {
         Session session = null;
         List<AudioEntity> user = new ArrayList<AudioEntity>();
@@ -108,6 +111,28 @@ public class AudioDAO {
             else {
                 result.add(audio.get(i));
             }
+        }
+        return result;
+    }
+
+    public Collection<AudioEntity> getSomeAudios(int first, int second) {
+        Session session = null;
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        List<AudioEntity> result = new ArrayList<AudioEntity>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("from AudioEntity order by upload_date DESC");
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+            audio = query.list();
+            session.getTransaction().commit();
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        for (int i = 0; i < second; i ++) {
+            result.add(audio.get(i));
         }
         return result;
     }

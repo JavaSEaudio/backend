@@ -2,7 +2,6 @@ package rest.authoriz;
 
 import DAO.SessionDAO;
 import util.Factory;
-
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -18,10 +17,11 @@ public class Exit {
             SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
             sessionDAO.delete(uid);
         } catch (Exception e) {
-            System.out.println("Do not deleted from DB");
+            System.out.println("Do not deleted cookies from DB");
         }
         Cookie cook = new Cookie("name", "");
         NewCookie cookie = new NewCookie(cook, "", 0, false);
+
         System.out.println("Deleted cookies");
         return Response.ok().cookie(cookie).build();
     }

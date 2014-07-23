@@ -1,13 +1,6 @@
-import BusinessLogic.UserLogic;
 import DAO.AudioDAO;
-import DAO.SessionDAO;
-import DAO.UserDAO;
 import Entity.AudioEntity;
-import Entity.SessionEntity;
-import Entity.UserEntity;
 import util.Factory;
-
-import java.util.List;
 
 public class Main {
 
@@ -19,17 +12,17 @@ public class Main {
          */
 
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-        UserDAO uDao = Factory.getInstance().getUserDAO();
-        SessionDAO sDao = Factory.getInstance().getSessionDAO();
+        //UserDAO uDao = Factory.getInstance().getUserDAO();
+        //SessionDAO sDao = Factory.getInstance().getSessionDAO();
 
         //Желательно изменять при каждом новом вызове или комментить
-          UserEntity user = new UserEntity("Ямакаси300", "Зass300", "us17@m.com", "", "");
-//        AudioEntity audio = new AudioEntity("Name17", "Artist17", "Album16","cheta6");
-//        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
+        //UserEntity user = new UserEntity("root", "root", "admin@gmail.com", "Sasha", "Coding");
+        //AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
+        //SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
 //        aDAO.add(audio);
-//          uDao.add(user);
-//        sDao.add(sess);
+//        uDao.add(user);
+        //sDao.sDao(sess);
 
         // Использовать при создании таблицы
 
@@ -40,23 +33,31 @@ public class Main {
 //        uDao.add(new UserEntity("user5", "pass5", "us5@m.com", "", ""));
 //        uDao.add(new UserEntity("user6", "pass6", "us6@m.com", "", ""));
 //        uDao.add(new UserEntity("user7", "pass7", "us7@m.com", "", ""));
-//        uDao.add(new UserEntity("user8", "pass8", "us8@m.com", "", ""));
-//        aDAO.add(new AudioEntity("Name2", "Artist2", "Album2","cheta2"));
-//        aDAO.add(new AudioEntity("Name3", "Artist3", "Album3","cheta3"));
-//        aDAO.add(new AudioEntity("Name4", "Artist4", "Album4","cheta4"));
-//        aDAO.add(new AudioEntity("Name5", "Artist5", "Album5","cheta5"));
-//        aDAO.add(new AudioEntity("Name6", "Artist6", "Album6","cheta6"));
-//        aDAO.add(new AudioEntity("Name7", "Artist7", "Album7","cheta7"));
-//        aDAO.add(new AudioEntity("Name8", "Artist8", "Album8","cheta8"));
+//        uDao.add(new UserEntity("Привет", "пароль", "при8@m.com", "", ""));
+        aDAO.add(new AudioEntity("Name30", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name31", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name32", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name33", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name34", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name35", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name36", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name37", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name38", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name39", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name40", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name41", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name42", "Artis", "Album","cheta"));
+        aDAO.add(new AudioEntity("Name43", "Artis", "Album","cheta"));
+
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
 //
 
         /**
          * Запрос проверки пароля и логина
          */
-        {
-            System.out.println(uDao.loginPassword("user2", "pass2"));
-        }
+//        {
+//            System.out.println(uDao.loginPassword("user2", "pass2"));
+//        }
 
         /**
          * Изменение записей
@@ -74,7 +75,8 @@ public class Main {
          */
 //        {
 //            uDao.delete(6);
-//            aDAO.delete(6);
+
+                //aDAO.delete(3);
 //            user = uDao.getById(7);
 //            audio = aDAO.getById(7);
 //            uDao.delete(user);
@@ -85,39 +87,45 @@ public class Main {
         /**
          * Вывод базы данных в консоль
          */
-        {
-            List<UserEntity> listU;
-            List<AudioEntity> listA;
-            List<SessionEntity> listS;
-            listU = uDao.getAll();
-            for (UserEntity c : listU)
-                System.out.println(c.getId() + ", " + c.getLogin() + ", " + c.getEmail());
-            listA = aDAO.getAll();
-            for (AudioEntity c : listA)
-                System.out.println(c.getArtist() + " " + c.getAlbum());
-            listS = sDao.getAll();
-            for (SessionEntity c : listS)
-                System.out.println(c.getUserId() + " " + c.getSkey());
+//        {
+//            List<UserEntity> listU;
+//            List<AudioEntity> listA;
+//            List<SessionEntity> listS;
+//            listU = uDao.getAll();
+//            for (UserEntity c : listU)
+//                System.out.println(c.getId() + ", " + c.getLogin() + ", " + c.getEmail());
+//            listA = aDAO.getAll();
+//            for (AudioEntity c : listA)
+//                System.out.println(c.getArtist() + " " + c.getAlbum());
+//            listS = sDao.getAll();
+//            for (SessionEntity c : listS)
+//                System.out.println(c.getUserId() + " " + c.getSkey());
+//
+
+//        }
 
 
-        }
+//        String login = "ямакаси300";
+//        String password = "зass300";
+//        System.out.println(login + " " + password);
+//
+//        UserLogic ul = new UserLogic();
+//        user = ul.authorization(login, password);
+//        if(user != null ) {
+//            System.out.println("yeeeeeeeeeees");
+//            System.out.println(user.getLogin());
+//        }
+//
+//        else
+//        System.out.println("noooooooooooooooo");
+//
+//        System.out.println("login = " +uDao.getById(1).getLogin());
 
 
-        String login = "ямакаси300";
-        String password = "зass300";
-        System.out.println(login + " " + password);
+//        UserDRO uDro = new UserDRO(uDao.getByLogin("user2"));
+//        System.out.println(uDro.getLogin());
 
-        UserLogic ul = new UserLogic();
-        user = ul.authorization(login, password);
-        if(user != null ) {
-            System.out.println("yeeeeeeeeeees");
-            System.out.println(user.getLogin());
-        }
-
-        else
-        System.out.println("noooooooooooooooo");
-
-        System.out.println("login = " +uDao.getById(1).getLogin());
+System.out.println("END");
         return;
     }
 }

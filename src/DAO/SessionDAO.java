@@ -1,8 +1,6 @@
 package DAO;
 
-import Entity.AudioEntity;
 import Entity.SessionEntity;
-import Entity.UserEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import util.HibernateUtil;

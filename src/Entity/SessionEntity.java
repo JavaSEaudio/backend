@@ -1,7 +1,6 @@
 package Entity;
 
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @Entity
@@ -51,24 +50,4 @@ public class SessionEntity {
         this.skey = key;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SessionEntity that = (SessionEntity) o;
-
-        if (id != that.id) return false;
-        if (userId != that.userId) return false;
-        if (!skey.equals(that.skey)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userId;
-        result = 31 * result + skey.hashCode();
-        return result;
-    }
 }
