@@ -23,6 +23,8 @@ public class Exit {
         Cookie cook = new Cookie("name", "");
         NewCookie cookie = new NewCookie(cook, "", 0, false);
 
+        Logger.getLogger("com.vaannila.admin").error("To admin log1 from web");
+
         Logger.getLogger("com.vaannila.admin").error("To admin log1__from web");
         System.out.println("Deleted cookies");
 

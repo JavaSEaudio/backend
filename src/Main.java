@@ -7,23 +7,21 @@ import org.apache.log4j.Logger;
 
 public class Main {
 
-    //private static Logger logger = Logger.getLogger(Main.class);
-
-//    private static Logger log = Logger.getLogger( Main.class );
-//    private static Logger connectionsLog = Logger.getLogger( "connections." + Main.class.getName() );
-//    private static Logger stacktracesLog = Logger.getLogger( "stacktraces." + Main.class.getName() );
-//    private static Logger httpLog = Logger.getLogger("http." + Main.class.getName());
-//   private static Logger httpLog = Logger.getLogger( "http." + Main.class.getName() );
+   public final static Logger logger =  Logger.getLogger("com.vaannila.report");
     public static void main(final String[] args) throws Exception {
 
-//        stacktracesLog.info("TESSSSSSSSSSTTTTTTT1");
-//        stacktracesLog.warn("TESSSSSSSSSSTTTTTTT2");
-//
-//        log.debug("TESSSSSSSSSSTTTTTTT3");
-//        connectionsLog.error("TESSSSSSSSSSTTTTTTT4");
-//        httpLog.info("TESSSSSSSSSSTTTTTTT5");
+
+        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only
+        Logger.getLogger("com.vaannila.admin").warn("To admin log1");
         Logger.getLogger("com.vaannila.admin").error("To admin log1");
+        Logger.getLogger("com.vaannila.admin").debug("To admin log1");
+
+        Logger.getLogger("com.vaannila.report").info("To report log2");     // report-log info, warn, error, debug ect...
+        Logger.getLogger("com.vaannila.report").warn("To report log2");
         Logger.getLogger("com.vaannila.report").error("To report log2");
+        Logger.getLogger("com.vaannila.report").debug("To report log2");
+            logger.info("asdfasdfasdfasdfasdfasdf");
+
 
 
         /**
