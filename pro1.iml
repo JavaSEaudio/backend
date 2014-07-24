@@ -26,8 +26,6 @@
         </datasource-map>
         <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/pro1_Web_exploded/WEB-INF/classes/hibernate.cfg.xml" />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/pro1_Web_exploded/WEB-INF/hibernate.cfg.xml" />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/pro1_Web_exploded/hibernate.cfg.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/unnamed/WEB-INF/classes/hibernate.cfg.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/unnamed/WEB-INF/hibernate.cfg.xml" />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/unnamed/hibernate.cfg.xml" />

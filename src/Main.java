@@ -1,5 +1,8 @@
 import DAO.AudioDAO;
+import DAO.SessionDAO;
+import DAO.UserDAO;
 import Entity.AudioEntity;
+import Entity.UserEntity;
 import util.Factory;
 
 public class Main {
@@ -11,20 +14,20 @@ public class Main {
          * а также дисконектить после выполнения
          */
 
-        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-        //UserDAO uDao = Factory.getInstance().getUserDAO();
-        //SessionDAO sDao = Factory.getInstance().getSessionDAO();
-
-        //Желательно изменять при каждом новом вызове или комментить
-        //UserEntity user = new UserEntity("root", "root", "admin@gmail.com", "Sasha", "Coding");
-        //AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
-        //SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
+//        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+        UserDAO uDao = Factory.getInstance().getUserDAO();
+//        SessionDAO sDao = Factory.getInstance().getSessionDAO();
+//
+//        Желательно изменять при каждом новом вызове или комментить
+        UserEntity user = new UserEntity("root234", "roo345t", "a23dmin@gmail.com", "Sasha", "Coding");
+//        AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
+//        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
 //        aDAO.add(audio);
-//        uDao.add(user);
-        //sDao.sDao(sess);
-
-        // Использовать при создании таблицы
+        uDao.add(user);
+//        sDao.sDao(sess);
+//
+//        Использовать при создании таблицы
 
 //
 //        uDao.add(new UserEntity("user2", "pass2", "us2@m.com", "", ""));
@@ -34,20 +37,17 @@ public class Main {
 //        uDao.add(new UserEntity("user6", "pass6", "us6@m.com", "", ""));
 //        uDao.add(new UserEntity("user7", "pass7", "us7@m.com", "", ""));
 //        uDao.add(new UserEntity("Привет", "пароль", "при8@m.com", "", ""));
-        aDAO.add(new AudioEntity("Name30", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name31", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name32", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name33", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name34", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name35", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name36", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name37", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name38", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name39", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name40", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name41", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name42", "Artis", "Album","cheta"));
-        aDAO.add(new AudioEntity("Name43", "Artis", "Album","cheta"));
+//        aDAO.add(new AudioEntity("Name1", "Artis1", "Album1","cheta"));
+//        aDAO.add(new AudioEntity("Name2", "Artis2", "Album2","cheta"));
+//        aDAO.add(new AudioEntity("Name3", "Artis3", "Album3","cheta"));
+//        aDAO.add(new AudioEntity("Name4", "Artis4", "Album4","cheta"));
+//        aDAO.add(new AudioEntity("Name5", "Artis5", "Album5","cheta"));
+//        aDAO.add(new AudioEntity("Name6", "Artis6", "Album6","cheta"));
+//        aDAO.add(new AudioEntity("Name7", "Artis7", "Album7","cheta"));
+//        aDAO.add(new AudioEntity("Name8", "Artis8", "Album8","cheta"));
+//        aDAO.add(new AudioEntity("Name9", "Artis9", "Album9","cheta"));
+//        aDAO.add(new AudioEntity("Name10", "Artis10", "Album10","cheta"));
+
 
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
 //
@@ -125,7 +125,8 @@ public class Main {
 //        UserDRO uDro = new UserDRO(uDao.getByLogin("user2"));
 //        System.out.println(uDro.getLogin());
 
-System.out.println("END");
+
+System.out.println("THE END");
         return;
     }
 }

@@ -19,7 +19,7 @@ public class StringUtil {
             }
             return false;
         }
-    
+
         public static boolean maxLength(String str, int len)  {
             Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
             Matcher matcher = pattern.matcher(str);

@@ -14,9 +14,11 @@ import javax.ws.rs.core.Response;
 
 @Path("/Login")
 public class Login {
+
     @POST
     public Response login(@FormParam("login") String login,
                           @FormParam("password") String password) {
+
         if (!StringUtil.minMaxLength(login , 2 , 225)  ||  !StringUtil.minMaxLength(password , 2 , 225))
         {
             System.out.println("not valid length or type - login or password");
