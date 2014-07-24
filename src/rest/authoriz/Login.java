@@ -12,15 +12,12 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 
-import org.apache.log4j.Logger;
-
 @Path("/Login")
 public class Login {
-    static Logger logger = Logger.getLogger(Login.class);
+
     @POST
     public Response login(@FormParam("login") String login,
                           @FormParam("password") String password) {
-
 
         if (!StringUtil.minMaxLength(login , 2 , 225)  ||  !StringUtil.minMaxLength(password , 2 , 225))
         {
@@ -43,7 +40,6 @@ public class Login {
             }
         } else {
             System.out.println("Not logged in");
-            logger.debug("Not logged in");
             return Response.status(400).build();
         }
     }

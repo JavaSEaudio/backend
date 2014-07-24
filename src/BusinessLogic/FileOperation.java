@@ -73,7 +73,7 @@ public static boolean addAudioFile(File file, String tags, int userID){
         temp.setAlbum(mp3File.getAlbum());
         temp.setGenre(mp3File.getMusicType());
         temp.setComment(mp3File.getComments());
-        temp.setTags(tags);
+        //temp.setTags(tags);
         temp.setYear(mp3File.getYear());
         temp.setType(".mp3");
         temp.setLength(mp3File.getAudioDuration()); // в милисикундах

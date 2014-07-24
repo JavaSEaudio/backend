@@ -1,51 +1,52 @@
 import DAO.AudioDAO;
+import DAO.UserDAO;
+import DAO.SessionDAO;
+import DAO.UserDAO;
 import Entity.AudioEntity;
-
+import Entity.UserEntity;
+import Entity.UserEntity;
 import org.apache.log4j.Priority;
 import util.Factory;
 import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 public class Main {
 
-   public final static Logger logger =  Logger.getLogger("com.vaannila.report");
+   private final static Logger logger =  Logger.getLogger("com.vaannila.report");
     public static void main(final String[] args) throws Exception {
 
-
-        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only
-        Logger.getLogger("com.vaannila.admin").warn("To admin log1");
-        Logger.getLogger("com.vaannila.admin").error("To admin log1");
+        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
+        Logger.getLogger("com.vaannila.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
+        Logger.getLogger("com.vaannila.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
         Logger.getLogger("com.vaannila.admin").debug("To admin log1");
 
         Logger.getLogger("com.vaannila.report").info("To report log2");     // report-log info, warn, error, debug ect...
         Logger.getLogger("com.vaannila.report").warn("To report log2");
-        Logger.getLogger("com.vaannila.report").error("To report log2");
-        Logger.getLogger("com.vaannila.report").debug("To report log2");
+        logger.error("To report log2");
+        logger.debug("To report log2");
             logger.info("asdfasdfasdfasdfasdfasdf");
 
-
-
-        /**
-         * При работе с ДАО обращатся только через фабрику!!!
-         * Не забываем менять create на update при повторном запуске,
-         * а также дисконектить после выполнения
-         */
+/**
+ * При работе с ДАО обращатся только через фабрику!!!
+ * Не забываем менять create на update при повторном запуске,
+ * а также дисконектить после выполнения
+ */
 
 //        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-        //UserDAO uDao = Factory.getInstance().getUserDAO();
-        //SessionDAO sDao = Factory.getInstance().getSessionDAO();
-
-        //Желательно изменять при каждом новом вызове или комментить
-        //UserEntity user = new UserEntity("root", "root", "admin@gmail.com", "Sasha", "Coding");
-        //AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
-        //SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
+        UserDAO uDao = Factory.getInstance().getUserDAO();
+//        SessionDAO sDao = Factory.getInstance().getSessionDAO();
+//
+//        Желательно изменять при каждом новом вызове или комментить
+        UserEntity user = new UserEntity("root234", "roo345t", "a23dmin@gmail.com", "Sasha", "Coding");
+//        AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
+//        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
 //        aDAO.add(audio);
 //        uDao.add(user);
-        //sDao.sDao(sess);
-
-        // Использовать при создании таблицы
-
+//        sDao.sDao(sess);
 //
+//        Использовать при создании таблицы
+
 //        uDao.add(new UserEntity("user2", "pass2", "us2@m.com", "", ""));
 //        uDao.add(new UserEntity("user3", "pass3", "us3@m.com", "", ""));
 //        uDao.add(new UserEntity("user4", "pass4", "us4@m.com", "", ""));
@@ -53,31 +54,25 @@ public class Main {
 //        uDao.add(new UserEntity("user6", "pass6", "us6@m.com", "", ""));
 //        uDao.add(new UserEntity("user7", "pass7", "us7@m.com", "", ""));
 //        uDao.add(new UserEntity("Привет", "пароль", "при8@m.com", "", ""));
-//        aDAO.add(new AudioEntity("Name30", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name31", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name32", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name33", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name34", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name35", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name36", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name37", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name38", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name39", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name40", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name41", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name42", "Artis", "Album","cheta"));
-//        aDAO.add(new AudioEntity("Name43", "Artis", "Album","cheta"));
+//        aDAO.add(new AudioEntity("Name1", "Artis1", "Album1","cheta"));
+//        aDAO.add(new AudioEntity("Name2", "Artis2", "Album2","cheta"));
+//        aDAO.add(new AudioEntity("Name3", "Artis3", "Album3","cheta"));
+//        aDAO.add(new AudioEntity("Name4", "Artis4", "Album4","cheta"));
+//        aDAO.add(new AudioEntity("Name5", "Artis5", "Album5","cheta"));
+//        aDAO.add(new AudioEntity("Name6", "Artis6", "Album6","cheta"));
+//        aDAO.add(new AudioEntity("Name7", "Artis7", "Album7","cheta"));
+//        aDAO.add(new AudioEntity("Name8", "Artis8", "Album8","cheta"));
+//        aDAO.add(new AudioEntity("Name9", "Artis9", "Album9","cheta"));
+//        aDAO.add(new AudioEntity("Name10", "Artis10", "Album10","cheta"));
 
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
 //
-
         /**
          * Запрос проверки пароля и логина
          */
 //        {
 //            System.out.println(uDao.loginPassword("user2", "pass2"));
 //        }
-
         /**
          * Изменение записей
          */
@@ -94,15 +89,12 @@ public class Main {
          */
 //        {
 //            uDao.delete(6);
-
-                //aDAO.delete(3);
+            //aDAO.delete(3);
 //            user = uDao.getById(7);
 //            audio = aDAO.getById(7);
 //            uDao.delete(user);
 //            aDAO.delete(audio);
 //        }
-
-
         /**
          * Вывод базы данных в консоль
          */
@@ -120,10 +112,7 @@ public class Main {
 //            for (SessionEntity c : listS)
 //                System.out.println(c.getUserId() + " " + c.getSkey());
 //
-
 //        }
-
-
 //        String login = "ямакаси300";
 //        String password = "зass300";
 //        System.out.println(login + " " + password);
@@ -134,21 +123,15 @@ public class Main {
 //            System.out.println("yeeeeeeeeeees");
 //            System.out.println(user.getLogin());
 //        }
-//
 //        else
 //        System.out.println("noooooooooooooooo");
 //
 //        System.out.println("login = " +uDao.getById(1).getLogin());
 
-
 //        UserDRO uDro = new UserDRO(uDao.getByLogin("user2"));
 //        System.out.println(uDro.getLogin());
 
-//
-
-
-
-        System.out.println("END");
+        System.out.println("THE END");
         return;
     }
 }

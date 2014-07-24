@@ -136,4 +136,121 @@ public class AudioDAO {
         }
         return result;
     }
+
+    public List<AudioEntity> getByYear(int year) {
+        Session session = null;
+        List<AudioEntity> audio = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE year = :year");
+            query.setInteger("year", year);
+            session.getTransaction().commit();
+            audio = (List<AudioEntity>) query.list();
+        } catch (Exception e){
+            System.err.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getByUserId(int id) {
+        Session session = null;
+        List<AudioEntity> audio = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE userid = :id");
+            query.setInteger("id", id);
+            session.getTransaction().commit();
+            audio = (List<AudioEntity>) query.list();
+        } catch (Exception e){
+            System.err.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getByGenre(String genre) {
+        Session session = null;
+        List<AudioEntity> audio = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE genre = :genre");
+            query.setString("genre", genre);
+            session.getTransaction().commit();
+            audio = (List<AudioEntity>) query.list();
+        } catch (Exception e){
+            System.err.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getByArtist(String artist) {
+        Session session = null;
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        List<AudioEntity> result = new ArrayList<AudioEntity>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE artist = :artist");
+            query.setString("artist", artist);
+            session.getTransaction().commit();
+            audio = query.list();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getByName(String name) {
+        Session session = null;
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        List<AudioEntity> result = new ArrayList<AudioEntity>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE name = :name");
+            query.setString("name", name);
+            session.getTransaction().commit();
+            audio = query.list();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getByAlbum(String album) {
+        Session session = null;
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        List<AudioEntity> result = new ArrayList<AudioEntity>();
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE album = :album");
+            query.setString("album", album);
+            session.getTransaction().commit();
+            audio = query.list();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
 }

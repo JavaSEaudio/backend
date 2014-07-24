@@ -15,7 +15,6 @@ public class AudioEntity {
     private String album;
     private String genre;
     private String comment;
-    private String tags;
     private int year;
     private String type;
     private int bitrate;
@@ -23,6 +22,8 @@ public class AudioEntity {
     private int size; //byte
     private int userid;
     private int access;
+    private String linkImage;
+    private String linkFile;
     @Temporal(TemporalType.DATE)
     private Date upload_date;
 
@@ -31,15 +32,16 @@ public class AudioEntity {
         this.album = album;
         this.artist = artist;
         this.genre = genre;
-        this.comment = "";
-        this.tags = "";
-        this.type = "";
+        this.comment = "comment";
+        this.type = "mp3";
         this.year = 2000;
         this.bitrate = 254;
         this.length = 100; //in second
         this.size = 1000;
         this.userid = 999; //id users
         this.access = 0;
+        this.linkFile = "C://file";
+        this.linkImage = "C://image";
     }
 
     public AudioEntity() {
@@ -112,15 +114,6 @@ public class AudioEntity {
         this.comment = comment;
     }
 
-    @Column(name = "tags")
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
     @Column(name = "year")
     public int getYear() {
         return year;
@@ -182,5 +175,23 @@ public class AudioEntity {
 
     public void setAccess(int access) {
         this.access = access;
+    }
+
+    @Column(name = "linkimage")
+    public String getLinkImage() {
+        return linkImage;
+    }
+
+    public void setLinkImage(String linkImage) {
+        this.linkImage = linkImage;
+    }
+
+    @Column(name = "linkfile")
+    public String getLinkFile() {
+        return linkFile;
+    }
+
+    public void setLinkFile(String linkFile) {
+        this.linkFile = linkFile;
     }
 }
