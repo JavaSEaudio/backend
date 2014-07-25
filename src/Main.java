@@ -1,10 +1,12 @@
+//import BusinessLogic.FileOperation;
+import BusinessLogic.FileOperation;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
 import DAO.UserDAO;
 import Entity.AudioEntity;
 import Entity.UserEntity;
 import util.Factory;
-
+import com.beaglebuddy.mp3.MP3;
 public class Main {
 
     public static void main(final String[] args) throws Exception {
@@ -14,17 +16,76 @@ public class Main {
          * а также дисконектить после выполнения
          */
 
+        FileOperation m  = new FileOperation("c://upload//audio//930.mp3");
+        System.out.println(m.getName());
+//
+//
+//        fo.setAlbum("The WAVE");
+//        fo.setArtist("Quarijo");
+//        fo.setName("Luaniro");
+//        fo.setComment("The best of the best!!!");
+//        fo.setGenre("Relax");
+//        fo.setYearOfRelease(1995);
+
+
+
+//        System.out.println(m.getName());
+//        System.out.println(m.getArtist());
+//        System.out.println(m.getAlbum());
+//        System.out.println(m.getComments());
+//        System.out.println(m.getGenre());
+//        System.out.println(m.getLyrics());
+//        System.out.println(m.getLyricsBy());
+//        System.out.println(m.getMusicBy());
+//        System.out.println(m.getSize());
+//        System.out.println(m.getLength());
+//        System.out.println(m.getYear());
+
+
+
+//        m.setTrack(0);
+
+
+/**
+ *
+ * Random rand = new Random();
+ System.out.println("Зашли в метод");
+ int randomPath = rand.nextInt();
+ String uploadedFileLocation = "c://upload//audio//" + randomPath + ".mp3";
+ System.out.println("До попытки записать файл на диск");
+ writeToFile(uploadedInputStream, uploadedFileLocation);
+ System.out.println("После попытки записать файл на диск");
+ String output = "File uploaded to : " + uploadedFileLocation;
+ System.out.println(output);
+ System.out.println("Работа закончена");
+ return Response.status(200).entity(output).build();
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-        UserDAO uDao = Factory.getInstance().getUserDAO();
+//        UserDAO uDao = Factory.getInstance().getUserDAO();
 //        SessionDAO sDao = Factory.getInstance().getSessionDAO();
 //
 //        Желательно изменять при каждом новом вызове или комментить
-        UserEntity user = new UserEntity("root234", "roo345t", "a23dmin@gmail.com", "Sasha", "Coding");
+//        UserEntity user = new UserEntity("root234", "roo345t", "a23dmin@gmail.com", "Sasha", "Coding");
 //        AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
 //        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
 //        aDAO.add(audio);
-        uDao.add(user);
+//        uDao.add(user);
 //        sDao.sDao(sess);
 //
 //        Использовать при создании таблицы

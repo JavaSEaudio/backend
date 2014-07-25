@@ -24,12 +24,17 @@
     <input type="submit"  value="OK!" name="submit"/>
 </form>
 
-<h1>Пробуем грузить файлы</h1>
+<h1>File Upload with Jersey</h1>
+<form action="rest/file/upload" method="post" enctype="multipart/form-data">
+    <p>
+        Select a file : <input type="file" name="audioFile" size="45" /></p>
+    <input type="submit" value="Upload It" />
+</form>
 
-<form action="UploadDownloadFileServlet" method="post" enctype="multipart/form-data">
-    Select File to Upload:<input type="file" name="fileName">
-    <br>
-    <input type="submit" value="Upload">
+</form>
+<br>
+<form action="rest/exit" method="GET" >
+    <input type="submit" value="EXIT">
 </form>
 
 

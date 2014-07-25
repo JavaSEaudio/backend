@@ -38,6 +38,8 @@
       <root url="jar://$PROJECT_DIR$/out/artifacts/pro1_Web_exploded/hibernate-jpamodelgen-4.3.5.Final.jar!/" />
       <root url="jar://$PROJECT_DIR$/out/artifacts/pro1_Web_exploded/mchange-commons-java-0.2.3.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/out/artifacts/pro1_Web_exploded/jersey-server.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/beaglebuddy_mp3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jersey-multipart-1.12.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
