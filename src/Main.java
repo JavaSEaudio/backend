@@ -27,7 +27,7 @@ public class Main {
 //        logger.debug("To report log2");
 //            logger.info("asdfasdfasdfasdfasdfasdf");
 
-        EmailSender.sendPassword("a8201170@drdrb.net", "6666");
+        EmailSender.sendPassword("a8202101@drdrb.net", "7777");
 //        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
 /**
  * При работе с ДАО обращатся только через фабрику!!!

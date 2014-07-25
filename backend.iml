@@ -59,27 +59,6 @@
         </webroots>
       </configuration>
     </facet>
-    <facet type="jpa" name="JPA2">
-      <configuration>
-        <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="" />
-        <datasource-mapping />
-        <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/META-INF/persistence.xml" />
-      </configuration>
-    </facet>
-    <facet type="hibernate" name="Hibernate2">
-      <configuration>
-        <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="13f530ce-7290-4b26-8e94-0bb546147188" />
-        </datasource-map>
-        <naming-strategy-map />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/pro1_Web_exploded/hibernate.cfg.xml" />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/pro1_Web_exploded2/WEB-INF/classes/hibernate.cfg.xml" />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/artifacts/working/WEB-INF/classes/hibernate.cfg.xml" />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/out/production/backend/hibernate.cfg.xml" />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/hibernate.cfg.xml" />
-      </configuration>
-    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="true">
     <exclude-output />
