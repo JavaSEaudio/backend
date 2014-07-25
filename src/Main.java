@@ -6,6 +6,7 @@ import Entity.AudioEntity;
 import Entity.UserEntity;
 import Entity.UserEntity;
 import org.apache.log4j.Priority;
+import util.EmailSender;
 import util.Factory;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
@@ -15,17 +16,19 @@ public class Main {
    private final static Logger logger =  Logger.getLogger("com.vaannila.report");
     public static void main(final String[] args) throws Exception {
 
-        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
-        Logger.getLogger("com.vaannila.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
-        Logger.getLogger("com.vaannila.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
-        Logger.getLogger("com.vaannila.admin").debug("To admin log1");
+//        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
+//        Logger.getLogger("com.vaannila.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
+//        Logger.getLogger("com.vaannila.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
+//        Logger.getLogger("com.vaannila.admin").debug("To admin log1");
+//
+//        Logger.getLogger("com.vaannila.report").info("To report log2");     // report-log info, warn, error, debug ect...
+//        Logger.getLogger("com.vaannila.report").warn("To report log2");
+//        logger.error("To report log2");
+//        logger.debug("To report log2");
+//            logger.info("asdfasdfasdfasdfasdfasdf");
 
-        Logger.getLogger("com.vaannila.report").info("To report log2");     // report-log info, warn, error, debug ect...
-        Logger.getLogger("com.vaannila.report").warn("To report log2");
-        logger.error("To report log2");
-        logger.debug("To report log2");
-            logger.info("asdfasdfasdfasdfasdfasdf");
-
+        EmailSender.sendPassword("a8201170@drdrb.net", "6666");
+//        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
 /**
  * При работе с ДАО обращатся только через фабрику!!!
  * Не забываем менять create на update при повторном запуске,
