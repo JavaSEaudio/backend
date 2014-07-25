@@ -3,19 +3,21 @@ package rest.authoriz;
 import DAO.SessionDAO;
 import util.Factory;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/test")
 public class Test {
     @GET
     @Path("/check")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response check(@CookieParam(value = "name") String uid) {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         if(sessionDAO.haveKey(uid) != -1)
-            System.out.println("cookies detected");
+            return Response.ok("true").build();
         else
             System.out.println("where is cookies?");
-        return Response.ok().status(400).build();
+        return Response.ok("false").build();
     }
 
 

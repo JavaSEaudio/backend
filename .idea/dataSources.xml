@@ -4,9 +4,9 @@
     <data-source source="LOCAL" name="hibernate.cfg.xml" uuid="f9c4626c-cdd6-4aab-918b-ac5aa6d65bd7">
       <driver-ref>mysql</driver-ref>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://nvs50.mirohost.net/audiostorage</jdbc-url>
-      <user-name>u_grimer</user-name>
-      <user-password>dfcddfd8dfc3dfc7dfcfdfd8dfdadfcbdfd9dfd9df9bdf9bdf9d</user-password>
+      <jdbc-url>jdbc:mysql://localhost:3306/project0.9</jdbc-url>
+      <user-name>root</user-name>
+      <user-password>dfd0dfc1dfd3dfc9dfcfdfdddfdfdfcc</user-password>
       <libraries>
         <library>
           <url>file://C:\MyProjects\pro1\lib\jersey-server.jar</url>

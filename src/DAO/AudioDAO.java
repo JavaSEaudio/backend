@@ -201,7 +201,7 @@ public class AudioDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM AudioEntity WHERE artist = :artist");
+            Query query = session.createQuery("FROM AudioEntity WHERE artist LIKE :artist");
             query.setString("artist", artist);
             session.getTransaction().commit();
             audio = query.list();
@@ -221,7 +221,7 @@ public class AudioDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM AudioEntity WHERE name = :name");
+            Query query = session.createQuery("FROM AudioEntity WHERE name LIKE :name");
             query.setString("name", name);
             session.getTransaction().commit();
             audio = query.list();
@@ -241,7 +241,7 @@ public class AudioDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-            Query query = session.createQuery("FROM AudioEntity WHERE album = :album");
+            Query query = session.createQuery("FROM AudioEntity WHERE album like :album");
             query.setString("album", album);
             session.getTransaction().commit();
             audio = query.list();
