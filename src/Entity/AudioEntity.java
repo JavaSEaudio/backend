@@ -17,9 +17,9 @@ public class AudioEntity {
     private String comment;
     private int year;
     private String type;
-    private int bitrate;
-    private int length; // seconds
-    private int size; //byte
+    private int bitrate; // deprecatet
+    private int length; // seconds?
+    private int size; // byte?
     private int userid;
     private int access;
     private String linkImage;
@@ -27,7 +27,7 @@ public class AudioEntity {
     @Temporal(TemporalType.DATE)
     private Date upload_date;
 
-    public AudioEntity(String name, String artist, String album, String genre){
+    public AudioEntity(String name, String artist, String album, String genre, String linkFile, String linkImage ){
         this.name = name;
         this.album = album;
         this.artist = artist;
@@ -40,11 +40,28 @@ public class AudioEntity {
         this.size = 1000;
         this.userid = 999; //id users
         this.access = 0;
-        this.linkFile = "C://file";
-        this.linkImage = "C://image";
+        this.linkFile = linkFile;
+        this.linkImage = linkImage;
     }
 
     public AudioEntity() {
+    }
+
+    public AudioEntity(String name, String artist, String album) {
+        this.name = name;
+        this.album = album;
+        this.artist = artist;
+        this.genre = "";
+        this.comment = "";
+        this.type = "";
+        this.year = 0;
+        this.bitrate = 0;
+        this.length = 0;
+        this.size = 0;
+        this.userid = 0;
+        this.access = 0;
+        this.linkFile = "";
+        this.linkImage = "";
     }
 
     @Id

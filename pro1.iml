@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
   <component name="FacetManager">
-    <facet type="hibernate" name="Hibernate">
-      <configuration>
-        <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="f9c4626c-cdd6-4aab-918b-ac5aa6d65bd7" />
-        </datasource-map>
-        <naming-strategy-map />
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/hibernate.cfg.xml" />
-      </configuration>
-    </facet>
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="context.xml" url="file://$MODULE_DIR$/web/META-INF/context.xml" />
+          <deploymentDescriptor name="context.xml" url="file://$MODULE_DIR$/out/artifacts/unnamed/META-INF/context.xml" />
           <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/web/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src" />
+        </sourceRoots>
       </configuration>
     </facet>
     <facet type="jpa" name="JPA">
       <configuration>
         <setting name="validation-enabled" value="true" />
-        <setting name="provider-name" value="Hibernate" />
+        <setting name="provider-name" value="" />
         <datasource-mapping />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/META-INF/persistence.xml" />
+      </configuration>
+    </facet>
+    <facet type="hibernate" name="Hibernate">
+      <configuration>
+        <datasource-map>
+          <unit-entry name="hibernate.cfg.xml" value="7ea1c1a2-a027-42e2-8e47-2765216e8a40" />
+          <unit-entry name="out:artifacts:pro1_Web_exploded:WEB-INF:classes:hibernate.cfg.xml" value="b5a6f414-466c-4ef8-b642-5e40808a431a" />
+          <unit-entry name="out:artifacts:unnamed:WEB-INF:classes:hibernate.cfg.xml" value="e2cc4006-6591-4bf7-b952-93c791d65d07" />
+          <unit-entry name="out:artifacts:unnamed:WEB-INF:hibernate.cfg.xml" value="f53ef872-8078-4e8c-a2fd-307f581d878f" />
+          <unit-entry name="out:artifacts:unnamed:hibernate.cfg.xml" value="a44c3ec6-17fe-468a-96ad-9276a230a318" />
+          <unit-entry name="out:production:pro1:hibernate.cfg.xml" value="ef71632b-4ac4-43ab-880d-d8adb383a205" />
+        </datasource-map>
+        <naming-strategy-map />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/hibernate.cfg.xml" />
       </configuration>
     </facet>
   </component>
@@ -34,10 +42,12 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/lib" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="antlr-2.7.7" level="project" />
+    <orderEntry type="library" name="email" level="project" />
   </component>
 </module>
 

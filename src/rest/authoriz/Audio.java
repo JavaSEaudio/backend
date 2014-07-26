@@ -7,11 +7,13 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 @Path("/audio")
 public class Audio {
+
 
     @GET
     @Path("/get")
@@ -29,7 +31,7 @@ public class Audio {
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
 
-    @POST
+    @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("criterion") String criterion) {

@@ -134,4 +134,26 @@ public class UserDAO {
         }
         return user;
     }
+    public UserEntity getByEmail(String email) {
+        Session session = null;
+        UserEntity user = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM UserEntity WHERE email = :email");
+            query.setString("email", email);
+            session.getTransaction().commit();
+            user = (UserEntity) query.uniqueResult();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return user;
+    }
+    public void changePassword(UserEntity user, String pass) {
+        user.setPassword(pass);
+        change(user);
+    }
 }

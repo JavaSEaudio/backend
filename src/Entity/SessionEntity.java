@@ -31,7 +31,7 @@ public class SessionEntity {
     }
 
     @Basic
-    @Column(name = "userid", unique = true)
+    @Column(name = "userid")
     public int getUserId() {
         return userId;
     }
