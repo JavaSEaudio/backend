@@ -41,8 +41,15 @@ public class Audio {
                            @QueryParam("count") int count,
                            @QueryParam("page") int page*/) {
         criterion = StringUtil.parse(criterion);
-        int count = 3;
+
+        /**
+         * раскоментить !!!!!!!!!
+         */
+        int count = 10;
         int page = 1;
+
+
+
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
