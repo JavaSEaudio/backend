@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 
 public class Main {
-    private final static Logger logger =  Logger.getLogger("com.vaannila.report");
+    private final static Logger logger =  Logger.getLogger("com.audiostorage.report");
     public static void main(final String[] args) throws Exception {
         /**
          * При работе с ДАО обращатся только через фабрику!!!
@@ -188,17 +188,17 @@ return Response.status(200).Entity(output).build();
 //        UserDRO uDro = new UserDRO(uDao.getByLogin("user2"));
 //        System.out.println(uDro.getLogin());
 
-//        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
-//        Logger.getLogger("com.vaannila.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
-//        Logger.getLogger("com.vaannila.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
-//        Logger.getLogger("com.vaannila.admin").debug("To admin log1");
-//
-//        Logger.getLogger("com.vaannila.report").info("To report log2");     // report-log info, warn, error, debug ect...
-//        Logger.getLogger("com.vaannila.report").warn("To report log2");
-//        logger.error("To report log2");
-//        logger.debug("To report log2");
-//        logger.info("asdfasdfasdfasdfasdfasdf");
-//
+        Logger.getLogger("com.audiostorage.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
+        Logger.getLogger("com.audiostorage.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
+        Logger.getLogger("com.audiostorage.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
+        Logger.getLogger("com.audiostorage.admin").debug("To admin log1");
+
+        Logger.getLogger("com.audiostorage.report").info("To report log2");     // report-log info, warn, error, debug ect...
+        Logger.getLogger("com.audiostorage.report").warn("To report log2");
+        logger.error("To report log2");
+        logger.debug("To report log2");
+        logger.info("asdfasdfasdfasdfasdfasdf");
+
 //        EmailSender.sendPassword("kakaha@gmail.com", "7777");
 //        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
         System.out.println("THE END");

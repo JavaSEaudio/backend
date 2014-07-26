@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/Login")
 public class Login {
-    private final static Logger logger =  Logger.getLogger("com.vaannila.report");
+    private final static Logger logger =  Logger.getLogger("com.audiostorage.report");
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("login") String login,
@@ -24,7 +24,7 @@ public class Login {
         if (!StringUtil.minMaxLength(login , 2 , 225)  ||  !StringUtil.minMaxLength(password , 2 , 225))
         {
             System.out.println("not valid length or type - login or password");
-            logger.info("not valid length or type - login or password " + login);
+            logger.info("not valid length or type - login or password, Username: " + login);
             return Response.ok("false").build();
         }
         UserEntity user = UserLogic.authorization(login, password);
@@ -39,12 +39,12 @@ public class Login {
                 logger.info("Logged sucsess " + login);
                 return Response.ok("true").cookie(cookie).header("Access-Control-Allow-Origin", "*").build();
             } catch (Exception e) {
-                logger.info(" You logged before " + login);
+                logger.info( "user: "+ login+"  logged before ");
                 System.out.println("You logged before");
                 return Response.ok("false1").build();
             }
         } else {
-            logger.info(" Not logged in, cant( " + login);
+            logger.info("User " + login + " Not logged in");
             System.out.println("Not logged in");
             return Response.ok("false").build();
         }
