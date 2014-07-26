@@ -4,6 +4,11 @@ import DAO.AudioDAO;
 import DAO.UserDAO;
 import Entity.AudioEntity;
 import Entity.UserEntity;
+<<<<<<< HEAD
+=======
+import Entity.UserEntity;
+import org.apache.log4j.Priority;
+>>>>>>> origin/master
 import util.EmailSender;
 import util.Factory;
 import org.apache.log4j.Logger;
@@ -29,6 +34,7 @@ public class Main {
 //        fo.setGenre("Relax");
 //        fo.setYearOfRelease(1995);
 
+<<<<<<< HEAD
 
 
 //        System.out.println(m.getName());
@@ -47,7 +53,21 @@ public class Main {
 
 //        m.setTrack(0);
 
+=======
+//        Logger.getLogger("com.vaannila.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
+//        Logger.getLogger("com.vaannila.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
+//        Logger.getLogger("com.vaannila.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
+//        Logger.getLogger("com.vaannila.admin").debug("To admin log1");
+//
+//        Logger.getLogger("com.vaannila.report").info("To report log2");     // report-log info, warn, error, debug ect...
+//        Logger.getLogger("com.vaannila.report").warn("To report log2");
+//        logger.error("To report log2");
+//        logger.debug("To report log2");
+//            logger.info("asdfasdfasdfasdfasdfasdf");
+>>>>>>> origin/master
 
+        EmailSender.sendPassword("a8202101@drdrb.net", "7777");
+//        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
 /**
 *
 * Random rand = new Random();

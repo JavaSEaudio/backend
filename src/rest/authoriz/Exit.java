@@ -1,6 +1,12 @@
 package rest.authoriz;
 
 import DAO.SessionDAO;
+<<<<<<< HEAD
+=======
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+import util.EmailSender;
+>>>>>>> origin/master
 import util.Factory;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;

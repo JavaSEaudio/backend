@@ -2,6 +2,11 @@ package BusinessLogic;
 
 import com.beaglebuddy.mp3.MP3;
 import java.io.IOException;
+<<<<<<< HEAD
+=======
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+>>>>>>> origin/master
 
 public class FileOperation {
 
@@ -15,6 +20,19 @@ public class FileOperation {
     }
     public String getName() {
         return mp3.getTitle();
+<<<<<<< HEAD
+    }
+    public String getAlbum() {
+        return mp3.getAlbum();
+    }
+    public String getArtist() {
+        String artist = new String();
+        try {
+            artist = mp3.getLeadPerformer();
+        } catch (Exception e){}
+        if(artist.equals("") || artist.equals(" ") || artist == null){
+            artist = mp3.getBand();
+=======
     }
     public String getAlbum() {
         return mp3.getAlbum();
@@ -52,43 +70,114 @@ public class FileOperation {
             mp3.save();
         }catch (IOException e){
             e.printStackTrace();
+>>>>>>> origin/master
         }
+        return artist;
     }
 
+<<<<<<< HEAD
+    public String getComments() {
+        return mp3.getComments();
+    }
+    public String getGenre() {
+        return mp3.getMusicType();
+    }
+    public int getLength() {
+        return mp3.getAudioDuration();
+    }
+    public int getSize() {
+        return mp3.getAudioSize();
+    }
+    public int getYear() {
+        return mp3.getYear();
+    }
+
+    public void setName(String name) {
+        try {
+            mp3.setTitle(name);
+=======
     public void setArtist(String artist) {
         try {
             mp3.setBand(artist);
             mp3.setLeadPerformer(artist);
+>>>>>>> origin/master
             mp3.save();
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+
+<<<<<<< HEAD
+    public void setArtist(String artist) {
+        try {
+            mp3.setBand(artist);
+            mp3.setLeadPerformer(artist);
+=======
+    public void setAlbum(String album) {
+        try {
+            mp3.setAlbum(album);
+>>>>>>> origin/master
+            mp3.save();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+<<<<<<< HEAD
 
     public void setAlbum(String album) {
         try {
             mp3.setAlbum(album);
+=======
+    public void setGenre(String genre) {
+        try {
+            mp3.setMusicType(genre);
+>>>>>>> origin/master
             mp3.save();
         }catch (IOException e){
             e.printStackTrace();
         }
     }
+<<<<<<< HEAD
     public void setGenre(String genre) {
         try {
             mp3.setMusicType(genre);
+=======
+
+    public void setYear(int year) {
+        try {
+            mp3.setYear(year);
+>>>>>>> origin/master
             mp3.save();
         }catch (IOException e){
             e.printStackTrace();
         }
     }
 
+<<<<<<< HEAD
     public void setYear(int year) {
         try {
             mp3.setYear(year);
             mp3.save();
         }catch (IOException e){
             e.printStackTrace();
+=======
+    public static String getExpansion (String fileName){
+      String expansion;
+      //  String regexpAudio = "/\.(?:mp3|wav|og(?:g|a)|flac|midi?|rm|aac|wma|mka|ape)$/";
+        String regexpAudio1 = "([^\\s]+(\\.(?i)(mp3|wav|og(?:g|a)|flac|midi?|rm|aac|wma|mka|ape))$)";
+        Pattern pattern = Pattern.compile(regexpAudio1);
+        Matcher matcher = pattern.matcher(fileName);
+
+        //Проверка является ли файл аудиофайлом
+        if(matcher.matches()){
+            String [] temp =  fileName.split("\\.");
+            //Записиваем расшерение
+            expansion = temp[temp.length-1];
+        }else {
+          expansion = null;
+>>>>>>> origin/master
         }
+        return expansion;
     }
 
 }

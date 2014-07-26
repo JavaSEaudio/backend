@@ -1,13 +1,23 @@
 package util;
+<<<<<<< HEAD
 
+=======
+import java.util.Properties;
+>>>>>>> origin/master
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+<<<<<<< HEAD
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+=======
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+>>>>>>> origin/master
 
 
 public class EmailSender {
@@ -33,7 +43,11 @@ public class EmailSender {
 //
 //    }
     public  static void sendPassword(String emailAdress, String restoringPassword) {
+<<<<<<< HEAD
         String mailBody = "Test email AudioStoraje j8 Password restore "+" Your new password is:  "+restoringPassword + "<br><br> Regards, <br>Audio Storage Admin";
+=======
+        String mailBody = "Test email AudioStoraje j8 Password restore"+"Your new password is:  "+restoringPassword + "<br><br> Regards, <br>Crunchify Admin";
+>>>>>>> origin/master
         try {
             generateAndSendEmail(emailAdress, mailBody);
         } catch (MessagingException e) {
@@ -62,11 +76,14 @@ public class EmailSender {
         generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress(emailAdress));
         generateMailMessage.setSubject("AudioStorage J8");
         String emailBody = mailBody;
+<<<<<<< HEAD
         try {
             generateMailMessage.setFrom(new InternetAddress("studrada.science@gmail.com", "Audiostorage.com(localhost:888)  - Admin"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+=======
+>>>>>>> origin/master
         generateMailMessage.setContent(emailBody, "text/html");
         System.out.println("Mail Session has been created successfully..");
 
