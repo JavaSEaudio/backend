@@ -1,4 +1,4 @@
-package rest.authoriz;
+package rest.user;
 
 import BusinessLogic.*;
 import Entity.SessionEntity;
@@ -23,7 +23,7 @@ public class Login {
             !StringUtil.minMaxLength(password , 2 , 225)) {
 
             System.out.println("not valid length or type - login or password");
-            return Response.ok("false").build();
+            return Response.ok("false1").build();
         }
         UserEntity user = UserLogic.authorization(login, password);
         if(user != null ) {
@@ -36,11 +36,11 @@ public class Login {
                 return Response.ok("true").cookie(cookie).header("Access-Control-Allow-Origin", "*").build();
             } catch (Exception e) {
                 System.out.println("You logged before");
-                return Response.ok("false").build();
+                return Response.ok("false2").build();
             }
         } else {
             System.out.println("Not logged in");
-            return Response.ok("false").build();
+            return Response.ok("false3").build();
         }
     }
 }

@@ -1,4 +1,4 @@
-package rest.authoriz;
+package rest.service;
 
 import DAO.SessionDAO;
 import DAO.util.Factory;

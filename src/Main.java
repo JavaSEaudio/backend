@@ -4,6 +4,7 @@ import DAO.UserDAO;
 import Entity.AudioEntity;
 import Entity.UserEntity;
 import DAO.util.Factory;
+import util.StringUtil;
 
 import java.util.List;
 
@@ -68,14 +69,17 @@ return Response.status(200).Entity(output).build();
 //        SessionDAO sDao = Factory.getInstance().getSessionDAO();
 //
 //        Желательно изменять при каждом новом вызове или комментить
-        UserEntity user = new UserEntity("root", "root", "a23dmin@gmail.com", "Sasha", "Coding");
+        UserEntity user = new UserEntity("bang", "bang", "giluruj@burstmail.info", "Sasha", "Coding");
         AudioEntity audio = new AudioEntity();
 //        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
 //        aDAO.add(audio);
-        uDao.add(user);
+//        uDao.add(user);
 //        sDao.sDao(sess);
 //
+        String ns = new String("li");
+        ns = StringUtil.parse(ns);
+        System.out.println(ns);
 //        Использовать при создании таблицы
 
 //
@@ -89,16 +93,6 @@ return Response.status(200).Entity(output).build();
 
 
 
-        aDAO.add(new AudioEntity("Numb", "Linkin Park", "Numb","Alternate rock", "/file/audio/1.mp3", "/file/image/1.jpg"));
-        aDAO.add(new AudioEntity("Highway to hell", "AC/DC", "Highway to hell","rock", "/file/audio/2.mp3", "/file/image/2.jpg"));
-        aDAO.add(new AudioEntity("TNT", "AC/DC", "TNT","rock", "/file/audio/3.mp3", "/file/image/3.jpg"));
-        aDAO.add(new AudioEntity("Bad Boys", "Bob Marley", "Inner Circle","reggae", "/file/audio/4.mp3", "/file/image/4.jpg"));
-        aDAO.add(new AudioEntity("Radioactive", "Imagine Dragons", "Radioactive","indie", "/file/audio/5.mp3", "/file/image/5.jpg"));
-        aDAO.add(new AudioEntity("Eye of the tiger", "Journey", "Eye of the tiger","rock", "/file/audio/6.mp3", "/file/image/6.jpg"));
-        aDAO.add(new AudioEntity("In the jungle", "Lion King", "In the jungle","cartoon", "/file/audio/7.mp3", "/file/image/7.jpg"));
-        aDAO.add(new AudioEntity("Crazy Train", "Ozzy Osbourne", "Tribute","heavy metal", "/file/audio/8.mp3", "/file/image/8.jpg"));
-        aDAO.add(new AudioEntity("We will rock you", "Queen", "News the world","rock", "/file/audio/9.mp3", "/file/image/9.jpg"));
-        aDAO.add(new AudioEntity("Another one bites the dust", "Queen", "The game","rock", "/file/audio/10.mp3", "/file/image/10.jpg"));
 //        aDAO.add(new AudioEntity("Numb", "Linkin Park", "Numb","Alternate rock", "/file/audio/1.mp3", "/file/image/1.jpg"));
 //        aDAO.add(new AudioEntity("Highway to hell", "AC/DC", "Highway to hell","rock", "/file/audio/2.mp3", "/file/image/2.jpg"));
 //        aDAO.add(new AudioEntity("TNT", "AC/DC", "TNT","rock", "/file/audio/3.mp3", "/file/image/3.jpg"));
@@ -109,12 +103,22 @@ return Response.status(200).Entity(output).build();
 //        aDAO.add(new AudioEntity("Crazy Train", "Ozzy Osbourne", "Tribute","heavy metal", "/file/audio/8.mp3", "/file/image/8.jpg"));
 //        aDAO.add(new AudioEntity("We will rock you", "Queen", "News the world","rock", "/file/audio/9.mp3", "/file/image/9.jpg"));
 //        aDAO.add(new AudioEntity("Another one bites the dust", "Queen", "The game","rock", "/file/audio/10.mp3", "/file/image/10.jpg"));
-        audio = aDAO.getById(1);
-        audio.setAlbum("SUPER");
-        aDAO.change(audio);
-        aDAO.delete(2);
-        audio = aDAO.getById(3);
-        aDAO.delete(audio);
+//        aDAO.add(new AudioEntity("Numb", "Linkin Park", "Numb","Alternate rock", "/file/audio/1.mp3", "/file/image/1.jpg"));
+//        aDAO.add(new AudioEntity("Highway to hell", "AC/DC", "Highway to hell","rock", "/file/audio/2.mp3", "/file/image/2.jpg"));
+//        aDAO.add(new AudioEntity("TNT", "AC/DC", "TNT","rock", "/file/audio/3.mp3", "/file/image/3.jpg"));
+//        aDAO.add(new AudioEntity("Bad Boys", "Bob Marley", "Inner Circle","reggae", "/file/audio/4.mp3", "/file/image/4.jpg"));
+//        aDAO.add(new AudioEntity("Radioactive", "Imagine Dragons", "Radioactive","indie", "/file/audio/5.mp3", "/file/image/5.jpg"));
+//        aDAO.add(new AudioEntity("Eye of the tiger", "Journey", "Eye of the tiger","rock", "/file/audio/6.mp3", "/file/image/6.jpg"));
+//        aDAO.add(new AudioEntity("In the jungle", "Lion King", "In the jungle","cartoon", "/file/audio/7.mp3", "/file/image/7.jpg"));
+//        aDAO.add(new AudioEntity("Crazy Train", "Ozzy Osbourne", "Tribute","heavy metal", "/file/audio/8.mp3", "/file/image/8.jpg"));
+//        aDAO.add(new AudioEntity("We will rock you", "Queen", "News the world","rock", "/file/audio/9.mp3", "/file/image/9.jpg"));
+//        aDAO.add(new AudioEntity("Another one bites the dust", "Queen", "The game","rock", "/file/audio/10.mp3", "/file/image/10.jpg"));
+//        audio = aDAO.getById(1);
+//        audio.setAlbum("SUPER");
+//        aDAO.change(audio);
+        //aDAO.delete(2);
+//        audio = aDAO.getById(3);
+//        aDAO.delete(audio);
 
 
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
@@ -157,14 +161,14 @@ return Response.status(200).Entity(output).build();
          */
 //        {
 //            List<UserEntity> listU;
-            List<AudioEntity> listA;
+//            List<AudioEntity> listA;
 //            List<SessionEntity> listS;
 //            listU = uDao.getAll();
 //            for (UserEntity c : listU)
 //                System.out.println(c.getId() + ", " + c.getLogin() + ", " + c.getEmail());
-            listA = aDAO.getAll();
-            for (AudioEntity c : listA)
-                System.out.println(c.getArtist() + " " + c.getAlbum());
+//            listA = aDAO.getAll();
+//            for (AudioEntity c : listA)
+//                System.out.println(c.getArtist() + " " + c.getAlbum());
 //            listS = sDao.getAll();
 //            for (SessionEntity c : listS)
 //                System.out.println(c.getUserId() + " " + c.getSkey());

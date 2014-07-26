@@ -11,9 +11,13 @@ public class UserLogic {
     public static UserEntity authorization(String login, String pass) {
         int id = uDao.loginPassword(login, pass);
         if (id == -1) {
-            return null;
-        }
-        else {
+            id = uDao.emailPassword(login, pass);
+            if(id == -1) {
+                return null;
+            } else {
+                return uDao.getById(id);
+            }
+        } else {
             return uDao.getById(id);
         }
     }
