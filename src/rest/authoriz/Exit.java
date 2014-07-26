@@ -1,7 +1,7 @@
 package rest.authoriz;
 
 import DAO.SessionDAO;
-import util.Factory;
+import DAO.util.Factory;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

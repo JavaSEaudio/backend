@@ -1,10 +1,9 @@
 package rest.authoriz;
 
 import BusinessLogic.*;
-import DAO.SessionDAO;
 import Entity.SessionEntity;
 import Entity.UserEntity;
-import util.Factory;
+import DAO.util.Factory;
 import util.StringUtil;
 
 import javax.ws.rs.*;
@@ -20,8 +19,9 @@ public class Login {
     public Response login(@FormParam("login") String login,
                           @FormParam("password") String password) {
 
-        if (!StringUtil.minMaxLength(login , 2 , 225)  ||  !StringUtil.minMaxLength(password , 2 , 225))
-        {
+        if (!StringUtil.minMaxLength(login , 2 , 30)  ||
+            !StringUtil.minMaxLength(password , 2 , 225)) {
+
             System.out.println("not valid length or type - login or password");
             return Response.ok("false").build();
         }
@@ -30,14 +30,13 @@ public class Login {
             String uid = UserLogic.uid();
             try {
                 SessionEntity sess = new SessionEntity(user.getId(), uid);
-                SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-                sessionDAO.add(sess);
+                Factory.getInstance().getSessionDAO().add(sess);
                 NewCookie cookie = new NewCookie("name", uid);
                 System.out.println("Logged success");
                 return Response.ok("true").cookie(cookie).header("Access-Control-Allow-Origin", "*").build();
             } catch (Exception e) {
                 System.out.println("You logged before");
-                return Response.ok("false1").build();
+                return Response.ok("false").build();
             }
         } else {
             System.out.println("Not logged in");

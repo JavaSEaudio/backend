@@ -27,7 +27,7 @@ public class AudioEntity {
     @Temporal(TemporalType.DATE)
     private Date upload_date;
 
-    public AudioEntity(String name, String artist, String album, String genre/*, String linkFile, String linkImage */){
+    public AudioEntity(String name, String artist, String album, String genre, String linkFile, String linkImage ){
         this.name = name;
         this.album = album;
         this.artist = artist;
@@ -40,8 +40,8 @@ public class AudioEntity {
         this.size = 1000;
         this.userid = 999; //id users
         this.access = 0;
-        this.linkFile = "";
-        this.linkImage = "";
+        this.linkFile = linkFile;
+        this.linkImage = linkImage;
     }
 
     public AudioEntity() {

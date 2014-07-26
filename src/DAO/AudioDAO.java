@@ -4,95 +4,46 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+
+import DAO.util.DAO;
+import DAO.util.Factory;
 import Entity.AudioEntity;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import util.HibernateUtil;
+import DAO.util.HibernateUtil;
 
 public class AudioDAO {
+    private static DAO dao = Factory.getInstance().getDao();
 
     public void change(AudioEntity audio) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(audio);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.change(audio);
     }
 
 
     public void add(AudioEntity audio) {
-        Session session = null;
         Calendar calendar = Calendar.getInstance();
         audio.setUpload_date(calendar.getTime());
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(audio);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.add(audio);
     }
 
     public void delete(AudioEntity audio) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(audio);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.delete(audio);
     }
 
+
     public void delete(int id) {
-        Session session = null;
-        AudioEntity audio = this.getById(id);
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(audio);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.delete(AudioEntity.class, id);
     }
 
     public List<AudioEntity> getAll() {
-        Session session = null;
-        List<AudioEntity> user = new ArrayList<AudioEntity>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            user = (List<AudioEntity>) session.createCriteria(AudioEntity.class).list();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return user;
+        return dao.getAll(AudioEntity.class);
     }
 
     public AudioEntity getById(int id) {
-        Session session = null;
-        AudioEntity res = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            res = ((AudioEntity) session.get(AudioEntity.class, id));
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return res;
+        return dao.getById(AudioEntity.class, id);
     }
+
     public Collection<AudioEntity> getLastTenAudio() {
         Session session = null;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();

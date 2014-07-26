@@ -3,7 +3,7 @@ package rest.authoriz;
 import DAO.UserDAO;
 import DTO.UserDTO;
 import DTO.UserListDTO;
-import util.Factory;
+import DAO.util.Factory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;

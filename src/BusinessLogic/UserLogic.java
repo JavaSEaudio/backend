@@ -1,9 +1,8 @@
 package BusinessLogic;
 
-import DAO.SessionDAO;
 import DAO.UserDAO;
 import Entity.UserEntity;
-import util.Factory;
+import DAO.util.Factory;
 
 public class UserLogic {
     private static UserDAO uDao = Factory.getInstance().getUserDAO();
@@ -18,15 +17,25 @@ public class UserLogic {
             return uDao.getById(id);
         }
     }
-
-    public static int haveKey(String key) {
-        SessionDAO sDao = Factory.getInstance().getSessionDAO();
-        return sDao.haveKey(key);
-
-    }
-
     public static String uid() {
-        Key key = new Key();
-        return key.getValue();
+        String temp = "";
+        for(int i=0; i<64;i++){
+            int vubor =(int) (Math.random()*3+1);
+            switch (vubor){
+                case 1:{//генирируем Большие букви
+                    temp += (char) ((int)(Math.random()*25+65));
+                }
+                break;
+                case 2:{ //генирируем цифры
+                    temp += (char) ((int)(Math.random()*9+48));
+                    break;
+                }
+                case 3:{//Генирируем маленькие буквы
+                    temp+=(char)((int)(Math.random()*25+97));
+                    break;
+                }
+            }
+        }
+        return temp;
     }
 }

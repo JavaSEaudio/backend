@@ -2,30 +2,17 @@ package rest.authoriz;
 
 import DAO.AudioDAO;
 import Entity.AudioEntity;
-import util.Factory;
+import DAO.util.Factory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 @Path("/audio")
 public class Audio {
 
-    @GET
-         @Path("/{fileName}")
-         @Produces("audio/mp3")
-         public Response getAudiFile(@PathParam("fileName") String fileName) {
-        String  SERVER_PATH = "C:\\upload\\audio\\";
-        File thisFile = new File(SERVER_PATH+fileName);
-        Response.ResponseBuilder response = Response.ok((Object) thisFile);
-        String attachmentFilename = "attachment; filename=\"" +fileName+"\"";
-        response.header("Content-Disposition", attachmentFilename);
-        System.out.println(fileName);
-        return response.build();
-    }
 
     @GET
     @Path("/get")

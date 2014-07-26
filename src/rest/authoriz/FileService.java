@@ -13,23 +13,10 @@ import DAO.AudioDAO;
 import DAO.SessionDAO;
 import Entity.AudioEntity;
 import com.sun.jersey.multipart.FormDataParam;
-import util.Factory;
+import DAO.util.Factory;
 
 @Path("/file")
 public class FileService {
-
-    @GET
-    @Path("/{fileName}")
-    @Produces("image/jpeg")
-    public Response getAudiFile(@PathParam("fileName") String fileName) {
-        String  SERVER_PATH = "C:\\upload\\image\\";
-        File thisFile = new File(SERVER_PATH+fileName);
-        Response.ResponseBuilder response = Response.ok((Object) thisFile);
-        String attachmentFilename = "attachment; filename=\"" +fileName+"\"";
-        response.header("Content-Disposition", attachmentFilename);
-        System.out.println(fileName);
-        return response.build();
-    }
 
     @POST
     @Path("/upload")
