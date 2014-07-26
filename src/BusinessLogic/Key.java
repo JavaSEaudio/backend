@@ -13,7 +13,7 @@ public class Key {
     //Генирация 60 символов больших малих латинскых, а также цифр(как просил Ваня)
     private String generate(){
         String temp = "";
-        for(int i=0; i<8;i++){
+        for(int i=0; i<64;i++){
             int vubor =(int) (Math.random()*3+1);
             switch (vubor){
                 case 1:{//генирируем Большие букви

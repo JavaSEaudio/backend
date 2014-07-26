@@ -1,7 +1,6 @@
 package rest;
 
 
-<<<<<<< HEAD
 import BusinessLogic.Key;
 import DAO.UserDAO;
 import Entity.UserEntity;
@@ -10,16 +9,6 @@ import util.Factory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-=======
-
-        import javax.ws.rs.*;
-        import javax.ws.rs.core.*;
-        import BusinessLogic.Key;
-        import Entity.UserEntity;
-        import DAO.UserDAO;
-        import util.EmailSender;
-        import util.Factory;
->>>>>>> origin/master
 
 @Path("/pwd")
 public class RestorePassword {

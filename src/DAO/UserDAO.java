@@ -134,10 +134,6 @@ public class UserDAO {
         }
         return user;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
     public UserEntity getByEmail(String email) {
         Session session = null;
         UserEntity user = null;
