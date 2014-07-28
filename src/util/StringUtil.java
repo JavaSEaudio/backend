@@ -59,7 +59,7 @@ public class StringUtil {
             return true;
         }
 
-        public static boolean validRegistration(String login, String passOne, String passTwo, String email){
+    public static boolean validRegistration(String login, String passOne, String passTwo, String email){
          if (!passOne.equals(passTwo)){
              return false;
          } else
@@ -71,13 +71,43 @@ public class StringUtil {
          } else
          if (!StringUtil.validEmail(email)){
              return false;
-            }
-            return true;
-        }
+         }
+         return true;
+    }
 
-        public static boolean isValidUuid(String uuid) {
+    public static boolean isValidUuid(String uuid) {
             return UUID_PATTERN.matcher(uuid).matches();
         }
 
+    public static String parse(String data) {
+        String s = data;
+        String filter = "[^\\w\\s]";//[^'\\-!@#$%^&*()] ";
+        String patternstring = "((\\w*\\s)*)";
+        Pattern pattern = Pattern.compile(patternstring);
+        Matcher m = pattern.matcher(data);
+
+        data = data.replaceAll(filter, "");
+
+        String[] str = data.split(" ");
+        StringBuilder t = new StringBuilder();
+        for (String k : str) {
+            //System.out.print(k + " ");
+            if (!s.equals(" ")) {
+                t.append(k + " ");
+            }
+        }
+        for (int i = 0; i < t.length() - 1; i ++) {
+            int j = 0;
+            if (t.charAt(i) == ' ') {
+                j =  i + 1;
+                while (t.charAt(j) == ' ') {
+                    //System.out.print(j + " ");
+                    //System.out.println(t);
+                    t.deleteCharAt(j);
+                }
+            }
+        }
+        return t.toString();
+    }
     }
 

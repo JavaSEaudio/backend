@@ -1,22 +1,24 @@
 //import BusinessLogic.FileOperation;
-import BusinessLogic.FileOperation;
 import DAO.AudioDAO;
 import DAO.UserDAO;
 import Entity.AudioEntity;
 import Entity.UserEntity;
-import util.EmailSender;
-import util.Factory;
+import DAO.util.Factory;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import util.StringUtil;
+
+import java.util.List;
 
 public class Main {
-    private final static Logger logger =  Logger.getLogger("com.audiostorage.report");
+
     public static void main(final String[] args) throws Exception {
         /**
          * При работе с ДАО обращатся только через фабрику!!!
          * Не забываем менять create на update при повторном запуске,
          * а также дисконектить после выполнения
          */
+
+        Logger log = Logger.getLogger(Main.class);
 
 //        FileOperation m  = new FileOperation("c://upload//audio//930.mp3");
 //        System.out.println(m.getName());
@@ -65,19 +67,22 @@ return Response.status(200).Entity(output).build();
 */
 
 
-//        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-//        UserDAO uDao = Factory.getInstance().getUserDAO();
+        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+        UserDAO uDao = Factory.getInstance().getUserDAO();
 //        SessionDAO sDao = Factory.getInstance().getSessionDAO();
 //
 //        Желательно изменять при каждом новом вызове или комментить
-//        UserEntity user = new UserEntity("root", "root", "a23dmin@gmail.com", "Sasha", "Coding");
-//        AudioEntity audio = new AudioEntity("TestTrack", "TestArtist", "TestAlbum","TestCheta");
+        UserEntity user = new UserEntity("bang", "bang", "giluruj@burstmail.info", "Sasha", "Coding");
+        AudioEntity audio = new AudioEntity();
 //        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
 //        aDAO.add(audio);
 //        uDao.add(user);
 //        sDao.sDao(sess);
 //
+        String ns = new String("li");
+        ns = StringUtil.parse(ns);
+        System.out.println(ns);
 //        Использовать при создании таблицы
 
 //
@@ -90,7 +95,7 @@ return Response.status(200).Entity(output).build();
 //        uDao.add(new UserEntity("Привет", "пароль", "при8@m.com", "", ""));
 
 
-//
+
 //        aDAO.add(new AudioEntity("Numb", "Linkin Park", "Numb","Alternate rock", "/file/audio/1.mp3", "/file/image/1.jpg"));
 //        aDAO.add(new AudioEntity("Highway to hell", "AC/DC", "Highway to hell","rock", "/file/audio/2.mp3", "/file/image/2.jpg"));
 //        aDAO.add(new AudioEntity("TNT", "AC/DC", "TNT","rock", "/file/audio/3.mp3", "/file/image/3.jpg"));
@@ -111,6 +116,13 @@ return Response.status(200).Entity(output).build();
 //        aDAO.add(new AudioEntity("Crazy Train", "Ozzy Osbourne", "Tribute","heavy metal", "/file/audio/8.mp3", "/file/image/8.jpg"));
 //        aDAO.add(new AudioEntity("We will rock you", "Queen", "News the world","rock", "/file/audio/9.mp3", "/file/image/9.jpg"));
 //        aDAO.add(new AudioEntity("Another one bites the dust", "Queen", "The game","rock", "/file/audio/10.mp3", "/file/image/10.jpg"));
+//        audio = aDAO.getById(1);
+//        audio.setAlbum("SUPER");
+//        aDAO.change(audio);
+        //aDAO.delete(2);
+//        audio = aDAO.getById(3);
+//        aDAO.delete(audio);
+
 
 //        sDao.add(new SessionEntity(2, "UniQueKey10002"));
 //
@@ -188,20 +200,8 @@ return Response.status(200).Entity(output).build();
 //        UserDRO uDro = new UserDRO(uDao.getByLogin("user2"));
 //        System.out.println(uDro.getLogin());
 
-        Logger.getLogger("com.audiostorage.admin").info("To admin log1");       // admin-log WAR and ERROR only!!!!!
-        Logger.getLogger("com.audiostorage.admin").warn("To admin log1");       // файл log4j.properties добавить в root артефакта!!!
-        Logger.getLogger("com.audiostorage.admin").error("To admin log1");      // запустить несколько раз пока проект захавает настройки и пропадут ошибки)
-        Logger.getLogger("com.audiostorage.admin").debug("To admin log1");
-
-        Logger.getLogger("com.audiostorage.report").info("To report log2");     // report-log info, warn, error, debug ect...
-        Logger.getLogger("com.audiostorage.report").warn("To report log2");
-        logger.error("To report log2");
-        logger.debug("To report log2");
-        logger.info("asdfasdfasdfasdfasdfasdf");
-
-//        EmailSender.sendPassword("kakaha@gmail.com", "7777");
-//        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
-        System.out.println("THE END");
+log.info("END");
+System.out.println("THE END");
         return;
     }
 }

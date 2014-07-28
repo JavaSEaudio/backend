@@ -1,7 +1,7 @@
-package rest.authoriz;
+package rest.service;
 
 import DAO.SessionDAO;
-import util.Factory;
+import DAO.util.Factory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

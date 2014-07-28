@@ -12,26 +12,10 @@ import java.util.Properties;
 
 public class EmailSender {
 
-
-
-    /**
-     * @author Crunchify.com
-     */
-
     static Properties mailServerProperties;
     static Session getMailSession;
     static MimeMessage generateMailMessage;
 
-//    public static void main(String args[]) throws AddressException, MessagingException {
-//        generateAndSendEmail();
-//        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
-//    }
-//    public  static void sendEmail(String emailAdress) throws AddressException, MessagingException {
-//        String mailBody = "Test email by Crunchify.com JavaMail API example. " + "<br><br> Regards, <br>Crunchify Admin";
-//        generateAndSendEmail(emailAdress, mailBody);
-////        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
-//
-//    }
     public  static void sendPassword(String emailAdress, String restoringPassword) {
         String mailBody = "Test email AudioStoraje j8 Password restore "+" Your new password is:  "+restoringPassword + "<br><br> Regards, <br>Audio Storage Admin";
         try {
@@ -39,7 +23,6 @@ public class EmailSender {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-//        System.out.println("\n\n ===> Your Java Program has just sent an Email successfully. Check your email..");
     }
 
 

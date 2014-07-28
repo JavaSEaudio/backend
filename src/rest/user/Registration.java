@@ -1,8 +1,8 @@
-package rest.authoriz;
+package rest.user;
 
 import DAO.UserDAO;
 import Entity.UserEntity;
-import util.Factory;
+import DAO.util.Factory;
 import util.StringUtil;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;

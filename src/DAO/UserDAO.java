@@ -1,65 +1,39 @@
 package DAO;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import DAO.util.DAO;
+import DAO.util.Factory;
 import Entity.UserEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import util.HibernateUtil;
+import DAO.util.HibernateUtil;
 
 public class UserDAO {
+    private static DAO dao = Factory.getInstance().getDao();
 
-    public void change(UserEntity endUser) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.update(endUser);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+    public void change(UserEntity user) {
+       dao.change(user);
     }
 
     public void add(UserEntity user) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(user);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.add(user);
     }
 
     public void delete(UserEntity user) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(user);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+       dao.delete(user);
     }
 
     public void delete(int id) {
-        Session session = null;
-        UserEntity user = this.getById(id);
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(user);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.delete(UserEntity.class, id);
+    }
+
+    public List<UserEntity> getAll() {
+        return dao.getAll(UserEntity.class);
+    }
+
+    public UserEntity getById(int id) {
+       return dao.getById(UserEntity.class, id);
     }
 
     public int loginPassword(String login, String password) {
@@ -68,9 +42,9 @@ public class UserDAO {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-                Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
-                query.setString("login", login);
-                query.setString("pass", password);
+            Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
+            query.setString("login", login);
+            query.setString("pass", password);
 
             session.getTransaction().commit();
             user = (UserEntity) query.uniqueResult();
@@ -82,40 +56,40 @@ public class UserDAO {
                     }
                 }
             }
-        } catch (Exception e){
-            //System.out.println("Trouble");
-        } finally {
+        } catch (Exception e){}
+        finally {
             if (session != null && session.isOpen())
                 session.close();
         }
         return -1;
     }
 
-    public List<UserEntity> getAll() {
+    public int emailPassword(String email, String password) {
         Session session = null;
-        List<UserEntity> user = new ArrayList<UserEntity>();
+        UserEntity user = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            user = (List<UserEntity>) session.createCriteria(UserEntity.class).list();
-        } finally {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM UserEntity WHERE email = :email AND password = :pass");
+            query.setString("email", email);
+            query.setString("pass", password);
+
+            session.getTransaction().commit();
+            user = (UserEntity) query.uniqueResult();
+
+            if(user != null) {
+                if(user.getPassword().equals(password)){
+                    return user.getId();
+                }
+            }
+        } catch (Exception e){}
+        finally {
             if (session != null && session.isOpen())
                 session.close();
         }
-        return user;
+        return -1;
     }
 
-    public UserEntity getById(int id) {
-        Session session = null;
-        UserEntity res = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            res = ((UserEntity) session.get(UserEntity.class, id));
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return res;
-    }
     public UserEntity getByLogin(String login) {
         Session session = null;
         UserEntity user = null;
@@ -134,6 +108,7 @@ public class UserDAO {
         }
         return user;
     }
+
     public UserEntity getByEmail(String email) {
         Session session = null;
         UserEntity user = null;
@@ -151,9 +126,5 @@ public class UserDAO {
                 session.close();
         }
         return user;
-    }
-    public void changePassword(UserEntity user, String pass) {
-        user.setPassword(pass);
-        change(user);
     }
 }

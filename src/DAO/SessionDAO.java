@@ -1,67 +1,49 @@
 package DAO;
 
+import DAO.util.DAO;
+import DAO.util.Factory;
 import Entity.SessionEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import util.HibernateUtil;
-import java.util.ArrayList;
+import DAO.util.HibernateUtil;
+
 import java.util.List;
 
 public class SessionDAO {
+    private static DAO dao = Factory.getInstance().getDao();
 
     public void add(SessionEntity sessionEntity) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.save(sessionEntity);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.add(sessionEntity);
     }
 
     public void delete(SessionEntity audio) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(audio);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        dao.delete(audio);
     }
 
     public void delete(int userId) {
-        Session session = null;
-        SessionEntity audio = this.getByUserId(userId);
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            session.beginTransaction();
-            session.delete(audio);
-            session.getTransaction().commit();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
+        SessionEntity sessionEntity = this.getByUserId(userId);
+        dao.delete(sessionEntity);
+    }
+
+    public SessionEntity getById(int id) {
+        return dao.getById(SessionEntity.class, id);
+    }
+
+    public List<SessionEntity> getAll() {
+        return dao.getAll(SessionEntity.class);
     }
 
     public void delete(String key) {
         Session session = null;
-        SessionEntity audio = null;
+        SessionEntity sessionEntity = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM SessionEntity WHERE skey = :skey");
                 query.setText("skey", key);
-                audio = (SessionEntity) query.uniqueResult();
+                sessionEntity = (SessionEntity) query.uniqueResult();
             session.getTransaction().commit();
-            session.beginTransaction();
-                session.delete(audio);
-            session.getTransaction().commit();
+            dao.delete(sessionEntity);
         } finally {
             if (session != null && session.isOpen())
                 session.close();
@@ -102,20 +84,4 @@ public class SessionDAO {
                 session.close();
         }
     }
-
-    //@SuppressWarnings("unchecked")
-    public List<SessionEntity> getAll() {
-        Session session = null;
-        List<SessionEntity> sessionEntities = new ArrayList<SessionEntity>();
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            sessionEntities = (List<SessionEntity>) session.createCriteria(SessionEntity.class).list();
-        } finally {
-            if (session != null && session.isOpen())
-                session.close();
-        }
-        return sessionEntities;
-    }
-
-
 }

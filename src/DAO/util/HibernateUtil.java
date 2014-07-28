@@ -1,4 +1,4 @@
-package util;
+package DAO.util;
 
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

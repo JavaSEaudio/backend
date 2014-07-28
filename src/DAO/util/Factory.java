@@ -1,4 +1,4 @@
-package util;
+package DAO.util;
 
 import DAO.AudioDAO;
 import DAO.UserDAO;
@@ -9,6 +9,7 @@ public class Factory {
     private static AudioDAO audioDAO = null;
     private static UserDAO userDAO = null;
     private static SessionDAO sessionDAO = null;
+    private static DAO dao = null;
 
     private Factory(){}
 
@@ -35,5 +36,12 @@ public class Factory {
             sessionDAO = new SessionDAO();
         }
         return sessionDAO;
+    }
+
+    public DAO getDao() {
+        if (dao == null){
+            dao = new DAO();
+        }
+        return dao;
     }
 }

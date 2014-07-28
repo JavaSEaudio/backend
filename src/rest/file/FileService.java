@@ -1,4 +1,4 @@
-package rest.authoriz;
+package rest.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,7 +13,7 @@ import DAO.AudioDAO;
 import DAO.SessionDAO;
 import Entity.AudioEntity;
 import com.sun.jersey.multipart.FormDataParam;
-import util.Factory;
+import DAO.util.Factory;
 
 @Path("/file")
 public class FileService {

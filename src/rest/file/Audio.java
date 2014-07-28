@@ -1,15 +1,18 @@
-package rest.authoriz;
+package rest.file;
 
 import DAO.AudioDAO;
 import Entity.AudioEntity;
-import util.Factory;
+import DAO.util.Factory;
+import util.StringUtil;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Path("/audio")
 public class Audio {
@@ -34,17 +37,26 @@ public class Audio {
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response search(@QueryParam("criterion") String criterion) {
+    public Response search(@QueryParam("criterion") String criterion/*,
+                           @QueryParam("count") int count,
+                           @QueryParam("page") int page*/) {
+        criterion = StringUtil.parse(criterion);
+
+        /**
+         * раскоментить !!!!!!!!!
+         */
+        int count = 10;
+        int page = 1;
+
+
+
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-            audio.addAll(aDAO.getByName(criterion));
-            audio.addAll(aDAO.getByArtist(criterion));
-            audio.addAll(aDAO.getByAlbum(criterion));
+            audio.addAll( aDAO.search(criterion, (count * (page - 1)), count) );
         } catch (Exception e) {
             System.out.println("Exception in get audio @get");
         }
-
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
 
@@ -130,7 +142,7 @@ public class Audio {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio = aDAO.getByName(name);
         } catch(Exception e) {
-            System.out.println("Error while getting audio by name /getbyalname");
+            System.out.println("Error while getting audio by name /getbyname");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
