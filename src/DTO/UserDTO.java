@@ -11,7 +11,7 @@ public class UserDTO {
     private String login;
     private String email;
     private String information;
-    private int money;
+    private double money;
     private int access;
     private int[] buylist;
 
@@ -75,11 +75,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 

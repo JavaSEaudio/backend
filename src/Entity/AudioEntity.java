@@ -16,8 +16,8 @@ public class AudioEntity {
     private String genre;
     private String comment;
     private int year;
+    private double price;
     private String type;
-    private int bitrate; // deprecatet
     private int length; // seconds?
     private int size; // byte?
     private int userid;
@@ -35,7 +35,7 @@ public class AudioEntity {
         this.comment = "comment";
         this.type = "mp3";
         this.year = 2000;
-        this.bitrate = 254;
+        this.price = 0;
         this.length = 100; //in second
         this.size = 1000;
         this.userid = 999; //id users
@@ -55,7 +55,7 @@ public class AudioEntity {
         this.comment = "";
         this.type = "";
         this.year = 0;
-        this.bitrate = 0;
+        this.price = 0;
         this.length = 0;
         this.size = 0;
         this.userid = 0;
@@ -149,15 +149,6 @@ public class AudioEntity {
         this.type = type;
     }
 
-    @Column(name = "bitrate")
-    public int getBitrate() {
-        return bitrate;
-    }
-
-    public void setBitrate(int bitrate) {
-        this.bitrate = bitrate;
-    }
-
     @Column(name = "length")
     public int getLength() {
         return length;
@@ -165,6 +156,15 @@ public class AudioEntity {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Column(name = "price")
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @Column(name = "size")
@@ -212,51 +212,4 @@ public class AudioEntity {
         this.linkFile = linkFile;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        AudioEntity that = (AudioEntity) o;
-
-        if (access != that.access) return false;
-        if (bitrate != that.bitrate) return false;
-        if (id != that.id) return false;
-        if (length != that.length) return false;
-        if (size != that.size) return false;
-        if (userid != that.userid) return false;
-        if (year != that.year) return false;
-        if (album != null ? !album.equals(that.album) : that.album != null) return false;
-        if (artist != null ? !artist.equals(that.artist) : that.artist != null) return false;
-        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
-        if (genre != null ? !genre.equals(that.genre) : that.genre != null) return false;
-        if (linkFile != null ? !linkFile.equals(that.linkFile) : that.linkFile != null) return false;
-        if (linkImage != null ? !linkImage.equals(that.linkImage) : that.linkImage != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (upload_date != null ? !upload_date.equals(that.upload_date) : that.upload_date != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (artist != null ? artist.hashCode() : 0);
-        result = 31 * result + (album != null ? album.hashCode() : 0);
-        result = 31 * result + (genre != null ? genre.hashCode() : 0);
-        result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        result = 31 * result + year;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + bitrate;
-        result = 31 * result + length;
-        result = 31 * result + size;
-        result = 31 * result + userid;
-        result = 31 * result + access;
-        result = 31 * result + (linkImage != null ? linkImage.hashCode() : 0);
-        result = 31 * result + (linkFile != null ? linkFile.hashCode() : 0);
-        result = 31 * result + (upload_date != null ? upload_date.hashCode() : 0);
-        return result;
-    }
 }

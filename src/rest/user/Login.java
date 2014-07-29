@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 @Path("/Login")
 public class Login {
 
-    private static Logger log = Logger.getLogger(Login.class);
+    private final static Logger log =  Logger.getLogger("com.audiostorage.report");
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("login") String login,

@@ -40,10 +40,10 @@ public class Audio {
     public Response search(@QueryParam("criterion") String criterion/*,
                            @QueryParam("count") int count,
                            @QueryParam("page") int page*/) {
-        criterion = StringUtil.parse(criterion);
+        //criterion = StringUtil.parse(criterion);
 
         /**
-         * раскоментить !!!!!!!!!
+         * рaзкоментить !!!!!!!!!
          */
         int count = 10;
         int page = 1;
@@ -145,6 +145,20 @@ public class Audio {
             System.out.println("Error while getting audio by name /getbyname");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
+    }
+
+    @GET
+    @Path("/getbyid")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getById(@QueryParam("id") int id) {
+        AudioEntity audio = null;
+        try {
+            AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+            audio = aDAO.getById(id);
+        } catch(Exception e) {
+            System.out.println("Error while getting audio by id /getbyid");
+        }
+        return Response.ok().entity(audio).build();
     }
 
 }

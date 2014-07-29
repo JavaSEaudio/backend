@@ -22,7 +22,11 @@ public class FileService {
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@CookieParam(value = "name") String uid,
-                               @FormDataParam("audioFile") InputStream uploadedInputStream
+                               @FormDataParam("audioFile") InputStream uploadAudioStream,
+                               @FormDataParam("image") InputStream uploadImageStream,
+                               @FormParam("name") String name,
+                               @FormParam("artist") String artist,
+                               @FormParam("album") String album
     ) {
 
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
@@ -30,18 +34,23 @@ public class FileService {
         if(userid == -1) {
             return Response.status(200).entity("File not uploaded! Please sign in!!!").build();
         }
-        String name = "";
-        String album = "";
-        String artist = "";
+
+//        String name = "";
+//        String album = "";
+//        String artist = "";
+
         AudioEntity audioEntity = new AudioEntity(name, artist, album);
         AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
         audioDAO.add(audioEntity);
         int path = audioEntity.getId();
-        String uploadedFileLocation = "c://upload//audio//" + path + ".mp3";
-        writeToFile(uploadedInputStream, uploadedFileLocation);
-        String output = "File uploaded to : " + uploadedFileLocation;
+        String uploadImageLocation = System.getProperty("user.dir")+"//web//image//" + path + ".jpg";
+        String uploadAudioLocation = System.getProperty("user.dir")+"//web//audio//" + path + ".mp3";
+        writeToFile(uploadAudioStream, uploadAudioLocation);
+        //if(uploadImageStream.)
+        writeToFile(uploadImageStream, uploadImageLocation);
+        String output = "File uploaded to : " + uploadAudioLocation;
         try {
-            saveFile(uploadedFileLocation, name, album, artist, audioEntity, userid);
+            saveFile(uploadAudioLocation, name, album, artist, audioEntity, userid, uploadImageLocation);
         } catch (Exception e) {
             return Response.status(200).entity("Failed upload file :(").build();
         }
@@ -60,23 +69,8 @@ public class FileService {
 //    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void saveFile(String location, String name, String album, String artist,
-                          AudioEntity audioEntity, int userid) {
+                          AudioEntity audioEntity, int userid, String imgLocation) {
         try{
             FileOperation fileOperation = new FileOperation(location);
             if(name.equals("") || name.equals(" ") || name == null) {
@@ -103,8 +97,7 @@ public class FileService {
             audioEntity.setSize(fileOperation.getSize());
             audioEntity.setType(".mp3");
             audioEntity.setUserid(userid);
-            audioEntity.setBitrate(0);
-            audioEntity.setLinkImage("netuuuuu");
+            audioEntity.setLinkImage(imgLocation);
             AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
             audioDAO.change(audioEntity);
             System.out.println("Save file in DB success");

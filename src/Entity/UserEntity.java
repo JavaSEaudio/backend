@@ -16,7 +16,7 @@ public class UserEntity {
     private String email;
     private String information;
     private String name;
-    private int money;
+    private double money;
     private int access;
     private String buylist;
 
@@ -41,7 +41,7 @@ public class UserEntity {
         this.name = userDRO.getName();
         this.money = userDRO.getMoney();
         this.access = userDRO.getAccess();
-        //this.buylist = userDRO.getBuylist();
+        this.buylist = userDRO.getBuylist();
     }
 
     @Id
@@ -93,11 +93,11 @@ public class UserEntity {
     }
 
     @Column(name = "money")
-    public int getMoney() {
+    public double getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
+    public void setMoney(double money) {
         this.money = money;
     }
 
