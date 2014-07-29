@@ -14,6 +14,8 @@ import DAO.SessionDAO;
 import Entity.AudioEntity;
 import com.sun.jersey.multipart.FormDataParam;
 import DAO.util.Factory;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 
 @Path("/file")
 public class FileService {
@@ -22,11 +24,12 @@ public class FileService {
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFile(@CookieParam(value = "name") String uid,
-                               @FormDataParam("audioFile") InputStream uploadAudioStream,
-                               @FormDataParam("image") InputStream uploadImageStream,
-                               @FormParam("name") String name,
-                               @FormParam("artist") String artist,
-                               @FormParam("album") String album
+                               @FormDataParam("audioFile") InputStream uploadAudioStream
+//                               @FormDataParam("image") InputStream uploadImageStream,
+//                               @FormDataParam("nameA") final String nameA
+//                               @FormDataParam("artist") String artist
+//                               @FormDataParam("album") String album
+
     ) {
 
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
@@ -35,22 +38,22 @@ public class FileService {
             return Response.status(200).entity("File not uploaded! Please sign in!!!").build();
         }
 
-//        String name = "";
-//        String album = "";
-//        String artist = "";
+        String nameA = "";
+        String album = "";
+        String artist = "";
 
-        AudioEntity audioEntity = new AudioEntity(name, artist, album);
+        AudioEntity audioEntity = new AudioEntity(nameA, artist, album);
         AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
         audioDAO.add(audioEntity);
         int path = audioEntity.getId();
-        String uploadImageLocation = System.getProperty("user.dir")+"//web//image//" + path + ".jpg";
-        String uploadAudioLocation = System.getProperty("user.dir")+"//web//audio//" + path + ".mp3";
+        String uploadImageLocation = "C:/web//image/" + path + ".jpg";     // String uploadImageLocation = System.getProperty("user.dir")+"C://web//image//" + path + ".jpg";
+        String uploadAudioLocation = "C:/web//audio/" + path + ".mp3";
         writeToFile(uploadAudioStream, uploadAudioLocation);
-        //if(uploadImageStream.)
-        writeToFile(uploadImageStream, uploadImageLocation);
+
+       // writeToFile(uploadImageStream, uploadImageLocation);
         String output = "File uploaded to : " + uploadAudioLocation;
         try {
-            saveFile(uploadAudioLocation, name, album, artist, audioEntity, userid, uploadImageLocation);
+            saveFile(uploadAudioLocation, nameA, album, artist, audioEntity, userid, uploadImageLocation);
         } catch (Exception e) {
             return Response.status(200).entity("Failed upload file :(").build();
         }
@@ -73,17 +76,17 @@ public class FileService {
                           AudioEntity audioEntity, int userid, String imgLocation) {
         try{
             FileOperation fileOperation = new FileOperation(location);
-            if(name.equals("") || name.equals(" ") || name == null) {
+            if(name == null || name.equals("") || name.equals(" ")) {
                 audioEntity.setName( fileOperation.getName() );
             } else {
                 fileOperation.setName(name);
             }
-            if(artist.equals("") || artist.equals(" ") || artist == null) {
+            if(artist == null || artist.equals("") || artist.equals(" ") ) {
                 audioEntity.setArtist(fileOperation.getArtist());
             } else {
                 fileOperation.setArtist(artist);
             }
-            if(album.equals("") || album.equals(" ") || album == null) {
+            if(album == null || album.equals("") || album.equals(" ")) {
                 audioEntity.setAlbum(fileOperation.getAlbum());
             } else {
                 fileOperation.setAlbum(album);

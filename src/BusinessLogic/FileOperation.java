@@ -27,7 +27,7 @@ public class FileOperation {
         try {
             artist = mp3.getLeadPerformer();
         } catch (Exception e){}
-        if(artist.equals("") || artist.equals(" ") || artist == null){
+        if( artist == null || artist.equals("") || artist.equals(" ") ){
             artist = mp3.getBand();
         }
         return artist;
