@@ -7,7 +7,11 @@ public class FileOperation {
 
     private MP3 mp3;
 
-   public FileOperation(String path){
+    public MP3 getMp3() {
+        return mp3;
+    }
+
+    public FileOperation(String path){
         try {
             mp3 = new MP3(path);
         }catch (IOException e){}
@@ -83,6 +87,14 @@ public class FileOperation {
     public void setYear(int year) {
         try {
             mp3.setYear(year);
+            mp3.save();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public void setComments(String comments) {
+        try {
+            mp3.setComments(comments);
             mp3.save();
         }catch (IOException e){
             e.printStackTrace();

@@ -120,4 +120,54 @@ public class FileService {
             e.printStackTrace();
         }
     }
+
+    @POST
+    @Path("/edit")
+    public Response editFile(  @CookieParam(value = "name") String uid,
+                               @QueryParam("idfile") int id,
+                               @FormParam("title")  String name,
+                               @FormParam("album") String album,
+                               @FormParam("artist") String artist,
+                               @FormParam("comment") String comment,
+                               @FormParam("genre") String genre
+
+    ) {
+          System.out.println("llaa");
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userid = sessionDAO.haveKey(uid);
+        if(userid == -1) {
+            return Response.status(200).entity("You can't edit file! Please sign in!!!").build();
+        }
+        AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
+        AudioEntity audioEntity = audioDAO.getById(id);
+        if(userid != audioEntity.getUserid()){
+            return Response.status(200).entity("You can't edit this file!!").build();
+        }
+       FileOperation fileEdit = new FileOperation(audioEntity.getLinkFile());
+       if((name != "") && (name != null) && name.equals(fileEdit.getName())!= true){
+           fileEdit.setName(name);
+           audioEntity.setName(name);
+       }
+        if((album != "") && (album != null) && album.equals(fileEdit.getAlbum())!= true){
+            fileEdit.setAlbum(album);
+            audioEntity.setAlbum(album);
+        }
+        if((artist != "") && (artist != null) && artist.equals(fileEdit.getArtist())!= true){
+            fileEdit.setArtist(artist);
+            audioEntity.setArtist(artist);
+        }
+        if((comment != "") && (comment != null) && comment.equals(fileEdit.getComments())!= true){
+            fileEdit.setComments(comment);
+            audioEntity.setComment(comment);
+        }
+
+        if((genre != "") && (genre != null) && genre.equals(fileEdit.getGenre())!= true){
+            fileEdit.setGenre(genre);
+            audioEntity.setGenre(genre);
+        }
+
+        return Response.status(200).build();
+    }
+
+
 }
