@@ -17,9 +17,11 @@ import javax.ws.rs.*;
 public class BuyAudio {
     private final static Logger log =  Logger.getLogger("com.audiostorage.report");
     @POST
+    @Path("/audio")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyAudio(@QueryParam(value = "audioID") int audioID,
                              @CookieParam(value = "name") String uid) {
+        System.out.println(audioID);
         UserDAO uDAO = Factory.getInstance().getUserDAO();
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         int userID;
@@ -44,6 +46,8 @@ public class BuyAudio {
                     return Response.ok().status(400).build();
                 } else {
                     UserEntity vendor = uDAO.getById(audio.getUserid());
+                    System.out.println(vendor.getLogin());
+                    System.out.println(buyer.getLogin());
                     UserDTO buyerDTO = new UserDTO(buyer);
                     buyerDTO.addBuylist(audioID);
                     buyer.setDRO(buyerDTO);
@@ -57,7 +61,7 @@ public class BuyAudio {
 
             } catch(Exception e) {
                 log.info("BUY: trouble in money transaction");
-                return Response.ok().status(400).build();
+                return Response.ok().status(203).build();
             }
         }
     }

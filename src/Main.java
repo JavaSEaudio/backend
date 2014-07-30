@@ -80,7 +80,12 @@ return Response.status(200).Entity(output).build();
 //        aDAO.add(audio);
 //        uDao.add(user);
 //        sDao.sDao(sess);
-        System.out.println(uDao.getById(-1));
+        //System.out.println(uDao.getById(-1));
+        audio = aDAO.getById(3);
+        audio.setUserid(6);
+        aDAO.change(audio);
+
+
 //        String ns = new String("li");
 //        ns = StringUtil.parse(ns);
 //        System.out.println(ns);

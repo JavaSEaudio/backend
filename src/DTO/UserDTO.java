@@ -110,7 +110,7 @@ public class UserDTO {
 
     public void addBuylist(int id) {
         int [] res = new int [buylist.length+1];
-        for(int i = 0; i < res.length; i++){
+        for(int i = 0; i < buylist.length; i++){
             res[i] = buylist[i];
         }
         res[buylist.length] = id;
@@ -132,7 +132,7 @@ public class UserDTO {
 
     public void addMylist(int id) {
         int [] res = new int [mylist.length+1];
-        for(int i = 0; i < res.length; i++){
+        for(int i = 0; i < mylist.length; i++){
             res[i] = mylist[i];
         }
         res[mylist.length] = id;
