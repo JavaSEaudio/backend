@@ -26,7 +26,7 @@ public class EmailSender {
     }
 
 
-    private static void generateAndSendEmail(String emailAdress, String mBody) throws MessagingException {
+    public static void generateAndSendEmail(String emailAdress, String mBody) throws MessagingException {
     String mailBody = mBody;
 //Step1
         System.out.println("\n 1st ===> setup Mail Server Properties..");

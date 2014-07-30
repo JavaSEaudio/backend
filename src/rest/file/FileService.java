@@ -12,11 +12,16 @@ import BusinessLogic.FileOperation;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
 import Entity.AudioEntity;
+import Entity.UserEntity;
 import com.sun.jersey.multipart.FormDataParam;
 import DAO.util.Factory;
+import org.apache.log4j.Logger;
+import util.ProjectPath;
+import util.StringUtil;
 
 @Path("/file")
 public class FileService {
+    private final static Logger log =  Logger.getLogger("com.audiostorage.report");
 
     @POST
     @Path("/upload")
@@ -35,10 +40,6 @@ public class FileService {
             return Response.status(200).entity("File not uploaded! Please sign in!!!").build();
         }
 
-//        String name = "";
-//        String album = "";
-//        String artist = "";
-
         AudioEntity audioEntity = new AudioEntity(name, artist, album);
         AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
         audioDAO.add(audioEntity);
@@ -46,7 +47,11 @@ public class FileService {
         String uploadImageLocation = System.getProperty("user.dir")+"//web//image//" + path + ".jpg";
         String uploadAudioLocation = System.getProperty("user.dir")+"//web//audio//" + path + ".mp3";
         writeToFile(uploadAudioStream, uploadAudioLocation);
-        //if(uploadImageStream.)
+        try {
+            if (uploadImageStream.available() <= 0) {
+                uploadImageLocation = System.getProperty("user.dir")+"//web//image//test.jpg";
+            }
+        } catch (IOException e) {}
         writeToFile(uploadImageStream, uploadImageLocation);
         String output = "File uploaded to : " + uploadAudioLocation;
         try {
@@ -57,22 +62,112 @@ public class FileService {
         return Response.status(200).entity(output).build();
     }
 
-//    @POST
-//    @Path("delete")
-//    public Response deleteFile(@CookieParam(value = "name") String uid
-//                               @QueryParam("id") int idFile
-//
-//
-//
-//    ) {
-//
-//    }
+    @POST
+    @Path("/delete")
+    public Response deleteFile(@CookieParam(value = "name") String uid,
+                               @QueryParam("id") int idFile
+    ) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userid = sessionDAO.haveKey(uid);
+        if(userid == -1) {
+            log.info("Delete File: not logged in" );
+            return Response.status(200).entity("You can't edit file! Please sign in!!!").build();
+        }
+        AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
+        AudioEntity audioEntity = audioDAO.getById(idFile);
+        if(userid != audioEntity.getUserid()){
+            UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
+            if(user.getAccess() < 1) {
+                log.info("Delete File: not access");
+                return Response.status(200).entity("You can't edit this file!!").build();
+            }
+        }
+        File file = new File(ProjectPath.getAudioPath(audioEntity));
+        if(file.delete()){
+            audioDAO.delete(audioEntity);
+            log.info("Delete File: " + file.getName() + " deleted");
+            return Response.status(200).build();
+        }
+        log.info("Delete File: " + file.getName() + " not removed");
+        return Response.status(200).entity("not removed").build();
+
+    }
+
+    @POST
+    @Path("/edit")
+    public Response editFile(  @CookieParam(value = "name") String uid,
+                               @QueryParam("idfile") int id,
+                               @FormParam("title")  String name,
+                               @FormParam("album") String album,
+                               @FormParam("artist") String artist,
+                               @FormParam("comment") String comment,
+                               @FormParam("genre") String genre,
+                               @FormParam("year") int year,
+                               @FormParam("price") double price,
+                               @QueryParam("access") String access
+    ) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userid = sessionDAO.haveKey(uid);
+        if(userid == -1) {
+            log.info("Edit File: not logged in");
+            return Response.status(200).entity("You can't edit file! Please sign in!!!").build();
+        }
+        AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
+        AudioEntity audioEntity = audioDAO.getById(id);
+        if(userid != audioEntity.getUserid()){
+            UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
+            if(user.getAccess() < 1) {
+                log.info("Edit File: not access");
+                return Response.status(200).entity("You can't edit this file!!").build();
+            }
+        }
+        name = StringUtil.parse(name);
+        album = StringUtil.parse(album);
+        artist = StringUtil.parse(artist);
+        comment = StringUtil.parse(comment);
+        genre = StringUtil.parse(genre);
+
+        FileOperation fileEdit = new FileOperation(ProjectPath.getAudioPath(audioEntity));
+        if((name == null) || (name.equals("")) || name.equals(fileEdit.getName())== true){
+            fileEdit.setName(name);
+            audioEntity.setName(name);
+        }
+        if((album == null) || (album.equals("")) || album.equals(fileEdit.getAlbum())== true){
+            fileEdit.setAlbum(album);
+            audioEntity.setAlbum(album);
+        }
+        if((artist == null) || (artist.equals("")) || artist.equals(fileEdit.getArtist()) == true){
+            fileEdit.setArtist(artist);
+            audioEntity.setArtist(artist);
+        }
+        if((comment == null) || (comment.equals("")) || comment.equals(fileEdit.getComments())== true){
+            fileEdit.setComments(comment);
+            audioEntity.setComment(comment);
+        }
+
+        if((genre == null) || (genre.equals("")) || genre.equals(fileEdit.getGenre())!= true){
+            fileEdit.setGenre(genre);
+            audioEntity.setGenre(genre);
+        }
+        if((year >= 0) || year < 2015) {
+            fileEdit.setYear(year);
+            audioEntity.setYear(year);
+        }
+        if(price >= 0) {
+            audioEntity.setPrice(price);
+        } else {
+            log.info("Edit File: price wrong");
+            return Response.status(203).entity("price wrong").build();
+        }
+        log.info("Edit File: success");
+        return Response.status(200).build();
+    }
 
 
-    private void saveFile(String location, String name, String album, String artist,
+    private void saveFile(String audioLocation, String name, String album, String artist,
                           AudioEntity audioEntity, int userid, String imgLocation) {
         try{
-            FileOperation fileOperation = new FileOperation(location);
+            FileOperation fileOperation = new FileOperation(audioLocation);
             if(name.equals("") || name.equals(" ") || name == null) {
                 audioEntity.setName( fileOperation.getName() );
             } else {
@@ -93,16 +188,16 @@ public class FileService {
             audioEntity.setAccess(0);
             audioEntity.setGenre(fileOperation.getGenre());
             audioEntity.setLength(fileOperation.getLength());
-            audioEntity.setLinkFile(location);
+            audioEntity.setLinkFile(audioLocation);
             audioEntity.setSize(fileOperation.getSize());
             audioEntity.setType(".mp3");
             audioEntity.setUserid(userid);
             audioEntity.setLinkImage(imgLocation);
             AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
             audioDAO.change(audioEntity);
-            System.out.println("Save file in DB success");
+            log.info("Upload File: audio save in the DB success");
         } catch (Exception e) {
-            System.out.println("Problem with save file in DB");
+            log.info("Upload File: audio is not store in the DB ");
         }
     }
 
@@ -117,7 +212,10 @@ public class FileService {
             out.flush();
             out.close();
         } catch (IOException e) {
+            log.info("Write File: exception");
             e.printStackTrace();
         }
     }
+
+
 }

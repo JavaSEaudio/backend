@@ -16,13 +16,16 @@ public class SessionDAO {
         dao.add(sessionEntity);
     }
 
-    public void delete(SessionEntity audio) {
-        dao.delete(audio);
+    public void delete(SessionEntity sessionEntity) {
+        dao.delete(sessionEntity);
     }
 
     public void delete(int userId) {
-        SessionEntity sessionEntity = this.getByUserId(userId);
-        dao.delete(sessionEntity);
+        List<SessionEntity> sessionEntity = this.getByUserId(userId);
+        for(SessionEntity s : sessionEntity){
+            dao.delete(s);
+        }
+
     }
 
     public SessionEntity getById(int id) {
@@ -50,15 +53,15 @@ public class SessionDAO {
         }
     }
 
-    public SessionEntity getByUserId(int userId) {
+    public List<SessionEntity> getByUserId(int userId) {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM SessionEntity WHERE userId = :userId");
                 query.setInteger("userId", userId);
-                SessionEntity sessionEntity = null;
-                sessionEntity = (SessionEntity) query.uniqueResult();
+                List<SessionEntity> sessionEntity = null;
+                sessionEntity = (List<SessionEntity>) query.list();
             session.getTransaction().commit();
             return sessionEntity;
         } finally {

@@ -29,7 +29,7 @@ public class Login {
         }
         UserEntity user = UserLogic.authorization(login, password);
         if(user != null ) {
-            String uid = UserLogic.uid();
+            String uid = UserLogic.uid(64);
             try {
                 SessionEntity sess = new SessionEntity(user.getId(), uid);
                 Factory.getInstance().getSessionDAO().add(sess);

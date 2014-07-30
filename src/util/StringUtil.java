@@ -87,27 +87,27 @@ public class StringUtil {
         Matcher m = pattern.matcher(data);
 
         data = data.replaceAll(filter, "");
-
-        String[] str = data.split(" ");
-        StringBuilder t = new StringBuilder();
-        for (String k : str) {
-            //System.out.print(k + " ");
-            if (!s.equals(" ")) {
-                t.append(k + " ");
+        StringBuilder sb = new StringBuilder(data);
+        int q = 0;
+        int w = 0;
+        if (data.charAt(0) == ' ') {
+            w = q + 1;
+            while (sb.charAt(w) == ' ') {
+                sb.deleteCharAt(w);
             }
+            q ++;
+            sb.deleteCharAt(0);
         }
-        for (int i = 0; i < t.length() - 1; i ++) {
+        for (int i = 0; i < sb.length() - 1; i ++) {
             int j = 0;
-            if (t.charAt(i) == ' ') {
+            if (sb.charAt(i) == ' ') {
                 j =  i + 1;
-                while (t.charAt(j) == ' ') {
-                    //System.out.print(j + " ");
-                    //System.out.println(t);
-                    t.deleteCharAt(j);
+                while (sb.charAt(j) == ' ') {
+                    sb.deleteCharAt(j);
                 }
             }
         }
-        return t.toString();
+        return sb.toString();
     }
-    }
+}
 

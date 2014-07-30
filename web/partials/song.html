@@ -1,0 +1,10 @@
+<div class="music clearfix" >
+    <h2><span>{{song.artist}}</span> - {{song.name}}</h2>
+    <div class="img"><img ng-src="{{song.linkImage}}" height="152" width="152" alt=""></div>
+    <audio ng-src="{{song.linkFile}}"></audio>
+    <div class="right">
+        <ul>
+            <li ng-repeat="param in song">{{param}}</li>
+        </ul>
+    </div>
+</div>

@@ -2,6 +2,8 @@ package Entity;
 
 import DTO.UserDTO;
 import org.hibernate.annotations.GenericGenerator;
+import util.ProjectPath;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,6 +21,8 @@ public class UserEntity {
     private double money;
     private int access;
     private String buylist;
+    private String mylist;
+    private String linkAvatar;
 
 
     public UserEntity() {}
@@ -30,7 +34,10 @@ public class UserEntity {
         this.money = 1000;
         this.access = 0;
         this.buylist = "";
-        this.information = "";
+        this.information = info;
+        this.name = name;
+        this.linkAvatar = ProjectPath.getPath()+"web//file//user//0.jpg";
+
     }
 
     public void setDRO(UserDTO userDRO) {
@@ -42,6 +49,9 @@ public class UserEntity {
         this.money = userDRO.getMoney();
         this.access = userDRO.getAccess();
         this.buylist = userDRO.getBuylist();
+        this.mylist = userDRO.getMylist();
+        this.linkAvatar = userDRO.getLinkAvatar();
+
     }
 
     @Id
@@ -126,5 +136,23 @@ public class UserEntity {
 
     public void setInformation(String information) {
         this.information = information;
+    }
+
+    @Column(name = "mylist")
+    public String getMylist() {
+        return mylist;
+    }
+
+    public void setMylist(String mylist) {
+        this.mylist = mylist;
+    }
+
+    @Column(name = "linkAvatar")
+    public String getLinkAvatar() {
+        return linkAvatar;
+    }
+
+    public void setLinkAvatar(String linkAvatar) {
+        this.linkAvatar = linkAvatar;
     }
 }

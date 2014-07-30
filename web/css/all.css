@@ -107,17 +107,22 @@ header {
 
 .h1 {
 	color: #ffaa5e;
-	font-size: 48px; 
+    font-size: 42px;
 	font-weight: 700;
 	text-transform: uppercase;
 }
 
-.h2 {
+h2, .h2 {
 	color: #cccccc;
-	font-size: 30px;
+    font-size: 28px;
 	text-transform: uppercase;
 	font-weight: 700;
 	padding: 17px 0;
+}
+
+.music .h2, .music h2 {
+    font-size: 33px;
+    line-height: 2.5;
 }
 
 .sidebar {
@@ -168,7 +173,7 @@ header {
 	width: 152px;
 }
 
-.music .h3 {
+.music .h3, .music .h3 a {
 	font-size: 24px;
 	color: #6c6c6c;
 }

@@ -1,0 +1,11 @@
+<div class="music clearfix" ng-repeat="music in songs">
+    <div class="img" ng-click="play(music);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
+    <div class="right">
+        <div class="h3">
+            <a href="#/song/{{music.id}}"> <span>{{music.artist}}</span> - {{music.name}}</a>
+        </div>
+        <img class="freq" src="img/freq.png" height="45" width="317" alt="">
+        <div class="button">share</div>
+        <div class="button"><i class="heart"></i>like</div>
+    </div>
+</div>

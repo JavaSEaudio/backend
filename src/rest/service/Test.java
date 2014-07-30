@@ -1,6 +1,5 @@
 package rest.service;
 
-import DAO.SessionDAO;
 import DAO.util.Factory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,11 +11,13 @@ public class Test {
     @Path("/check")
     @Produces(MediaType.APPLICATION_JSON)
     public Response check(@CookieParam(value = "name") String uid) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        if(sessionDAO.haveKey(uid) != -1)
-            return Response.ok("true").build();
-        else
-            System.out.println("where is cookies?");
+        int id = Factory.getInstance().getSessionDAO().haveKey(uid);
+        if(id != -1) {
+            int access = Factory.getInstance().getUserDAO().getById(id).getAccess();
+            if(access == 0) return Response.ok("true").build();
+            if(access == 1) return Response.ok("moderator").build();
+            if(access == 2) return Response.ok("admin").build();
+        }
         return Response.ok("false").build();
     }
 

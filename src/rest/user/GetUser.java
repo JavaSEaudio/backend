@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
 @Path("/user")
-public class User {
+public class GetUser {
 
     @GET
     @Path("/login")

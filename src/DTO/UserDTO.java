@@ -14,6 +14,8 @@ public class UserDTO {
     private double money;
     private int access;
     private int[] buylist;
+    private int[] mylist;
+    private String linkIAvatar;
 
     public UserDTO(){}
 
@@ -27,6 +29,8 @@ public class UserDTO {
         this.money = user.getMoney();
         this.access = user.getAccess();
         this.buylist = parser(user.getBuylist());
+        this.mylist = parser(user.getMylist());
+        this.linkIAvatar = user.getLinkAvatar();
     }
 
     private int[] parser (String str) {
@@ -106,8 +110,33 @@ public class UserDTO {
 
     public void addBuylist(int id) {
         int [] res = new int [buylist.length+1];
+        for(int i = 0; i < res.length; i++){
+            res[i] = buylist[i];
+        }
         res[buylist.length] = id;
         buylist = res;
+    }
+
+    public String getMylist() {
+
+        String res = new String();
+        for(int i = 0; i < mylist.length; i++){
+            res += mylist[i]+" ";
+        }
+        return res;
+    }
+
+    public void setMylist(String mylist) {
+        this.mylist = parser(mylist);
+    }
+
+    public void addMylist(int id) {
+        int [] res = new int [mylist.length+1];
+        for(int i = 0; i < res.length; i++){
+            res[i] = mylist[i];
+        }
+        res[mylist.length] = id;
+        mylist = res;
     }
 
     public String getInformation() {
@@ -116,5 +145,13 @@ public class UserDTO {
 
     public void setInformation(String information) {
         this.information = information;
+    }
+
+    public String getLinkAvatar() {
+        return linkIAvatar;
+    }
+
+    public void setILinkAvatar(String linkIAvatar) {
+        this.linkIAvatar = linkIAvatar;
     }
 }

@@ -21,9 +21,9 @@ public class UserLogic {
             return uDao.getById(id);
         }
     }
-    public static String uid() {
+    public static String uid(int count) {
         String temp = "";
-        for(int i=0; i<64;i++){
+        for(int i=0; i<count;i++){
             int vubor =(int) (Math.random()*3+1);
             switch (vubor){
                 case 1:{//генирируем Большие букви

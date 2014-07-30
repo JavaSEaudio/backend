@@ -3,6 +3,7 @@ package rest.file;
 import DAO.AudioDAO;
 import Entity.AudioEntity;
 import DAO.util.Factory;
+import org.apache.log4j.Logger;
 import util.StringUtil;
 
 import javax.ws.rs.*;
@@ -17,18 +18,20 @@ import java.util.Set;
 @Path("/audio")
 public class Audio {
 
+    private final static Logger log =  Logger.getLogger("com.audiostorage.report");
 
     @GET
     @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAudios(@QueryParam("count") int count,
                               @QueryParam("page") int page) {
+        if(count > 100) count = 100;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll(aDAO.getSomeAudios((count * (page - 1)), count));
         } catch (Exception e) {
-             System.out.println("Exception in get audio @search");
+            log.info("Audio Get: exception");
         }
 
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
@@ -40,22 +43,38 @@ public class Audio {
     public Response search(@QueryParam("criterion") String criterion/*,
                            @QueryParam("count") int count,
                            @QueryParam("page") int page*/) {
-        //criterion = StringUtil.parse(criterion);
-
-        /**
-         * рaзкоментить !!!!!!!!!
-         */
-        int count = 10;
+        criterion = StringUtil.parse(criterion);
+        int count = 5;
         int page = 1;
-
-
-
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         try {
-            AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll( aDAO.search(criterion, (count * (page - 1)), count) );
         } catch (Exception e) {
-            System.out.println("Exception in get audio @get");
+            log.info("Audio Search: exception");
+        }
+        if (audio.size() == 0) {
+            String[] parts = criterion.split(" ");
+            List<AudioEntity>[] lists = new List[parts.length];
+            for (int i = 0; i < parts.length; i ++) {
+                lists[i] = (List)aDAO.search(parts[i], (count * (page - 1)), count);
+            }
+            boolean flag;
+            for (int i = 1; i < parts.length; i ++) {
+                for (int j = 0; j < parts.length; j ++) {
+                    flag = false;
+                    for (int q = 0; q < parts.length; q ++) {
+                        if (lists[0].get(j).getName().equals(lists[1].get(q).getName())) {
+                            flag = true;
+                            continue;
+                        }
+                    }
+                    if (!flag) {
+                        lists[0].remove(j);
+                    }
+                }
+            }
+            audio = lists[0];
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
@@ -68,9 +87,8 @@ public class Audio {
         try {
             AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
             audio = audioDAO.getByYear(year);
-            System.out.println("Success search audio @year");
         } catch (Exception e) {
-            System.out.println("Exception in search audio @year");
+            log.info("Audio Year: exception");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>) audio) {}).build();
     }
@@ -83,9 +101,8 @@ public class Audio {
         try {
             AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
             audio = audioDAO.getByUserId(id);
-            System.out.println("Success search audio @user");
         } catch (Exception e) {
-            System.out.println("Exception in search audio @user");
+            log.info("Audio User: exception");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>) audio) {}).build();
     }
@@ -98,9 +115,8 @@ public class Audio {
         try {
             AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
             audio = audioDAO.getByGenre(genre);
-            System.out.println("Success search audio @genre");
         } catch (Exception e) {
-            System.out.println("Exception in search audio @genre");
+            log.info("Audio Genre: exception");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>) audio) {}).build();
     }
@@ -114,7 +130,7 @@ public class Audio {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio = aDAO.getByName(artist);
         } catch(Exception e) {
-            System.out.println("Error while getting audio by artist /getbyartist");
+            log.info("Audio Artist: exception");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
@@ -128,7 +144,7 @@ public class Audio {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio = aDAO.getByAlbum(album);
         } catch(Exception e) {
-            System.out.println("Error while getting audio by album /getbyalbum");
+            log.info("Audio Album: exception");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
@@ -142,7 +158,7 @@ public class Audio {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio = aDAO.getByName(name);
         } catch(Exception e) {
-            System.out.println("Error while getting audio by name /getbyname");
+            log.info("Audio Name: exception");
         }
         return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
     }
@@ -156,7 +172,7 @@ public class Audio {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio = aDAO.getById(id);
         } catch(Exception e) {
-            System.out.println("Error while getting audio by id /getbyid");
+            log.info("Audio ByID: exception");
         }
         return Response.ok().entity(audio).build();
     }

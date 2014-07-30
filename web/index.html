@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="app">
 <head>
 	<meta charset="UTF-8">
 	<title>The best storage ever</title>
@@ -8,6 +8,10 @@
 	<link rel="stylesheet" href="css/all.css">
 	<script src="js/jquery.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/ng-route.js"></script>
+    <script src="js/ng/app.functions.js"></script>
+    <script src="js/ng/app.main.js"></script>
     <script src="js/main.js"></script>
 </head>
 <body>
@@ -19,8 +23,9 @@
 			</a></div>
 			<div class="header__menu">
 				<ul>
-					<li>Create new account</li>
-					<li><a href="#" class="login-anchor">Sign in</a></li>
+                    <li ng-show="logined"><a href="#/profile/exit">Logout</a></li>
+					<li ng-hide="logined"><a href="#/profile/reg">Create new account</a></li>
+					<li ng-hide="logined"><a href="#/profile/signin" class="login-anchor">Sign in</a></li>
 				</ul>
 			</div>
 		</div>
@@ -39,7 +44,9 @@
 				<li>Price</li>
 				<li>Rating</li>
 			</ul>
-            <div id="content-music"></div>
+            <div id="content-music">
+                <ng-view></ng-view>
+            </div>
 			<!-- music -->
 		</div>
 		<div class="sidebar">
@@ -64,6 +71,10 @@
 	<footer>
 		
 	</footer>
+
+    <div id="player">
+        <audio></audio>
+    </div>
 
 
     <div class="popup">

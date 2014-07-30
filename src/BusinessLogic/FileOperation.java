@@ -88,4 +88,13 @@ public class FileOperation {
             e.printStackTrace();
         }
     }
+
+    public void setComments(String comments) {
+        try {
+            mp3.setComments(comments);
+            mp3.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
