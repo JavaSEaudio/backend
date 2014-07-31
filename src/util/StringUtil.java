@@ -81,8 +81,8 @@ public class StringUtil {
 
     public static String parse(String data) {
         String s = data;
-        String filter = "[^\\w\\s]";//[^'\\-!@#$%^&*()] ";
-        String patternstring = "((\\w*\\s)*)";
+        String filter = "";//"[^\\w\\s]";//[^'\\-!@#$%^&*()] ";
+        String patternstring = "";//"((\\w*\\s)*)";
         Pattern pattern = Pattern.compile(patternstring);
         Matcher m = pattern.matcher(data);
 
@@ -91,6 +91,7 @@ public class StringUtil {
         int q = 0;
         int w = 0;
         if (data.charAt(0) == ' ') {
+
             w = q + 1;
             while (sb.charAt(w) == ' ') {
                 sb.deleteCharAt(w);
