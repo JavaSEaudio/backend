@@ -36,7 +36,7 @@ public class UserEntity {
         this.buylist = "";
         this.information = info;
         this.name = name;
-        this.linkAvatar = ProjectPath.getPath()+"web//file//user//0.jpg";
+        this.linkAvatar = "/file/user/0.jpg";
 
     }
 
