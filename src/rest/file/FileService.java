@@ -35,25 +35,26 @@ public class FileService {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userid = sessionDAO.haveKey(uid);
         if (userid == -1) {
-            return Response.status(202).entity("File not uploaded! Please sign in!!!").build();
+            return Response.status(401).entity("File not uploaded! Please sign in!!!").build();
         }
         AudioEntity audioEntity = new AudioEntity(nameA, artist, album);
         Factory.getInstance().getAudioDAO().add(audioEntity);
+        int path = audioEntity.getId();
         String uploadedFileLocation = ProjectPath.getPath() + "web//file//audio//" + audioEntity.getId() + ".mp3";
         try {
             FileWrite.writeToFile(uploadAudioStream, uploadedFileLocation);
         } catch (Exception e) {
             log.info("Upload File: file can not write");
-            return Response.status(201).build();
+            return Response.status(412).build();
         }
         try {
             saveFile(uploadedFileLocation, nameA, album, artist, audioEntity, userid, "/file/image/0.jpg");
         } catch (Exception e) {
             File file = new File(uploadedFileLocation);
             file.delete();
-            return Response.status(203).build();
+            return Response.status(409).build();
         }
-        return Response.status(200).build();
+        return Response.status(200).entity(path).build();
     }
 
     @Path("/uploadImage")
@@ -66,14 +67,14 @@ public class FileService {
         int userid = sessionDAO.haveKey(uid);
         if (userid == -1) {
             log.info("DUpload Image: not logged in");
-            return Response.status(201).entity("You can't edit file! Please sign in!!!").build();
+            return Response.status(401).entity("You can't edit file! Please sign in!!!").build();
         }
         AudioEntity audioEntity = Factory.getInstance().getAudioDAO().getById(idA);
         if (userid != audioEntity.getUserid()) {
             UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
             if (user.getAccess() < 1) {
                 log.info("Delete File: not access");
-                return Response.status(200).entity("You can't edit this file!!").build();
+                return Response.status(401).entity("You can't edit this file!!").build();
             }
         }
         String uploadImageLocation = ProjectPath.getPath() + "web//file//image//" + idA + ".jpg";
