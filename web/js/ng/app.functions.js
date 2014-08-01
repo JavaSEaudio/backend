@@ -17,13 +17,15 @@ startup.directive('ngEnter', function () {
 startup.run(function($rootScope, $http, $location) {
 
     $http.get("/rest/test/check").success(function(data) {
-        $rootScope.logined = "true" === data;
+        $rootScope.logined = "false" !== data;
     });
 
     // Покупка
     $rootScope.buy = function(music) {
         $http.get("/rest/buy/audio?audioID="+music.id).success(function(data) {
             console.log("Куплено!");
+            alert("Куплено!");
+            window.location.replace("/");
             $http.get("/rest/user/mylogin").success(function(data) {
                 console.log(data);
             });

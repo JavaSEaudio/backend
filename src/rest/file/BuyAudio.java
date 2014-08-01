@@ -20,7 +20,7 @@ public class BuyAudio {
     @Path("/audio")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyAudio(@QueryParam(value = "audioID") int audioID,
-                                  @CookieParam(value = "name") String uid) {
+                             @CookieParam(value = "name") String uid) {
         System.out.println(audioID);
         UserDAO uDAO = Factory.getInstance().getUserDAO();
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();

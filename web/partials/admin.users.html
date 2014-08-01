@@ -1,0 +1,17 @@
+<h1 class="h1">Admin page: user list</h1>
+<table>
+    <tr>
+        <td>ID</td>
+        <td>Login</td>
+        <td>User Name</td>
+        <td>E-Mail</td>
+        <td>Ban</td>
+    </tr>
+    <tr ng-repeat="user in users" ng-click="userPage(user);">
+        <td>{{user.id}}</td>
+        <td>{{user.login}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+        <td ng-click="ban(user)"><div class="button">Kill</div></td>
+    </tr>
+</table>

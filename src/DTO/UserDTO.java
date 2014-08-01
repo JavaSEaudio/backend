@@ -116,6 +116,9 @@ public class UserDTO {
         res[buylist.length] = id;
         buylist = res;
     }
+    public int[] getBuyListArray(){
+        return this.buylist;
+    }
 
     public String getMylist() {
 

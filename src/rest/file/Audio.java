@@ -1,6 +1,9 @@
 package rest.file;
 
 import DAO.AudioDAO;
+import DAO.SessionDAO;
+import DTO.AudioDTO;
+import DTO.AudioListDTO;
 import Entity.AudioEntity;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
@@ -24,29 +27,40 @@ public class Audio {
     @Path("/get")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAudios(@QueryParam("count") int count,
-                              @QueryParam("page") int page) {
+                              @QueryParam("page") int page,
+                              @CookieParam("name") String uid
+    ) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userID = sessionDAO.haveKey(uid);
         if(count > 100) count = 100;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll(aDAO.getSomeAudios((count * (page - 1)), count));
+            audioDTOs = (ArrayList<AudioDTO>)AudioListDTO.getListAudioDTO(audio,userID);
+
         } catch (Exception e) {
             log.info("Audio Get: exception");
         }
 
-        return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
+        return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
     }
 
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response search(@QueryParam("criterion") String criterion/*,
+    public Response search(@QueryParam("criterion") String criterion,
+                           @CookieParam("name") String uid/*,
                            @QueryParam("count") int count,
                            @QueryParam("page") int page*/) {
         criterion = StringUtil.parse(criterion);
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userID = sessionDAO.haveKey(uid);
         int count = 5;
         int page = 1;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         try {
             audio.addAll( aDAO.search(criterion, (count * (page - 1)), count) );
@@ -98,7 +112,8 @@ public class Audio {
             }
             audio = lists[0];
         }
-        return Response.ok(new GenericEntity<ArrayList<AudioEntity>>((ArrayList<AudioEntity>)audio){}).build();
+        audioDTOs = (ArrayList<AudioDTO>)AudioListDTO.getListAudioDTO(audio,userID);
+        return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
     }
 
     @GET
@@ -188,7 +203,10 @@ public class Audio {
     @GET
     @Path("/getbyid")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getById(@QueryParam("id") int id) {
+    public Response getById(@QueryParam("id") int id,
+                            @CookieParam("name") String uid) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userID = sessionDAO.haveKey(uid);
         AudioEntity audio = null;
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
@@ -196,7 +214,8 @@ public class Audio {
         } catch(Exception e) {
             log.info("Audio ByID: exception");
         }
-        return Response.ok().entity(audio).build();
+        AudioDTO audioDTO = new AudioDTO(audio, userID);
+        return Response.ok().entity(audioDTO).build();
     }
 
 }

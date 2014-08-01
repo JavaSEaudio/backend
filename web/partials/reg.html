@@ -1,8 +1,23 @@
 Registration
-<form action="/rest/Registration" method="POST">
+<form action="/rest/Registration" method="POST" id="reg-form">
     <input type="text" name="login" placeholder="Login"><br>
     <input type="password" name="passwordOne" placeholder="Password"><br>
     <input type="password" name="passwordTwo" placeholder="Password"><br>
     <input type="email" name="email" placeholder="E-mail"><br>
     <input type="submit" value="Registration">
 </form>
+
+
+<script>
+   $("#reg-form").ajaxForm({
+       success: function(d) {
+           console.log(d);
+           alert("Успешная регистрация!");
+           window.location.replace("/");
+       },
+       error: function(d) {
+           console.log(d);
+           alert("Ошибка, данные не верны!");
+       }
+   });
+</script>

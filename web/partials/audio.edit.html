@@ -1,5 +1,5 @@
 <h1 class="h1">Edit audio file</h1>
-<form action="{{'/rest/file/edit?idfile=' + song.id}}" method="POST"><br>
+<form id="audio-edit" action="{{'/rest/file/edit?idfile=' + song.id}}" method="POST"><br>
     title<br>
     <input type="text" name="title" placeholder="title" value="{{song.name}}"><br>
     album<br>
@@ -20,3 +20,16 @@
     <input type="submit"/>
     
 </form>
+
+<script>
+    $("#audio-edit").ajaxForm({
+        success: function(d) {
+            alert("Информация обновлена!");
+            console.log(d);
+        },
+        error: function(d) {
+            console.log(d);
+            alert("Ошибка! Печаль, беда");
+        }
+    });
+</script>

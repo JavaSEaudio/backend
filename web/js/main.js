@@ -58,6 +58,11 @@ app.config(['$routeProvider',
                 templateUrl : "partials/music.html",
                 controller: "audio.search"
             }).
+            //Admin
+            when("/admin/users", {
+               templateUrl: "partials/admin.users.html",
+               controller: "admin.users"
+            }).
             otherwise({
                 redirectTo: '/main'
             });

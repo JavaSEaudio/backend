@@ -4,7 +4,18 @@
     <audio ng-src="{{song.linkFile}}"></audio>
     <div class="right">
         <ul>
-            <li ng-repeat="param in song">{{param}}</li>
+            <!--<li ng-repeat="param in song">{{param}}</li>-->
+            <li>Name: {{song.name}}</li>
+            <li>Artist: {{song.artist}}</li>
+            <li>Album: {{song.album}}</li>
+            <li>Genre: {{song.genre}}</li>
+            <li>Comment: {{song.comment}}</li>
+            <li>Price: {{song.price}}$</li>
+            <li>Юзер который залил: {{song.userid}}</li>
         </ul>
+        <div class="button" ng-show="logined && (song.buy)" ng-click="buy(song);">BUY</div>
+        <div class="button" ng-show="logined && song.edit" ng-click="edit(song)">Edit</div>
+
+
     </div>
 </div>

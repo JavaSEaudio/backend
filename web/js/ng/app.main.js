@@ -1,21 +1,30 @@
 var main = angular.module("app.controllers", []);
 
 //Main page
-main.controller("main", function($rootScope, $scope, $http) {
+main.controller("main", function($location, $rootScope, $scope, $http) {
     $http.get("/rest/audio/get?count=20&page=1").success(function(data) {
-        $scope.songs = data.audioEntity;
+        $scope.songs = data.audioDTO;
     });
+
+    $scope.edit = function(music) {
+        $location.path("/audio/edit/" + music.id);
+    };
 
     $rootScope.searchQuery = "";
 
 });
 
 //Song page
-main.controller("song", function($scope, $http, $routeParams) {
+main.controller("song", function($location, $scope, $http, $routeParams) {
     $http.get("rest/audio/getbyid?id=" + $routeParams.musicId)
         .success(function(data) {
-            $scope.song = data.audioEntity;
+            $scope.song = data.audioDTO;
+            console.log(data);
         });
+
+    $scope.edit = function(music) {
+        $location.path("/audio/edit/" + music.id);
+    };
 });
 
 //Profile
@@ -26,9 +35,12 @@ main.controller("profile.exit", function($location, $http) {
     window.location.replace("/");
 });
 
-main.controller("profile.signin", function($http) {
+main.controller("profile.signin", function($scope, $http) {
     console.log("signin");
-    $http.get("");
+    //$http.get("");
+    $scope.login = function() {
+        window.location.replace("/");
+    }
 });
 
 main.controller("profile.reg", function($http) {
@@ -87,5 +99,26 @@ main.controller("audio.search", function($http, $scope, $routeParams) {
     console.log("Search " + q);
     $http.get("/rest/audio/search?criterion=" + q).success(function(data) {
         $scope.songs = data.audioEntity;
+    });
+});
+
+
+
+//Admin
+main.controller("admin.users", function($http, $scope, $location) {
+
+    $scope.userPage = function(user) {
+        $location.path("/profile/user/" + user.login);
+    }
+
+    $scope.ban = function(user) {
+        $http.get("/rest/admin/ban/?userID=" + user.id).success(function(d) {
+            console.log("Ban function: ", d);
+        });
+    }
+
+    $http.get("/rest/user/all").success(function(data) {
+        $scope.users = data.userDTO;
+        console.log(data);
     });
 });

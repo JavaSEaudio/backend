@@ -35,10 +35,10 @@ public class AudioEntity {
         this.comment = "comment";
         this.type = "mp3";
         this.year = 2000;
-        this.price = 0;
+        this.price = 2;
         this.length = 100; //in second
         this.size = 1000;
-        this.userid = 999; //id users
+        this.userid = 1; //id users
         this.access = 0;
         this.linkFile = linkFile;
         this.linkImage = linkImage;

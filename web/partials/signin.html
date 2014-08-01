@@ -1,5 +1,5 @@
 Sign in
-<form action="/rest/Login" method="POST">
+<form action="/rest/Login" method="POST" id="login-form">
     <input type="text" name="login"><br>
     <input type="password" name="password"><br>
     <input type="submit" value="Sign In">
@@ -9,7 +9,22 @@ Sign in
 <form action="/rest/pwd">
     Input E-Mail for recover password
     <input type="email" name="email" placeholder="E-mail">
-    <input type="submit"/>
+    <input type="submit" ng-click="login();"/>
 </form>
 
-<!-- get email -->
+<script>
+    $("#login-form").ajaxForm({
+        success: function(d) {
+            console.log(d);
+            if(d == false) {
+                alert("Данные не верны!");
+            } else {
+                window.location.replace("/");
+            }
+        },
+        error: function(d) {
+            console.log(d);
+            alert("Ошибка, данные не верны!");
+        }
+    });
+</script>
