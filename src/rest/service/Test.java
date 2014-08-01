@@ -1,6 +1,10 @@
 package rest.service;
 
+import DAO.AudioDAO;
 import DAO.util.Factory;
+import Entity.AudioEntity;
+import Entity.UserEntity;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,7 +24,27 @@ public class Test {
         }
         return Response.ok("false").build();
     }
+    @GET
+    @Path("/checkAudio")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response check(@CookieParam(value = "name") String uid,
+                          @QueryParam(value = "id") int idfile){
+        int userid = Factory.getInstance().getSessionDAO().haveKey(uid);
+        if (userid == -1) {
 
+            return Response.ok("false").build();
+        }
+        AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
+        AudioEntity audioEntity = audioDAO.getById(idfile);
+        if (userid != audioEntity.getUserid()) {
+            UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
+            if (user.getAccess() < 1) {
+
+                return Response.ok("false").build();
+            }
+        }
+        return Response.ok("true").build();
+    }
 
 
 }

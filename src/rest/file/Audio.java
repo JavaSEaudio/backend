@@ -61,6 +61,28 @@ public class Audio {
             }
             boolean flag;
             for (int i = 1; i < parts.length; i ++) {
+                            for (int j = 0; j < parts.length; j ++) {
+                                flag = false;
+                                for (int q = 0; q < parts.length; q ++) {
+                                    if (lists[0].get(j).getName().equals(lists[1].get(q).getName())) {
+                                        flag = true;
+                                        continue;
+                                    }
+                    }
+                    if (!flag) {
+                        lists[0].remove(j);
+                    }
+                }
+            }
+            audio = lists[0];
+        }if (audio.size() == 0) {
+            String[] parts = criterion.split(" ");
+            List<AudioEntity>[] lists = new List[parts.length];
+            for (int i = 0; i < parts.length; i ++) {
+                lists[i] = (List)aDAO.search(parts[i], (count * (page - 1)), count);
+            }
+            boolean flag;
+            for (int i = 1; i < parts.length; i ++) {
                 for (int j = 0; j < parts.length; j ++) {
                     flag = false;
                     for (int q = 0; q < parts.length; q ++) {

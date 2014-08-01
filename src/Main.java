@@ -1,5 +1,4 @@
 //import BusinessLogic.FileOperation;
-import BusinessLogic.FileOperation;
 import DAO.AudioDAO;
 import DAO.UserDAO;
 import Entity.AudioEntity;
@@ -19,7 +18,7 @@ public class Main {
          * а также дисконектить после выполнения
          */
 
-//        logger.info("User  Not logged in");
+        logger.info("User  Not logged in");
 
 
 //        FileOperation m  = new FileOperation("c://upload//audio//930.mp3");
@@ -69,34 +68,22 @@ return Response.status(200).Entity(output).build();
 */
 
 
-        AudioDAO aDao = Factory.getInstance().getAudioDAO();
+        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         UserDAO uDao = Factory.getInstance().getUserDAO();
 //        SessionDAO sDao = Factory.getInstance().getSessionDAO();
 //
 //        Желательно изменять при каждом новом вызове или комментить
         UserEntity user = new UserEntity("root", "root", "giluruj@burstmail.info", "Sasha", "Coding");
         AudioEntity audio = new AudioEntity();
-
-        aDao.delete(21);
-//        aDao.delete(22);
-//        aDao.delete(23);
-//        aDao.delete(24);
-//        aDao.delete(25);
-//        aDao.delete(26);
-//        aDao.delete(27);
-//        aDao.delete(28);
-
-//        FileOperation file = new FileOperation("C://Users//Степанов//Documents//Project//music//6.mp3");
 //        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
-//            String ki = file.getName();
-//        System.out.println(ki);
+
 //        aDAO.add(audio);
 //        uDao.add(user);
 //        sDao.sDao(sess);
         //System.out.println(uDao.getById(-1));
-//        audio = aDAO.getById(3);
-//        audio.setUserid(6);
-//        aDAO.change(audio);
+        audio = aDAO.getById(3);
+        audio.setUserid(6);
+        aDAO.change(audio);
 
 
 //        String ns = new String("li");
@@ -218,7 +205,7 @@ return Response.status(200).Entity(output).build();
 //        UserDRO uDro = new UserDRO(uDao.getByLogin("user2"));
 //        System.out.println(uDro.getLogin());
 
-//logger.info("END");
+logger.info("END");
 System.out.println("THE END");
         return;
     }

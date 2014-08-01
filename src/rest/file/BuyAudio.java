@@ -16,11 +16,11 @@ import javax.ws.rs.*;
 @Path("/buy")
 public class BuyAudio {
     private final static Logger log =  Logger.getLogger("com.audiostorage.report");
-    @POST
+    @GET
     @Path("/audio")
     @Produces(MediaType.APPLICATION_JSON)
     public Response buyAudio(@QueryParam(value = "audioID") int audioID,
-                             @CookieParam(value = "name") String uid) {
+                                  @CookieParam(value = "name") String uid) {
         System.out.println(audioID);
         UserDAO uDAO = Factory.getInstance().getUserDAO();
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
@@ -41,8 +41,9 @@ public class BuyAudio {
                 UserEntity buyer = uDAO.getById(userID);
                 AudioEntity audio = aDAO.getById(audioID);
                 double price = audio.getPrice();
-                if (buyer.getMoney() < price) {
+                if (buyer.getMoney() <= price) {
                     log.info("BUY: not enough money");
+                    System.out.println("No buy");
                     return Response.ok().status(400).build();
                 } else {
                     UserEntity vendor = uDAO.getById(audio.getUserid());
@@ -53,6 +54,7 @@ public class BuyAudio {
                     buyer.setDRO(buyerDTO);
                     buyer.setMoney(buyer.getMoney() - price);
                     vendor.setMoney(vendor.getMoney() + price);
+                    System.out.println("---" + buyer.getBuylist());
                     uDAO.change(buyer);
                     uDAO.change(vendor);
                     log.info("BUY: success");

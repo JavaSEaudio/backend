@@ -1,9 +1,13 @@
 package rest.user;
 
+import DAO.SessionDAO;
 import DAO.UserDAO;
 import DTO.UserDTO;
 import DTO.UserListDTO;
 import DAO.util.Factory;
+import Entity.UserEntity;
+import org.apache.log4j.Logger;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -12,7 +16,7 @@ import java.util.ArrayList;
 
 @Path("/user")
 public class GetUser {
-
+    private final static Logger log =  Logger.getLogger("com.audiostorage.report");
     @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
@@ -21,10 +25,11 @@ public class GetUser {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
         try {
             UserDTO user = new UserDTO(userDAO.getByLogin(login));
-            System.out.println("Success in @getUserByLogin "+user.toString());
+            log.info("GetUser Login: success");
+
             return Response.ok().entity(user).build();
         } catch (Exception e) {
-            System.out.println("Problem in @getUserByLogin");
+            log.info("GetUser Login: exception");
             return Response.ok().status(400).build();
         }
     }
@@ -37,10 +42,10 @@ public class GetUser {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
         try {
             UserDTO user = new UserDTO(userDAO.getById(id));
-            System.out.println("Success in @getUserById "+user.toString());
+            log.info("GetUser ID: success");
             return Response.ok().entity(user).build();
         } catch (Exception e) {
-            System.out.println("Problem in @getUserById");
+            log.info("GetUser ID: exception");
             return Response.ok().status(400).build();
         }
     }
@@ -52,11 +57,31 @@ public class GetUser {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
         try {
             ArrayList<UserDTO> users = (ArrayList<UserDTO>) UserListDTO.getListUserDTO(userDAO.getAll());
-            System.out.println("Success in @getAllUsers");
+            log.info("GetUser ALL: success");
             return Response.ok(new GenericEntity<ArrayList<UserDTO>>(users){}).build();
         } catch (Exception e) {
-            System.out.println("Problem in @getAllUsers");
+            log.info("GetUser ALL: exception");
             return null;
         }
     }
+
+     @GET
+     @Path("/mylogin")
+     @Produces(MediaType.APPLICATION_JSON)
+     public Response editUser(@CookieParam(value = "name") String uid
+                              ) {
+
+         UserDAO userDAO = Factory.getInstance().getUserDAO();
+         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+
+             UserEntity user = userDAO.getById(sessionDAO.haveKey(uid));
+             UserDTO userDTO = new UserDTO(user);
+             if(user == null) {
+
+                 return Response.ok().status(400).build();
+             }
+             System.out.println(user.getLogin());
+
+             return Response.ok().entity(userDTO).build();
+     }
 }

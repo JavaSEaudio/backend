@@ -11,11 +11,11 @@ public class UserDTO {
     private String login;
     private String email;
     private String information;
+    private String linkAvatar;
     private double money;
     private int access;
     private int[] buylist;
     private int[] mylist;
-    private String linkIAvatar;
 
     public UserDTO(){}
 
@@ -30,7 +30,7 @@ public class UserDTO {
         this.access = user.getAccess();
         this.buylist = parser(user.getBuylist());
         this.mylist = parser(user.getMylist());
-        this.linkIAvatar = user.getLinkAvatar();
+        this.linkAvatar = user.getLinkAvatar();
     }
 
     private int[] parser (String str) {
@@ -148,10 +148,10 @@ public class UserDTO {
     }
 
     public String getLinkAvatar() {
-        return linkIAvatar;
+        return linkAvatar;
     }
 
-    public void setILinkAvatar(String linkIAvatar) {
-        this.linkIAvatar = linkIAvatar;
+    public void setLinkAvatar(String linkIAvatar) {
+        this.linkAvatar = linkIAvatar;
     }
 }

@@ -1,0 +1,9 @@
+Upload audio file
+
+    <input type="text" ng-model="sendAudio.nameAudio" placeholder="Audio name"><br>
+    <input type="text" ng-model="sendAudio.artist" placeholder="Artist"><br>
+    <input type="text" ng-model="sendAudio.album" placeholder="Album"><br>
+<form action="{{'/rest/file/uploadAudio?nameAudio=' + sendAudio.nameAudio + '&artist=' + sendAudio.artist + '&album=' + sendAudio.album}}" method="POST" enctype="multipart/form-data">
+    <input type="file" ng-model="sendAudio.audioFile" name="audioFile">
+    <input type="submit"/>
+</form>

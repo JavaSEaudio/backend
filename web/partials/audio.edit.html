@@ -1,0 +1,22 @@
+<h1 class="h1">Edit audio file</h1>
+<form action="{{'/rest/file/edit?idfile=' + song.id}}" method="POST"><br>
+    title<br>
+    <input type="text" name="title" placeholder="title" value="{{song.name}}"><br>
+    album<br>
+    <input type="text" name="album" placeholder="album" value="{{song.album}}"><br>
+    artist<br>
+    <input type="text" name="artist" placeholder="artist" value="{{song.artist}}"><br>
+    genre<br>
+    <input type="text" name="genre" placeholder="genre" value="{{song.genre}}"><br>
+    year<br>
+    <input type="text" name="year" placeholder="year" value="{{song.year}}"><br>
+    price<br>
+    <input type="text" name="price" placeholder="price" value="{{song.price}}"><br>
+    <input type="checkbox" name="access"><br>
+    comment<br>
+    <textarea name="comment" cols="30" rows="10">
+        {{song.comment}}
+    </textarea><br>
+    <input type="submit"/>
+    
+</form>
