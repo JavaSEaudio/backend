@@ -35,24 +35,27 @@ public class FileService {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userid = sessionDAO.haveKey(uid);
         if (userid == -1) {
+            log.info("Upload File: file can not write: sign in");
             return Response.status(202).entity("File not uploaded! Please sign in!!!").build();
         }
         AudioEntity audioEntity = new AudioEntity(nameA, artist, album);
         Factory.getInstance().getAudioDAO().add(audioEntity);
-        String uploadedFileLocation = ProjectPath.getPath() + "web//file//audio//" + audioEntity.getId() + ".mp3";
+        String uploadedFileLocation = "C://upload//audio//" + audioEntity.getId() + ".mp3";
         try {
             FileWrite.writeToFile(uploadAudioStream, uploadedFileLocation);
         } catch (Exception e) {
             log.info("Upload File: file can not write");
+            Factory.getInstance().getAudioDAO().delete(audioEntity);
             return Response.ok("can not").status(201).build();
         }
-//        try {
-            saveFile(uploadedFileLocation, nameA, album, artist, audioEntity, userid, "/file/image/0.jpg");
-//        } catch (Exception e) {
-//            File file = new File(uploadedFileLocation);
-//            file.delete();
-//            return Response.ok("chren").status(203).build();
-//        }
+        try {
+            saveFile(uploadedFileLocation, nameA, album, artist, audioEntity, userid, "/rest/get/image?id=0");
+        } catch (Exception e) {
+            File file = new File(uploadedFileLocation);
+            file.delete();
+            Factory.getInstance().getAudioDAO().delete(audioEntity);
+            return Response.ok("chren").status(203).build();
+        }
         return Response.status(200).build();
     }
 
@@ -76,13 +79,13 @@ public class FileService {
                 return Response.status(200).entity("You can't edit this file!!").build();
             }
         }
-        String uploadImageLocation = ProjectPath.getPath() + "web//file//image//" + idA + ".jpg";
+        String uploadImageLocation = ProjectPath.getPath() + "image//" + idA + ".jpg";
         try {
             FileWrite.writeToFile(uploadImageStream, uploadImageLocation);
         } catch (Exception e) {
             log.info("Upload Image: file can not write");
         }
-        audioEntity.setLinkImage("/file/image/" + idA + ".jpg");
+        audioEntity.setLinkImage("/rest/get/image?id=" + idA);
         Factory.getInstance().getAudioDAO().change(audioEntity);
         log.info("Upload Image: success");
         return Response.status(200).build();
@@ -148,57 +151,43 @@ public class FileService {
                 return Response.status(200).entity("You can't edit this file!!").build();
             }
         }
-        System.out.println(name);
-        System.out.println(album);
-        System.out.println(artist);
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        System.out.println();
-
-
 
         FileOperation fileEdit = new FileOperation(ProjectPath.getAudioPath(audioEntity));
-        if ((name == null) || (name.equals(""))) {
+        if ((name != null) || (!name.equals(""))) {
             try {
                 fileEdit.setName(name);
 
             } catch (Exception e) {}
             audioEntity.setName(name);
-            Factory.getInstance().getAudioDAO().change(audioEntity);
         }
-        if ((album == null) || (album.equals(""))) {
+        if ((album != null) || (!album.equals(""))) {
             try {
                 fileEdit.setAlbum(album);
 
             } catch (Exception e) {}
             audioEntity.setAlbum(album);
-            Factory.getInstance().getAudioDAO().change(audioEntity);
         }
-        if ((artist == null) || (artist.equals(""))) {
+        if ((artist != null) || (!artist.equals(""))) {
             try {
                 fileEdit.setArtist(artist);
 
             } catch (Exception e) {}
             audioEntity.setArtist(artist);
-            Factory.getInstance().getAudioDAO().change(audioEntity);
         }
-        if ((comment == null) || (comment.equals(""))) {
+        if ((comment != null) || (!comment.equals(""))) {
             try {
                 fileEdit.setComments(comment);
 
             } catch (Exception e) {}
             audioEntity.setComment(comment);
-            Factory.getInstance().getAudioDAO().change(audioEntity);
         }
 
-        if ((genre == null) || (genre.equals(""))) {
+        if ((genre != null) || (!genre.equals(""))) {
             try {
                 fileEdit.setGenre(genre);
 
             } catch (Exception e) {}
             audioEntity.setGenre(genre);
-            Factory.getInstance().getAudioDAO().change(audioEntity);
         }
         if ((year >= 0) || year < 2015) {
             try {
@@ -206,12 +195,10 @@ public class FileService {
 
             } catch (Exception e) {}
             audioEntity.setYear(year);
-            Factory.getInstance().getAudioDAO().change(audioEntity);
         }
         if (price >= 0) {
             audioEntity.setPrice(price);
         } else {
-            Factory.getInstance().getAudioDAO().change(audioEntity);
             log.info("Edit File: price wrong");
             return Response.status(203).entity("price wrong").build();
         }
@@ -223,7 +210,7 @@ public class FileService {
 
     private void saveFile(String audioLocation, String name, String album, String artist,
                           AudioEntity audioEntity, int userid, String imgLocation) {
-//        try {
+        try {
             FileOperation fileOperation = new FileOperation(audioLocation);
             if (name == null || name.equals("") || name.equals(" ")) {
                 name = fileOperation.getName();
@@ -252,11 +239,16 @@ public class FileService {
             } else {
                 try { fileOperation.setAlbum(album); } catch (Exception e){}
             }
+            if(fileOperation.getImage(audioEntity.getId())){
+                audioEntity.setLinkImage("/rest/get/image?id="+audioEntity.getId());
+            } else {
+                audioEntity.setLinkImage(imgLocation);
+            }
             audioEntity.setType(".mp3");
             audioEntity.setAccess(0);
             audioEntity.setUserid(userid);
-            audioEntity.setLinkFile("/file/audio/"+audioEntity.getId()+".mp3");
-            audioEntity.setLinkImage(imgLocation);
+            audioEntity.setLinkFile("/rest/get/audio?id="+audioEntity.getId());
+
             try { audioEntity.setYear(fileOperation.getYear()); } catch (Exception e){}
             try { audioEntity.setComment(fileOperation.getComments()); } catch (Exception e){}
             try { audioEntity.setGenre(fileOperation.getGenre()); } catch (Exception e){}
@@ -266,9 +258,9 @@ public class FileService {
 
             Factory.getInstance().getAudioDAO().change(audioEntity);
             log.info("Upload File: audio save in the DB success");
-//        } catch (Exception e) {
-//            log.info("Upload File: audio is not store in the DB ");
-//            throw new RuntimeException();
-//        }
+        } catch (Exception e) {
+            log.info("Upload File: audio is not store in the DB ");
+            throw new RuntimeException();
+        }
     }
 }

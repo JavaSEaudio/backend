@@ -51,7 +51,7 @@ public class FileOperation {
     }
     public boolean getImage(int id) {
         AttachedPicture attachedPicture = mp3.getPicture(PictureType.FRONT_COVER);
-        File file = new File(ProjectPath.getPath() + "web//file//image//"+id+".jpg");
+        File file = new File("C://upload//image//"+id+".jpg");
         try{
             FileOutputStream out = new FileOutputStream(file);
             out.write(attachedPicture.getImage());
