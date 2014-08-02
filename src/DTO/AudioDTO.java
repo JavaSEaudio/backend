@@ -3,6 +3,7 @@ package DTO;
 
 import DAO.util.Factory;
 import Entity.AudioEntity;
+import rest.goodies.LikesSystem;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -27,8 +28,11 @@ public class AudioDTO {
     private Date upload_date;
     private boolean edit;
     private boolean buy;
+    private boolean like;
+    private int countLike;
 
     public AudioDTO(){}
+
 
     public AudioDTO(AudioEntity audioEntity, int userid){
          this.id = audioEntity.getId();
@@ -49,14 +53,11 @@ public class AudioDTO {
          this.upload_date = audioEntity.getUpload_date();
         if(userid != -1) {
             UserDTO user = new UserDTO(Factory.getInstance().getUserDAO().getById(userid));
-
-
             if (user.getAccess() > 0) {
                 this.buy = false;
             } else {
                 this.buy = true;
                 for (int i : user.getBuyListArray()) {
-
                     if (i == this.id) {
                         this.buy = false;
                         break;
@@ -64,6 +65,7 @@ public class AudioDTO {
                 }
             }
             if (audioEntity.getUserid() == userid || user.getAccess() > 0) {
+                this.buy = false;
                 this.edit = true;
             } else {
                 this.edit = false;
@@ -72,6 +74,9 @@ public class AudioDTO {
             this.edit = false;
             this.buy = false;
         }
+        this.countLike = LikesSystem.count(this.id);
+        this.like = LikesSystem.check(userid, this.id);
+        System.out.println(like);
 
     }
 
@@ -217,5 +222,21 @@ public class AudioDTO {
 
     public void setBuy(boolean buy) {
         this.buy = buy;
+    }
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
+
+    public int getCountLike() {
+        return countLike;
+    }
+
+    public void setCountLike(int countLike) {
+        this.countLike = countLike;
     }
 }

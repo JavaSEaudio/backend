@@ -1,6 +1,6 @@
 <form id="user-edit-form" action="/rest/useredit/edit" method="POST">
    Name: <input type="text" name="name" value="{{user.name}}"><br>
-   E-mail: <input type="email" name="email" value="{{user.email}}"><br>
+   <!--E-mail: <input type="email" name="email" value="{{user.email}}"><br>-->
    Information:<br> <textarea name="information" cols="30" rows="10">{{user.information}}</textarea><br>
     <input type="submit" value="Update information">
 </form>
@@ -9,6 +9,26 @@
     $("#user-edit-form").ajaxForm({
         success: function(d) {
             alert("Информация обновлена!");
+            console.log(d);
+        },
+        error: function(d) {
+            console.log(d);
+            alert("Ошибка! Печаль, беда");
+        }
+    });
+</script>
+
+
+<form action="/rest/useredit/image" method="POST" id="image-edit">
+    Edit your userpic:<br>
+    <input type="file" name="image"><br>
+    <input type="submit"/>
+</form>
+
+<script>
+    $("#image-edit").ajaxForm({
+        success: function(d) {
+            alert("Картинка обновлена!");
             console.log(d);
         },
         error: function(d) {

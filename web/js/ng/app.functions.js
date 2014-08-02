@@ -18,6 +18,11 @@ startup.run(function($rootScope, $http, $location) {
 
     $http.get("/rest/test/check").success(function(data) {
         $rootScope.logined = "false" !== data;
+        if($rootScope.logined) {
+            $http.get("/rest/user/mylogin").success(function(data) {
+                $rootScope.myInfo = data.userDTO;//Ну и лапша-код)
+            });
+        }
     });
 
     // Покупка
@@ -31,6 +36,13 @@ startup.run(function($rootScope, $http, $location) {
             });
         });
     };
+
+    $rootScope.like = function(music) {
+        $http.get("/rest/like/putlike?id=" + music.id).success(function(data) {
+            console.log(data);
+            music.like = true;
+        });
+    }
 
     //Player
     $rootScope.player = {
@@ -58,6 +70,5 @@ startup.run(function($rootScope, $http, $location) {
         $location.path("/search/" + q);
     };
 
-//    $rootScope.search.searchQuery = "q1";
 
 });

@@ -1,0 +1,23 @@
+<form id="user-edit-form" action="{{'/rest/admin/edit?userID=' + user.id}}" method="POST">
+   Name: <input type="text" name="name" value="{{user.name}}"><br>
+   access: <select name="access">
+                <option value="user">User</option>
+                <option value="moderator">Moderator</option>
+                <option value="admin">Administrator</option>
+           </select>
+   Information:<br> <textarea name="information" cols="30" rows="10">{{user.information}}</textarea><br>
+    <input type="submit" value="Update information">
+</form>
+
+<script>
+    $("#user-edit-form").ajaxForm({
+        success: function(d) {
+            alert("Информация обновлена!");
+            console.log(d);
+        },
+        error: function(d) {
+            console.log(d);
+            alert("Непонятная ошибка!");
+        }
+    });
+</script>

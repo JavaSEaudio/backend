@@ -1,7 +1,9 @@
 //import BusinessLogic.FileOperation;
 import DAO.AudioDAO;
+import DAO.LikeDAO;
 import DAO.UserDAO;
 import Entity.AudioEntity;
+import Entity.LikeEntity;
 import Entity.UserEntity;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
@@ -70,6 +72,7 @@ return Response.status(200).Entity(output).build();
 
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         UserDAO uDao = Factory.getInstance().getUserDAO();
+        LikeDAO likeDAO = Factory.getInstance().getLikeDAO();
 //        SessionDAO sDao = Factory.getInstance().getSessionDAO();
 //
 //        Желательно изменять при каждом новом вызове или комментить
@@ -77,8 +80,11 @@ return Response.status(200).Entity(output).build();
         AudioEntity audio = new AudioEntity();
 //        SessionEntity sess = new SessionEntity(7, "UniQueKey10007");
 
+//        aDAO.delete(21);
+//        aDAO.delete(22);
 //        aDAO.add(audio);
         uDao.add(user);
+//        likeDAO.add(new LikeEntity(1));
 //        sDao.sDao(sess);
         //System.out.println(uDao.getById(-1));
 //        audio = aDAO.getById(3);

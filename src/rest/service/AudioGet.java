@@ -32,4 +32,23 @@ public class AudioGet {
                 .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" ) //optional
                 .build();
     }
+    @GET
+    @Path("/avatar")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getAvatar(@QueryParam(value = "id") int id) {
+        String path = "C://upload//user//"+id+".jpg";
+        File file;
+        try {
+            file = new File(path);
+        } catch (Exception e) {
+            file = new File("C://upload//user//0.jpg");
+        }
+        if (!file.exists() || file.isDirectory()) {
+            file = new File("C://upload//user//0.jpg");
+        }
+        System.out.println(file);
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + file.getName()+ "\"" ) //optional
+                .build();
+    }
 }

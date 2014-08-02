@@ -1,4 +1,27 @@
-User profile {{user.login}}
-        <ul>
-            <li ng-repeat="a in user">{{a}}</li>
-        </ul>
+<h1 class="h1">User profile <em>{{user.login}}</em></h1>
+
+<img ng-src="{{user.linkAvatar}}" alt=""/><br>
+<ul>
+    <li>Login: {{user.login}}</li>
+    <li>Name: {{user.name}}</li>
+    <li>Money: {{user.money}}$</li>
+    <li>Info: {{user.information}}</li>
+    <li>Status: {{user.access}}</li> <!-- TODO:Написать фильтр -->
+</ul><br>
+<div class="button" ng-show="(user.id == myInfo.id) || (myInfo.access == 2)" ng-click="edit(user)">Edit user</div><br>
+<br>
+
+<table>
+    <tr>
+        <td>Image</td>
+        <td>Artist</td>
+        <td>Name</td>
+        <td>Price</td>
+    </tr>
+    <tr ng-repeat="music in musics" ng-click="audioEdit(music)">
+       <td><img ng-src="{{music.linkImage}}" alt="" height="64" width="64"></td>
+       <td>{{music.artist}}</td>
+       <td>{{music.name}}</td>
+       <td>{{music.price}}</td>
+    </tr>
+</table>

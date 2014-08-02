@@ -3,13 +3,16 @@ package DAO.util;
 import DAO.AudioDAO;
 import DAO.UserDAO;
 import DAO.SessionDAO;
+import DAO.LikeDAO;
 
 public class Factory {
     private static Factory instance = null;
     private static AudioDAO audioDAO = null;
     private static UserDAO userDAO = null;
     private static SessionDAO sessionDAO = null;
+    private static LikeDAO likeDAO = null;
     private static DAO dao = null;
+
 
     private Factory(){}
 
@@ -36,6 +39,13 @@ public class Factory {
             sessionDAO = new SessionDAO();
         }
         return sessionDAO;
+    }
+
+    public LikeDAO getLikeDAO() {
+        if (likeDAO == null){
+            likeDAO = new LikeDAO();
+        }
+        return likeDAO;
     }
 
     public DAO getDao() {

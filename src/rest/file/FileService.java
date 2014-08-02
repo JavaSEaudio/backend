@@ -92,7 +92,7 @@ public class FileService {
     }
 
 
-    @POST
+    @GET
     @Path("/delete")
     public Response deleteFile(@CookieParam(value = "name") String uid,
                                @QueryParam("id") int idFile
@@ -101,7 +101,7 @@ public class FileService {
         int userid = sessionDAO.haveKey(uid);
         if (userid == -1) {
             log.info("Delete File: not logged in");
-            return Response.status(200).entity("You can't edit file! Please sign in!!!").build();
+            return Response.status(400).entity("You can't edit file! Please sign in!!!").build();
         }
         AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
         AudioEntity audioEntity = audioDAO.getById(idFile);
@@ -109,17 +109,17 @@ public class FileService {
             UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
             if (user.getAccess() < 1) {
                 log.info("Delete File: not access");
-                return Response.status(200).entity("You can't edit this file!!").build();
+                return Response.status(400).entity("You can't edit this file!!").build();
             }
         }
-        File file = new File(ProjectPath.getAudioPath(audioEntity));
+        File file = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
         if (file.delete()) {
             audioDAO.delete(audioEntity);
             log.info("Delete File: " + file.getName() + " deleted");
             return Response.status(200).build();
         }
         log.info("Delete File: " + file.getName() + " not removed");
-        return Response.status(200).entity("not removed").build();
+        return Response.status(400).entity("not removed").build();
 
     }
 

@@ -21,7 +21,6 @@ public class UserEdit {
     @Path("/edit")
     @Produces(MediaType.APPLICATION_JSON)
     public Response editUser(@CookieParam(value = "name") String uid,
-                             @FormParam("email") String email,
                              @FormParam("information") String information,
                              @FormParam("name") String name) {
 
@@ -34,20 +33,16 @@ public class UserEdit {
                 return Response.ok().status(400).build();
             }
             System.out.println(user.getLogin());
-            try {
-                user.setEmail(email);
-            } catch (Exception e) {
-                log.info("UserEdit: the email is occupied");
-                Response.ok().status(203).build();
-            }
             user.setInformation(information);
+            System.out.println(information);
             user.setName(name);
+            System.out.println(name);
             userDAO.change(user);
             log.info("UserEdit: logged in success");
             return Response.ok().status(204).build();
         } catch (Exception e) {
             log.info("UserEdit: some problem");
-            return Response.ok().status(202).build();
+            return Response.ok().status(400).build();
         }
     }
 
@@ -92,12 +87,12 @@ public class UserEdit {
             log.info("UserEdit: not logged in");
             return Response.ok().status(400).build();
         }
-        String uploadImageLocation = ProjectPath.getPath()+"web//file//user//"+user.getId()+".jpg";
+        String uploadImageLocation = "C://upload//user//"+user.getId()+".jpg";
         try {
             FileWrite.writeToFile(uploadImageStream, uploadImageLocation);
         } catch (Exception e) {
             log.info("UserEdit: image not dowloaded");
-            return Response.status(203).entity("Failed upload image").build();
+            return Response.status(403).entity("Failed upload image").build();
         }
         user.setLinkAvatar("/file/user/"+user.getId()+".jpg");
         Factory.getInstance().getUserDAO().change(user);

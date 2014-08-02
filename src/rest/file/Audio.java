@@ -51,14 +51,13 @@ public class Audio {
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(@QueryParam("criterion") String criterion,
-                           @CookieParam("name") String uid/*,
+                           @CookieParam("name") String uid,
                            @QueryParam("count") int count,
-                           @QueryParam("page") int page*/) {
-        criterion = StringUtil.parse(criterion);
+                           @QueryParam("page") int page) {
+        if(count > 100) count = 100;
+        //criterion = StringUtil.parse(criterion);
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userID = sessionDAO.haveKey(uid);
-        int count = 5;
-        int page = 1;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();

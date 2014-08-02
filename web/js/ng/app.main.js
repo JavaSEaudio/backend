@@ -4,6 +4,7 @@ var main = angular.module("app.controllers", []);
 main.controller("main", function($location, $rootScope, $scope, $http) {
     $http.get("/rest/audio/get?count=20&page=1").success(function(data) {
         $scope.songs = data.audioDTO;
+        console.log("Songs was updated.");
     });
 
     $scope.edit = function(music) {
@@ -12,6 +13,13 @@ main.controller("main", function($location, $rootScope, $scope, $http) {
 
     $rootScope.searchQuery = "";
 
+});
+
+main.controller("audio.getbyrate", function($scope, $http) {
+    $http.get("/rest/rate/like").success(function(data) {
+        $scope.songs = data.audioDTO;
+        console.log("Songs was updated.");
+    });
 });
 
 //Song page
@@ -48,15 +56,34 @@ main.controller("profile.reg", function($http) {
     $http.get("");
 });
 
-main.controller("profile.user", function($http, $scope, $route, $routeParams) {
+main.controller("profile.user",
+function($rootScope, $location, $http, $scope, $route, $routeParams) {
     $scope.user = {
         login: $routeParams.user
-    }
+    };
 
     $http.get("/rest/user/login/?login=" + $routeParams.user).success(function(data) {
         console.log(data);
         $scope.user = data.userDTO;
+
     });
+
+    $scope.edit = function(user) {
+        if(user.id == $rootScope.myInfo.id) {
+            $location.path("/profile/edit");
+        } else if($rootScope.myInfo.access == 2) {
+            $location.path("/admin/useredit/" + user.id);
+        }
+    };
+
+
+    $scope.audioEdit = function(music) {
+        $location.path("/song/" + music.id);
+    };
+
+        $http.get("/rest/list/my").success(function(data) {
+            $scope.musics = data.audioDTO;
+        });
 
 });
 
@@ -85,12 +112,19 @@ main.controller("audio.upload", function() {
     //Когда нибудь реализуем... В другом году
 });
 
-main.controller("audio.edit", function($scope, $http, $routeParams) {
+main.controller("audio.edit", function($location, $scope, $http, $routeParams) {
     $http.get("rest/audio/getbyid?id=" + $routeParams.id)
         .success(function(data) {
             console.log(data);
-            $scope.song = data.audioEntity;
+            $scope.song = data.audioDTO;
     });
+
+    $scope.audioDelete = function(song) {
+        $http.get("/rest/file/delete?id=" + song.id).success(function(data) {
+            alert("Audio was deleted!");
+            $location.path("/");
+        });
+    };
 });
 
 
@@ -98,7 +132,7 @@ main.controller("audio.search", function($http, $scope, $routeParams) {
     var q = $routeParams.q;
     console.log("Search " + q);
     $http.get("/rest/audio/search?criterion=" + q).success(function(data) {
-        $scope.songs = data.audioEntity;
+        $scope.songs = data.audioDTO;
     });
 });
 
@@ -120,5 +154,11 @@ main.controller("admin.users", function($http, $scope, $location) {
     $http.get("/rest/user/all").success(function(data) {
         $scope.users = data.userDTO;
         console.log(data);
+    });
+});
+
+main.controller("admin.useredit", function($http, $scope, $routeParams) {
+    $http.get("/rest/user/id?id=" + $routeParams.id).success(function(data) {
+        $scope.user = data.userDTO;
     });
 });

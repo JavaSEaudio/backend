@@ -11,7 +11,7 @@
         <!--<property name="connection.username">u_kakpopaplo</property>-->
         <!--<property name="connection.password">grimerpass117</property>-->
 
-        <property name="connection.url">jdbc:mysql://localhost:3306/project0.9</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/audio</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">root</property>
         <property name="connection.password">zkycewuf</property>
@@ -36,6 +36,7 @@
         <mapping class="Entity.AudioEntity"/>
         <mapping class="Entity.UserEntity"/>
         <mapping class="Entity.SessionEntity"/>
+        <mapping class="Entity.LikeEntity"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -18,8 +18,8 @@
         {{song.comment}}
     </textarea><br>
     <input type="submit"/>
-    
 </form>
+
 
 <script>
     $("#audio-edit").ajaxForm({
@@ -33,3 +33,5 @@
         }
     });
 </script>
+
+<div class="button" ng-click="audioDelete(song)">DELETE</div>

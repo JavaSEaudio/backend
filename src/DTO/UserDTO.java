@@ -9,11 +9,19 @@ public class UserDTO {
     private int id;
     private String name;
     private String login;
-    private String email;
     private String information;
-    private String linkAvatar;
     private double money;
     private int access;
+
+    public String getLinkAvatar() {
+        return linkAvatar;
+    }
+
+    public void setLinkAvatar(String linkAvatar) {
+        this.linkAvatar = linkAvatar;
+    }
+
+    private String linkAvatar;
     private int[] buylist;
     private int[] mylist;
 
@@ -24,13 +32,12 @@ public class UserDTO {
         this.id = user.getId();
         this.name = user.getName();
         this.login = user.getLogin();
-        this.email = user.getEmail();
         this.information = user.getInformation();
         this.money = user.getMoney();
         this.access = user.getAccess();
         this.buylist = parser(user.getBuylist());
         this.mylist = parser(user.getMylist());
-        this.linkAvatar = user.getLinkAvatar();
+        this.linkAvatar = "/rest/get/avatar?id="+this.id;
     }
 
     private int[] parser (String str) {
@@ -69,14 +76,6 @@ public class UserDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public double getMoney() {
@@ -129,6 +128,10 @@ public class UserDTO {
         return res;
     }
 
+    public int[] getMyListArray() {
+        return this.mylist;
+    }
+
     public void setMylist(String mylist) {
         this.mylist = parser(mylist);
     }
@@ -148,13 +151,5 @@ public class UserDTO {
 
     public void setInformation(String information) {
         this.information = information;
-    }
-
-    public String getLinkAvatar() {
-        return linkAvatar;
-    }
-
-    public void setLinkAvatar(String linkIAvatar) {
-        this.linkAvatar = linkIAvatar;
     }
 }

@@ -19,6 +19,10 @@ app.config(['$routeProvider',
                 templateUrl: 'partials/music.html',
                 controller: 'main'
             }).
+            when('/audio/getbyrate', {
+                templateUrl: 'partials/music.html',
+                controller: 'audio.getbyrate'
+            }).
             when('/song/:musicId', {
                 templateUrl: 'partials/song.html',
                 controller: 'song'
@@ -62,6 +66,10 @@ app.config(['$routeProvider',
             when("/admin/users", {
                templateUrl: "partials/admin.users.html",
                controller: "admin.users"
+            }).
+            when("/admin/useredit/:id", {
+                templateUrl: "partials/admin.useredit.html",
+                controller: "admin.useredit"
             }).
             otherwise({
                 redirectTo: '/main'

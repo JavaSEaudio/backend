@@ -43,14 +43,12 @@ public class UserEntity {
     public void setDRO(UserDTO userDRO) {
         this.id = userDRO.getId();
         this.login = userDRO.getLogin();
-        this.email = userDRO.getEmail();
         this.information = userDRO.getInformation();
         this.name = userDRO.getName();
         this.money = userDRO.getMoney();
         this.access = userDRO.getAccess();
         this.buylist = userDRO.getBuylist();
         this.mylist = userDRO.getMylist();
-        this.linkAvatar = userDRO.getLinkAvatar();
 
     }
 

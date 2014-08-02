@@ -27,7 +27,7 @@
                     <li ng-show="logined"><a href="#/audio/upload">Upload Audio Track</a></li>
 					<li ng-hide="logined"><a href="#/profile/reg">Create new account</a></li>
 					<li ng-hide="logined"><a href="#/profile/signin" class="login-anchor">Sign in</a></li>
-				    <li ng-show="logined"><a href="/#profile/edit">Profile</a></li>
+				    <li ng-show="logined"><a href="{{'/#profile/user/' + myInfo.login}}">Profile</a></li>
                 </ul>
 			</div>
 		</div>
@@ -47,7 +47,15 @@
 			<!-- music -->
 		</div>
 		<div class="sidebar">
-			<div class="sidebar__box">
+
+            <div class="sidebar__box" ng-show="myInfo">
+                <div class="h2">Profile</div>
+                Name: <a href="{{'/#/profile/user/' + myInfo.login}}">{{myInfo.login}}<br>
+                <img ng-src="{{myInfo.linkAvatar}}" height="100" width="100" alt=""/></a><br>
+
+            </div>
+
+            <div class="sidebar__box">
 				<div class="h2">Tags cloud</div>
 				#alternative, #rock, #metalcore, #deathcore, #mathcore, #djent, #Power metal, #Progressive metal, 
 				#Rap metal, #Sludge metal

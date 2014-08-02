@@ -14,17 +14,21 @@ import javax.ws.rs.core.Response;
 @Path("/admin")
 public class Admin {
     private final static Logger log =  Logger.getLogger("com.audiostorage.report");
-    @GET
-    @Path("/edit")
+    @POST
+    @Path("/edit")//Какого хуя тут гет и формпарам?согласен, счас
     @Produces(MediaType.APPLICATION_JSON)
     public Response editUserAdmin(@QueryParam("userID") int userID,
-                                  @FormParam("pass") String pass,
-                                  @FormParam("email") String email,
+                                  @FormParam("access") String access,
                                   @FormParam("information") String information,
                                   @FormParam("name") String name,
                                   @CookieParam("name") String uid) {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
         UserEntity admin = userDAO.getById(Factory.getInstance().getSessionDAO().haveKey(uid));
+        int acs = -1;
+        if(access.equals("user")) acs = 0;
+        if(access.equals("moderator"))  acs = 1;
+        if(access.equals("admin")) acs = 2;
+
         if(admin.getAccess() == 2) {
             try {
                 UserEntity user = userDAO.getById(userID);
@@ -32,9 +36,8 @@ public class Admin {
                     log.info("ADMIN: "+admin.getLogin()+" user not found... \'in edit\'");
                     return Response.ok().status(400).build();
                 }
-                user.setPassword(pass);
-                user.setEmail(email);
                 user.setInformation(information);
+                if(acs != -1) user.setAccess(acs);
                 user.setName(name);
                 userDAO.change(user);
                 log.info("ADMIN: "+admin.getLogin()+" success edit user: "+user.getLogin() );
