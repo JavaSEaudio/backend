@@ -4,6 +4,8 @@ import DAO.AudioDAO;
 import DAO.UserDAO;
 import DAO.SessionDAO;
 import DAO.LikeDAO;
+import DAO.BannedDAO;
+import DAO.PrivateDAO;
 
 public class Factory {
     private static Factory instance = null;
@@ -11,6 +13,8 @@ public class Factory {
     private static UserDAO userDAO = null;
     private static SessionDAO sessionDAO = null;
     private static LikeDAO likeDAO = null;
+    private static BannedDAO bannedDAO = null;
+    private static PrivateDAO privateDAO = null;
     private static DAO dao = null;
 
 
@@ -47,6 +51,20 @@ public class Factory {
         }
         return likeDAO;
     }
+
+    public BannedDAO getBannedDAO() {
+        if (bannedDAO == null){
+            bannedDAO = new BannedDAO();
+        }
+        return  bannedDAO;
+    }
+    public PrivateDAO getPrivateDAO() {
+        if (privateDAO == null){
+            privateDAO = new PrivateDAO();
+        }
+        return  privateDAO;
+    }
+
 
     public DAO getDao() {
         if (dao == null){

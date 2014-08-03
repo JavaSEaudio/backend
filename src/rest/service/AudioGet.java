@@ -1,41 +1,63 @@
 package rest.service;
 
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import java.io.*;
+import java.net.SocketException;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.WritableByteChannel;
+import java.util.Date;
 
 @Path("get")
 public class AudioGet {
     @GET
     @Path("/audio")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getAudio(@QueryParam(value = "id") int id) {
+    public Response getAudio(@QueryParam(value = "id") int id)throws IOException, WebApplicationException, SocketException {
         String path = "C://upload//audio//"+id+".mp3";
-        File file = new File(path);
+        File file;
+        try {
+            file = new File(path);
+        } catch (Exception e) {
+            file = new File("");
+            Response.ok().build();
+        }
+        if (!file.exists() || file.isDirectory()) {
+            Response.ok().build();
+        }
         return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" ) //optional
+                .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" )
                 .build();
-
     }
+
+
     @GET
     @Path("/image")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getImage(@QueryParam(value = "id") int id) {
         String path = "C://upload//image//"+id+".jpg";
-        File file = new File(path);
+        File file;
+        try {
+            file = new File(path);
+        } catch (Exception e) {
+            file = new File("C://upload//image//0.jpg");
+        }
+        if (!file.exists() || file.isDirectory()) {
+            file = new File("C://upload//image//0.jpg");
+        }
         return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
-                .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" ) //optional
+                .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" )
                 .build();
     }
     @GET
     @Path("/avatar")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getAvatar(@QueryParam(value = "id") int id) {
+    public Response getAvatar(@QueryParam(value = "id") int id)throws IOException, WebApplicationException, SocketException {
         String path = "C://upload//user//"+id+".jpg";
         File file;
         try {
@@ -46,9 +68,29 @@ public class AudioGet {
         if (!file.exists() || file.isDirectory()) {
             file = new File("C://upload//user//0.jpg");
         }
-        System.out.println(file);
         return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "attachment; filename=\"" + file.getName()+ "\"" ) //optional
                 .build();
     }
+
+    @GET
+    @Path("/private")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getPrivate(@QueryParam(value = "id") int id,
+                               @CookieParam("name") String uid) throws IOException, WebApplicationException, SocketException {
+        String path = "C://upload//private//"+id+".mp3";
+        File file;
+        try {
+            file = new File(path);
+        } catch (Exception e) {
+            file = new File("");
+        }
+        if (!file.exists() || file.isDirectory()) {
+            file = new File("");
+        }
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + file.getName()+ "\"" ) //optional
+                .build();
+    }
+
 }

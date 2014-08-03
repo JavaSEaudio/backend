@@ -22,7 +22,7 @@ public class Registration {
         }
         try {
             UserDAO uDao = Factory.getInstance().getUserDAO();
-            UserEntity user = new UserEntity(login, passwordOne, email, "", "");
+            UserEntity user = new UserEntity(login, passwordOne, email);
             uDao.add(user);
         } catch(Exception e) {
             System.out.println("User do not created");

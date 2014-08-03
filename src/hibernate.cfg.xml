@@ -37,6 +37,9 @@
         <mapping class="Entity.UserEntity"/>
         <mapping class="Entity.SessionEntity"/>
         <mapping class="Entity.LikeEntity"/>
+        <mapping class="Entity.BannedEntity"/>
+        <mapping class="Entity.PrivateEntity"/>
+
 
     </session-factory>
 </hibernate-configuration>

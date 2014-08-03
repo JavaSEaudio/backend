@@ -21,13 +21,10 @@ public class AudioEntity {
     private int length; // seconds?
     private int size; // byte?
     private int userid;
-    private int access;
-    private String linkImage;
-    private String linkFile;
     @Temporal(TemporalType.DATE)
     private Date upload_date;
 
-    public AudioEntity(String name, String artist, String album, String genre, String linkFile, String linkImage ){
+    public AudioEntity(String name, String artist, String album, String genre){
         this.name = name;
         this.album = album;
         this.artist = artist;
@@ -38,10 +35,7 @@ public class AudioEntity {
         this.price = 2;
         this.length = 100; //in second
         this.size = 1000;
-        this.userid = 1; //id users
-        this.access = 0;
-        this.linkFile = linkFile;
-        this.linkImage = linkImage;
+        this.userid = 1;
     }
 
     public AudioEntity() {
@@ -59,9 +53,6 @@ public class AudioEntity {
         this.length = 0;
         this.size = 0;
         this.userid = 0;
-        this.access = 0;
-        this.linkFile = "";
-        this.linkImage = "";
     }
 
     @Id
@@ -183,33 +174,6 @@ public class AudioEntity {
 
     public void setUserid(int userid) {
         this.userid = userid;
-    }
-
-    @Column(name = "access")
-    public int getAccess() {
-        return access;
-    }
-
-    public void setAccess(int access) {
-        this.access = access;
-    }
-
-    @Column(name = "linkimage")
-    public String getLinkImage() {
-        return linkImage;
-    }
-
-    public void setLinkImage(String linkImage) {
-        this.linkImage = linkImage;
-    }
-
-    @Column(name = "linkfile")
-    public String getLinkFile() {
-        return linkFile;
-    }
-
-    public void setLinkFile(String linkFile) {
-        this.linkFile = linkFile;
     }
 
 }

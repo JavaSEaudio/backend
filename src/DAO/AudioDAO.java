@@ -45,11 +45,10 @@ public class AudioDAO {
     }
 
     public Collection<AudioEntity> getSomeAudios(int first, int second) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         List<AudioEntity> result = new ArrayList<AudioEntity>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("from AudioEntity order by upload_date DESC");
             query.setFirstResult(first);
@@ -64,11 +63,10 @@ public class AudioDAO {
     }
 
     public Collection<AudioEntity> search(String some, int first, int second) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         List<AudioEntity> result = new ArrayList<AudioEntity>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("from AudioEntity where name LIKE :some OR " +
                                                 "artist LIKE :some OR album LIKE :some ");
@@ -86,10 +84,9 @@ public class AudioDAO {
     }
 
     public List<AudioEntity> getByYear(int year) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE year = :year");
             query.setInteger("year", year);
@@ -105,10 +102,9 @@ public class AudioDAO {
     }
 
     public List<AudioEntity> getByUserId(int id) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE userid = :id");
             query.setInteger("id", id);
@@ -124,10 +120,9 @@ public class AudioDAO {
     }
 
     public List<AudioEntity> getByGenre(String genre) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE genre = :genre");
             query.setString("genre", genre);
@@ -143,11 +138,9 @@ public class AudioDAO {
     }
 
     public List<AudioEntity> getByArtist(String artist) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
-        List<AudioEntity> result = new ArrayList<AudioEntity>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE artist LIKE :artist");
             artist = "%"+artist+"%";
@@ -164,11 +157,9 @@ public class AudioDAO {
     }
 
     public List<AudioEntity> getByName(String name) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
-        List<AudioEntity> result = new ArrayList<AudioEntity>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE name LIKE :name");
             name = "%"+name+"%";
@@ -185,17 +176,35 @@ public class AudioDAO {
     }
 
     public List<AudioEntity> getByAlbum(String album) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
-        List<AudioEntity> result = new ArrayList<AudioEntity>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE album like :album");
             album = "%"+album+"%";
             query.setString("album", album);
             session.getTransaction().commit();
             audio = query.list();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getFree(int first, int second) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE price = :price");
+            query.setDouble("price", 0);
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+            audio = (List<AudioEntity>) query.list();
+            session.getTransaction().commit();
         } catch (Exception e){
             System.out.println("Trouble");
         } finally {

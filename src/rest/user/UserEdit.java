@@ -94,7 +94,6 @@ public class UserEdit {
             log.info("UserEdit: image not dowloaded");
             return Response.status(403).entity("Failed upload image").build();
         }
-        user.setLinkAvatar("/file/user/"+user.getId()+".jpg");
         Factory.getInstance().getUserDAO().change(user);
         log.info("UserEdit: image update success");
         return Response.status(200).build();

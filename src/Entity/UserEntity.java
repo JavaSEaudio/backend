@@ -22,22 +22,30 @@ public class UserEntity {
     private int access;
     private String buylist;
     private String mylist;
-    private String linkAvatar;
 
 
     public UserEntity() {}
 
-    public UserEntity(String login, String password, String email, String name, String info) {
+    public UserEntity(String login, String password, String email) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.money = 1000;
         this.access = 0;
         this.buylist = "";
-        this.information = info;
-        this.name = name;
-        this.linkAvatar = "/file/user/0.jpg";
+        this.information = "";
+        this.name = "";
+    }
 
+    public UserEntity(String login, String password, String email, int access) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.money = 1000;
+        this.access = access;
+        this.buylist = "";
+        this.information = "";
+        this.name = "";
     }
 
     public void setDRO(UserDTO userDRO) {
@@ -143,14 +151,5 @@ public class UserEntity {
 
     public void setMylist(String mylist) {
         this.mylist = mylist;
-    }
-
-    @Column(name = "linkAvatar")
-    public String getLinkAvatar() {
-        return linkAvatar;
-    }
-
-    public void setLinkAvatar(String linkAvatar) {
-        this.linkAvatar = linkAvatar;
     }
 }

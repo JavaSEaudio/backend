@@ -25,7 +25,6 @@ public class SessionDAO {
         for(SessionEntity s : sessionEntity){
             dao.delete(s);
         }
-
     }
 
     public SessionEntity getById(int id) {
@@ -37,10 +36,9 @@ public class SessionDAO {
     }
 
     public void delete(String key) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         SessionEntity sessionEntity = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM SessionEntity WHERE skey = :skey");
                 query.setText("skey", key);
@@ -54,9 +52,8 @@ public class SessionDAO {
     }
 
     public List<SessionEntity> getByUserId(int userId) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM SessionEntity WHERE userId = :userId");
                 query.setInteger("userId", userId);
@@ -71,9 +68,8 @@ public class SessionDAO {
     }
 
     public int haveKey(String key) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
                 Query query = session.createQuery("FROM SessionEntity WHERE skey = :key");
                 query.setString("key", key);

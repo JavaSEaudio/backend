@@ -217,4 +217,28 @@ public class Audio {
         return Response.ok().entity(audioDTO).build();
     }
 
+    @GET
+    @Path("/free")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFree(@QueryParam("count") int count,
+                            @QueryParam("page") int page,
+                            @CookieParam("name") String uid
+    ) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userID = sessionDAO.haveKey(uid);
+        if(count > 100) count = 100;
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
+        try {
+            AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+            audio.addAll(aDAO.getFree((count * (page - 1)), count));
+            audioDTOs = (ArrayList<AudioDTO>)AudioListDTO.getListAudioDTO(audio,userID);
+            log.info("Audio Free: success");
+        } catch (Exception e) {
+            log.info("Audio Free: exception");
+        }
+
+        return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
+    }
+
 }

@@ -37,10 +37,9 @@ public class UserDAO {
     }
 
     public int loginPassword(String login, String password) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         UserEntity user = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM UserEntity WHERE login = :login AND password = :pass");
             query.setString("login", login);
@@ -65,10 +64,9 @@ public class UserDAO {
     }
 
     public int emailPassword(String email, String password) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         UserEntity user = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM UserEntity WHERE email = :email AND password = :pass");
             query.setString("email", email);
@@ -91,10 +89,9 @@ public class UserDAO {
     }
 
     public UserEntity getByLogin(String login) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         UserEntity user = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM UserEntity WHERE login = :login");
             query.setString("login", login);
@@ -110,10 +107,9 @@ public class UserDAO {
     }
 
     public UserEntity getByEmail(String email) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         UserEntity user = null;
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM UserEntity WHERE email = :email");
             query.setString("email", email);

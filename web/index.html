@@ -77,8 +77,10 @@
 		
 	</footer>
 
-    <div id="player">
-        Player // Когда нибудь здесь будут крутые стили...
+    <div id="player" ng-hide="player.active()">
+        <img class="album" ng-src="{{player.music().linkImage}}" alt=""/>
+        {{player.music().artist}} - {{player.music().name}}<br>
+        {{player.time}} / {{player.maxTime}}
         <audio></audio>
     </div>
 

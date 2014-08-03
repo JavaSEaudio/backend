@@ -23,9 +23,9 @@ public class RestorePassword {
         int userid = sessionDAO.haveKey(uid);
         if(userid != -1) {
             log.info("Restore Pass: is not restored: user is logged" );
-            return Response.status(203).entity("is logged").build();
+            return Response.status(400).entity("is logged").build();
         }
-        String newPassword = UserLogic.uid(12);
+
 
         UserDAO uDAO = Factory.getInstance().getUserDAO();
         UserEntity user = uDAO.getByEmail(email);
@@ -33,10 +33,15 @@ public class RestorePassword {
             user = uDAO.getByLogin(email);
             if(user == null) {
                 log.info("Restore Pass: email or login incorrect");
-                return Response.ok("login not correct").build();
+                return Response.status(401).entity("login not correct").build();
             }
             email = user.getEmail();
         }
+        if(Factory.getInstance().getBannedDAO().isUserId(user.getId())) {
+            log.info("Restore Pass: banned user: " + user.getLogin() + " trie to restore");
+            return Response.status(402).entity("BANED!!!").build();
+        }
+        String newPassword = UserLogic.uid(12);
         try {
             user.setPassword(newPassword);
             uDAO.change(user);
@@ -45,7 +50,7 @@ public class RestorePassword {
             return Response.status(203).build();
         }
         EmailSender.sendPassword(email, newPassword);
-        log.info("Restore Pass: paas is restored");
+        log.info("Restore Pass: paas is restored user: " + user.getLogin());
         return Response.status(200).entity(email).build();
 
     }

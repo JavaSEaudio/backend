@@ -1,5 +1,6 @@
 package DTO;
 
+import DAO.util.Factory;
 import Entity.UserEntity;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,18 +13,12 @@ public class UserDTO {
     private String information;
     private double money;
     private int access;
-
-    public String getLinkAvatar() {
-        return linkAvatar;
-    }
-
-    public void setLinkAvatar(String linkAvatar) {
-        this.linkAvatar = linkAvatar;
-    }
-
     private String linkAvatar;
     private int[] buylist;
     private int[] mylist;
+    private boolean banned;
+
+
 
     public UserDTO(){}
 
@@ -38,6 +33,7 @@ public class UserDTO {
         this.buylist = parser(user.getBuylist());
         this.mylist = parser(user.getMylist());
         this.linkAvatar = "/rest/get/avatar?id="+this.id;
+        this.banned = Factory.getInstance().getBannedDAO().isUserId(user.getId());
     }
 
     private int[] parser (String str) {
@@ -151,5 +147,21 @@ public class UserDTO {
 
     public void setInformation(String information) {
         this.information = information;
+    }
+
+    public String getLinkAvatar() {
+        return linkAvatar;
+    }
+
+    public void setLinkAvatar(String linkAvatar) {
+        this.linkAvatar = linkAvatar;
+    }
+
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean banned) {
+        this.banned = banned;
     }
 }

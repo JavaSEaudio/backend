@@ -14,7 +14,7 @@ startup.directive('ngEnter', function () {
     };
 });
 
-startup.run(function($rootScope, $http, $location) {
+startup.run(function($interval, $rootScope, $http, $location) {
 
     $http.get("/rest/test/check").success(function(data) {
         $rootScope.logined = "false" !== data;
@@ -42,25 +42,52 @@ startup.run(function($rootScope, $http, $location) {
             console.log(data);
             music.like = true;
         });
-    }
+    };
+
+    $rootScope.audioEdit = function(music) {
+        $location.path("/audio/edit/" + music.id);
+    };
 
     //Player
     $rootScope.player = {
         node: $("#player audio")[0],
-        setMusic: function() {
-            console.log($(this.node).attr("src",  $rootScope.currentMusic.linkFile));
+        setMusic: function(cm) {
+            this.currentMusic = cm;
+            console.log($(this.node).attr("src",  this.currentMusic.linkFile));
         },
         play: function() {
             this.node.play();
         },
         pause: function() {
             this.node.pause();
+        },
+        music: function() {
+            return this.currentMusic;
+        },
+
+        maxTime: 0,
+        time: 0,
+
+        setTime: function(newTime) {
+            node.currentTime = newTime;
+        },
+
+        active: function() {
+            return this.currentMusic === undefined;
         }
     };
 
+    $interval(function() {
+        $rootScope.player.time = Math.round($rootScope.player.node.currentTime);
+
+        // TODO:Сделать по человечески, event
+        $rootScope.player.maxTime = Math.round($rootScope.player.node.duration);
+        console.log($($rootScope.player.node));
+    }, 1000);
+
+
     $rootScope.play = function(music) {
-        $rootScope.currentMusic = music;
-        $rootScope.player.setMusic();
+        $rootScope.player.setMusic(music);
         $rootScope.player.play();
     };
 

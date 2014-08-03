@@ -7,10 +7,6 @@ main.controller("main", function($location, $rootScope, $scope, $http) {
         console.log("Songs was updated.");
     });
 
-    $scope.edit = function(music) {
-        $location.path("/audio/edit/" + music.id);
-    };
-
     $rootScope.searchQuery = "";
 
 });

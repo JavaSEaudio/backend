@@ -15,10 +15,10 @@
             <div><i class="heart"></i> {{music.countLike}} Likes</div>
             <div>{{music.price}}$</div>
             <div class="button" ng-show="logined && (music.buy)" ng-click="buy(music);">BUY</div>
-            <div class="button" ng-show="logined && music.edit" ng-click="edit(music)">Edit</div>
+            <div class="button" ng-show="logined && music.edit" ng-click="audioEdit(music)">Edit</div>
             <img class="freq" src="img/freq.png" height="45" width="317" alt="">
             <!--<div class="button">share</div>-->
-            <div class="button" ng-hide="music.like" ng-click="like(music);"><i class="heart"></i>like</div>
+            <div class="button" ng-hide="!logined || music.like" ng-click="like(music);"><i class="heart"></i>like</div>
         </div>
     </div>
 </div>

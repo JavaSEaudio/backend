@@ -9,13 +9,13 @@ import BusinessLogic.FileOperation;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
 import Entity.AudioEntity;
+import Entity.PrivateEntity;
 import Entity.UserEntity;
 import com.sun.jersey.multipart.FormDataParam;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
 import util.FileWrite;
 import util.ProjectPath;
-import util.StringUtil;
 
 
 @Path("/file")
@@ -30,31 +30,111 @@ public class FileService {
                                @QueryParam(value = "nameAudio") String nameA,
                                @QueryParam(value = "artist") String artist,
                                @QueryParam(value = "album") String album,
+                               @QueryParam(value = "public") String access,
                                @FormDataParam("audioFile") InputStream uploadAudioStream
     ) {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userid = sessionDAO.haveKey(uid);
         if (userid == -1) {
             log.info("Upload File: file can not write: sign in");
-            return Response.status(202).entity("File not uploaded! Please sign in!!!").build();
+            return Response.status(402).entity("File not uploaded! Please sign in!!!").build();
         }
-        AudioEntity audioEntity = new AudioEntity(nameA, artist, album);
-        Factory.getInstance().getAudioDAO().add(audioEntity);
-        String uploadedFileLocation = "C://upload//audio//" + audioEntity.getId() + ".mp3";
+        int acs= -1;
+        if(access == null) acs = 0;
+        else if(access.equals("private")) acs = 1;
+        else if(access.equals("public")) acs = 0;
+        String uploadedFileLocation;
+        AudioEntity audioEntity = null;
+        PrivateEntity privateEntity = null;
+        if(acs != 1) {
+            audioEntity = new AudioEntity(nameA, artist, album);
+            Factory.getInstance().getAudioDAO().add(audioEntity);
+            uploadedFileLocation = "C://upload//audio//" + audioEntity.getId() + ".mp3";
+        } else {
+            privateEntity = new PrivateEntity(nameA, artist, album);
+            Factory.getInstance().getPrivateDAO().add(privateEntity);
+            uploadedFileLocation = "C://upload//private//" + privateEntity.getId() + ".mp3";
+        }
+
         try {
             FileWrite.writeToFile(uploadAudioStream, uploadedFileLocation);
         } catch (Exception e) {
             log.info("Upload File: file can not write");
-            Factory.getInstance().getAudioDAO().delete(audioEntity);
-            return Response.ok("can not").status(201).build();
+            new File(uploadedFileLocation).delete();
+            if(acs != 1) {
+                Factory.getInstance().getAudioDAO().delete(audioEntity);
+            } else {
+                Factory.getInstance().getPrivateDAO().delete(privateEntity);
+            }
+
+            return Response.ok("can not").status(401).build();
         }
         try {
-            saveFile(uploadedFileLocation, nameA, album, artist, audioEntity, userid, "/rest/get/image?id=0");
+                FileOperation fileOperation = new FileOperation(uploadedFileLocation);
+                if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
+                    nameA = fileOperation.getName();
+                    if(nameA == null || nameA.equals("") || nameA.equals(" ")) {
+                        nameA = "Unknown";
+                    }
+                    if(acs != 1) {
+                        audioEntity.setName(nameA);
+                    } else {
+                        privateEntity.setName(nameA);
+                    }
+                } else {
+                    try { fileOperation.setName(nameA); } catch (Exception e){}
+                }
+                if (artist == null || artist.equals("") || artist.equals(" ")) {
+                    artist = fileOperation.getArtist();
+                    if(artist == null || artist.equals("") || artist.equals(" ")) {
+                        artist = "Unknown";
+                    }
+                    if(acs != 1) {
+                        audioEntity.setArtist(artist);
+                    } else {
+                        privateEntity.setArtist(artist);
+                    }
+                } else {
+                    try { fileOperation.setArtist(artist); } catch (Exception e){}
+                }
+                if (album == null || album.equals("") || album.equals(" ")) {
+                    album = fileOperation.getAlbum();
+                    if(album == null || album.equals("") || album.equals(" ")) {
+                        album = "Unknown";
+                    }
+                    if(acs != 1) {
+                        audioEntity.setAlbum(album);
+                    } else {
+                        privateEntity.setAlbum(album);
+                    }
+                } else {
+                    try { fileOperation.setAlbum(album); } catch (Exception e){}
+                }
+
+                if(acs != 1) {
+                    fileOperation.getImage(audioEntity.getId());
+                    audioEntity.setType(".mp3");
+                    audioEntity.setUserid(userid);
+                    try { audioEntity.setYear(fileOperation.getYear()); } catch (Exception e){}
+                    try { audioEntity.setComment(fileOperation.getComments()); } catch (Exception e){}
+                    try { audioEntity.setGenre(fileOperation.getGenre()); } catch (Exception e){}
+                    try { audioEntity.setLength(fileOperation.getLength()); } catch (Exception e){}
+                    try { audioEntity.setSize(fileOperation.getSize()); } catch (Exception e){}
+                } else {
+                    fileOperation.getImage(privateEntity.getId());
+                    privateEntity.setUserid(userid);
+                }
+            Factory.getInstance().getAudioDAO().change(audioEntity);
+                log.info("Upload File: audio save in the DB success");
+
         } catch (Exception e) {
-            File file = new File(uploadedFileLocation);
-            file.delete();
-            Factory.getInstance().getAudioDAO().delete(audioEntity);
-            return Response.ok("chren").status(203).build();
+            if(new File(uploadedFileLocation).delete());
+            if(acs != 1) {
+                Factory.getInstance().getAudioDAO().delete(audioEntity);
+            } else {
+                Factory.getInstance().getPrivateDAO().delete(privateEntity);
+            }
+            return Response.ok("chren").status(403).build();
         }
         return Response.status(200).build();
     }
@@ -85,7 +165,6 @@ public class FileService {
         } catch (Exception e) {
             log.info("Upload Image: file can not write");
         }
-        audioEntity.setLinkImage("/rest/get/image?id=" + idA);
         Factory.getInstance().getAudioDAO().change(audioEntity);
         log.info("Upload Image: success");
         return Response.status(200).build();
@@ -93,9 +172,9 @@ public class FileService {
 
 
     @GET
-    @Path("/delete")
-    public Response deleteFile(@CookieParam(value = "name") String uid,
-                               @QueryParam("id") int idFile
+     @Path("/delete")
+     public Response deleteFile(@CookieParam(value = "name") String uid,
+                                @QueryParam("id") int idFile
     ) {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userid = sessionDAO.haveKey(uid);
@@ -152,7 +231,7 @@ public class FileService {
             }
         }
 
-        FileOperation fileEdit = new FileOperation(ProjectPath.getAudioPath(audioEntity));
+        FileOperation fileEdit = new FileOperation("C://upload//private//"+audioEntity.getId()+".mp3");
         if ((name != null) || (!name.equals(""))) {
             try {
                 fileEdit.setName(name);
@@ -205,62 +284,5 @@ public class FileService {
         Factory.getInstance().getAudioDAO().change(audioEntity);
         log.info("Edit File: success");
         return Response.status(200).entity("suc").build();
-    }
-
-
-    private void saveFile(String audioLocation, String name, String album, String artist,
-                          AudioEntity audioEntity, int userid, String imgLocation) {
-        try {
-            FileOperation fileOperation = new FileOperation(audioLocation);
-            if (name == null || name.equals("") || name.equals(" ")) {
-                name = fileOperation.getName();
-                if(name == null || name.equals("") || name.equals(" ")) {
-                    name = "Unknown";
-                }
-                audioEntity.setName(name);
-            } else {
-                try { fileOperation.setName(name); } catch (Exception e){}
-            }
-            if (artist == null || artist.equals("") || artist.equals(" ")) {
-                artist = fileOperation.getArtist();
-                if(artist == null || artist.equals("") || artist.equals(" ")) {
-                    artist = "Unknown";
-                }
-                audioEntity.setArtist(artist);
-            } else {
-                try { fileOperation.setArtist(artist); } catch (Exception e){}
-            }
-            if (album == null || album.equals("") || album.equals(" ")) {
-                album = fileOperation.getAlbum();
-                if(album == null || album.equals("") || album.equals(" ")) {
-                    album = "Unknown";
-                }
-                audioEntity.setAlbum(album);
-            } else {
-                try { fileOperation.setAlbum(album); } catch (Exception e){}
-            }
-            if(fileOperation.getImage(audioEntity.getId())){
-                audioEntity.setLinkImage("/rest/get/image?id="+audioEntity.getId());
-            } else {
-                audioEntity.setLinkImage(imgLocation);
-            }
-            audioEntity.setType(".mp3");
-            audioEntity.setAccess(0);
-            audioEntity.setUserid(userid);
-            audioEntity.setLinkFile("/rest/get/audio?id="+audioEntity.getId());
-
-            try { audioEntity.setYear(fileOperation.getYear()); } catch (Exception e){}
-            try { audioEntity.setComment(fileOperation.getComments()); } catch (Exception e){}
-            try { audioEntity.setGenre(fileOperation.getGenre()); } catch (Exception e){}
-            try { audioEntity.setLength(fileOperation.getLength()); } catch (Exception e){}
-            try { audioEntity.setSize(fileOperation.getSize()); } catch (Exception e){}
-
-
-            Factory.getInstance().getAudioDAO().change(audioEntity);
-            log.info("Upload File: audio save in the DB success");
-        } catch (Exception e) {
-            log.info("Upload File: audio is not store in the DB ");
-            throw new RuntimeException();
-        }
     }
 }

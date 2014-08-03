@@ -29,8 +29,17 @@ public class Login {
         }
         UserEntity user = UserLogic.authorization(login, password);
         if(user != null ) {
-            String uid = UserLogic.uid(64);
             try {
+                if(Factory.getInstance().getBannedDAO().isUserId(user.getId())){
+                    log.info("Login: banned user tried to logged in");
+                    return Response.status(400).entity("BANNNED!!!").build();
+                }
+            } catch (Exception e){
+                log.info("Login: Exception in banned block");
+                return Response.status(400).entity("OOPS...").build();
+            }
+            try {
+                String uid = UserLogic.uid(64);
                 SessionEntity sess = new SessionEntity(user.getId(), uid);
                 Factory.getInstance().getSessionDAO().add(sess);
                 NewCookie cookie = new NewCookie("name", uid);

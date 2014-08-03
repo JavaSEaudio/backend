@@ -3,6 +3,8 @@ package DTO;
 
 import DAO.util.Factory;
 import Entity.AudioEntity;
+import Entity.PrivateEntity;
+import rest.file.Audio;
 import rest.goodies.LikesSystem;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,10 +21,9 @@ public class AudioDTO {
     private int year;
     private double price;
     private String type;
-    private int length; // seconds?
-    private int size; // byte?
+    private int length;
+    private int size;
     private int userid;
-    private int access;
     private String linkImage;
     private String linkFile;
     private Date upload_date;
@@ -47,22 +48,25 @@ public class AudioDTO {
          this.length = audioEntity.getLength();
          this.size = audioEntity.getSize();
          this.userid = audioEntity.getUserid();
-         this.access = audioEntity.getAccess();
-         this.linkImage = audioEntity.getLinkImage();
-         this.linkFile = audioEntity.getLinkFile();
+         this.linkImage = "/rest/get/image?id="+audioEntity.getId();
+         this.linkFile = "/rest/listen?id="+audioEntity.getId();
          this.upload_date = audioEntity.getUpload_date();
         if(userid != -1) {
             UserDTO user = new UserDTO(Factory.getInstance().getUserDAO().getById(userid));
-            if (user.getAccess() > 0) {
-                this.buy = false;
-            } else {
-                this.buy = true;
-                for (int i : user.getBuyListArray()) {
-                    if (i == this.id) {
-                        this.buy = false;
-                        break;
+            if(this.price > 0) {
+                if (user.getAccess() > 0) {
+                    this.buy = false;
+                } else {
+                    this.buy = true;
+                    for (int i : user.getBuyListArray()) {
+                        if (i == this.id) {
+                            this.buy = false;
+                            break;
+                        }
                     }
                 }
+            } else {
+                this.buy = false;
             }
             if (audioEntity.getUserid() == userid || user.getAccess() > 0) {
                 this.buy = false;
@@ -77,7 +81,28 @@ public class AudioDTO {
         this.countLike = LikesSystem.count(this.id);
         this.like = LikesSystem.check(userid, this.id);
         System.out.println(like);
+    }
 
+    public AudioDTO(PrivateEntity privateEntity) {
+        this.id = privateEntity.getId();
+        this.name = privateEntity.getName();
+        this.artist = privateEntity.getArtist();
+        this.album = privateEntity.getAlbum();
+        this.linkImage = "/rest/get/image?id="+privateEntity.getId();
+        this.linkFile = "/rest/listen?id="+privateEntity.getId();
+        this.upload_date = privateEntity.getUpload_date();
+        this.userid = privateEntity.getUserid();
+        this.buy = false;
+        this.edit = true;
+        this.like = false;
+        this.countLike = 0;
+        this.genre = "";
+        this.comment = "";
+        this.year = 0;
+        this.price = 0;
+        this.type = "";
+        this.length = 0;
+        this.size = 0;
     }
 
     public int getId() {
@@ -174,14 +199,6 @@ public class AudioDTO {
 
     public void setUserid(int userid) {
         this.userid = userid;
-    }
-
-    public int getAccess() {
-        return access;
-    }
-
-    public void setAccess(int access) {
-        this.access = access;
     }
 
     public String getLinkImage() {

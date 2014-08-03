@@ -40,9 +40,8 @@ public class LikeDAO {
     }
 
     public LikeEntity getByAudio(int id) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("FROM LikeEntity WHERE audioId = :audioId");
             query.setInteger("audioId", id);
@@ -57,10 +56,9 @@ public class LikeDAO {
     }
 
     public List<LikeEntity> getMostLikes(int first, int second) {
-        Session session = null;
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<LikeEntity> like = new ArrayList<LikeEntity>();
         try {
-            session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             Query query = session.createQuery("from LikeEntity order by counts desc");
             query.setFirstResult(first);
