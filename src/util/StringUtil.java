@@ -1,38 +1,39 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringUtil {
 
-        private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$");
-        private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9_-]{3,15}$");
+    private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$");
+    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9_-]{3,15}$");
 
-        public static boolean minLength(String str, int len)  { //throws IllegalArgumentException
-            Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
-            Matcher matcher = pattern.matcher(str);
-            boolean found = matcher.find();
+    public static boolean minLength(String str, int len)  { //throws IllegalArgumentException
+        Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
+        Matcher matcher = pattern.matcher(str);
+        boolean found = matcher.find();
 
-            if(!found && !str.contains(" ")) {
-                if (str.length() > len) {
-            return true;    //throw new IllegalArgumentException();
-                }
+        if(!found && !str.contains(" ")) {
+            if (str.length() > len) {
+                return true;    //throw new IllegalArgumentException();
             }
-            return false;
         }
+        return false;
+    }
 
-        public static boolean maxLength(String str, int len)  {
-            Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
-            Matcher matcher = pattern.matcher(str);
-            boolean found = matcher.find();
+    public static boolean maxLength(String str, int len)  {
+        Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
+        Matcher matcher = pattern.matcher(str);
+        boolean found = matcher.find();
 
-            if(!found && !str.contains(" ")) {
-                if (str.length() < len) {
-                    return true;    //throw new IllegalArgumentException();
-                }
+        if(!found && !str.contains(" ")) {
+            if (str.length() < len) {
+                return true;    //throw new IllegalArgumentException();
             }
-            return false;
         }
+        return false;
+    }
 
     public static boolean minMaxLength(String str, int minLen, int maxLen)  {       //@return true if string is valid
         Pattern pattern = Pattern.compile("\\s");                                   //----contain whitespace
@@ -48,36 +49,36 @@ public class StringUtil {
         }
         return false;
     }
-        // @return true if email is valid
-        public static boolean validEmail(String email)  {
+    // @return true if email is valid
+    public static boolean validEmail(String email)  {
 
-            if( !minMaxLength(email, 4 , 225)){
-                return false;
-            }  else
-            if (!email.contains("@") ) {
-                return false;
-            }  else
+        if( !minMaxLength(email, 4 , 225)){
+            return false;
+        }  else
+        if (!email.contains("@") ) {
+            return false;
+        }  else
             return true;
-        }
+    }
 
     public static boolean validRegistration(String login, String passOne, String passTwo, String email){
-     if (!passOne.equals(passTwo)){
-             return false;
-         } else
-         if (!StringUtil.minMaxLength(passOne, 2 , 225)){
-             return false;
-         } else
-         if (!StringUtil.minMaxLength(login, 2 , 225)){
-             return false;
-         } else
-         if (!StringUtil.validEmail(email)){
-             return false;
-         }
+        if (!passOne.equals(passTwo)){
+            return false;
+        } else
+        if (!StringUtil.minMaxLength(passOne, 2 , 225)){
+            return false;
+        } else
+        if (!StringUtil.minMaxLength(login, 2 , 225)){
+            return false;
+        } else
+        if (!StringUtil.validEmail(email)){
+            return false;
+        }
         if(!validLogin(login) ){
             return false;
         }
-         return true;
-     }
+        return true;
+    }
     public static boolean validLogin (String login){
         Matcher matcher = USERNAME_PATTERN.matcher(login);
         boolean found = matcher.find();
@@ -88,20 +89,15 @@ public class StringUtil {
     }
 
     public static boolean isValidUuid(String uuid) {
-            return UUID_PATTERN.matcher(uuid).matches();
-        }
+        return UUID_PATTERN.matcher(uuid).matches();
+    }
 
     public static String parse(String data) {
-        String s = data;
-        String filter = "[^\\w\\s]";//[^'\\-!@#$%^&*()] ";
-        String patternstring = "((\\w*\\s)*)";
-        Pattern pattern = Pattern.compile(patternstring);
-        Matcher m = pattern.matcher(data);
-
+        String filter = "[[^а-яА-ЯёЁa-zA-Z0-9\\s]+$]";
         data = data.replaceAll(filter, "");
         StringBuilder sb = new StringBuilder(data);
         int q = 0;
-        int w = 0;
+        int w;
         if (data.charAt(0) == ' ') {
             w = q + 1;
             while (sb.charAt(w) == ' ') {
@@ -111,7 +107,7 @@ public class StringUtil {
             sb.deleteCharAt(0);
         }
         for (int i = 0; i < sb.length() - 1; i ++) {
-            int j = 0;
+            int j;
             if (sb.charAt(i) == ' ') {
                 j =  i + 1;
                 while (sb.charAt(j) == ' ') {
@@ -121,5 +117,26 @@ public class StringUtil {
         }
         return sb.toString();
     }
-}
 
+    public static ArrayList<String> tagParse(String data) {
+        ArrayList<String> tagsArray = new ArrayList<>();
+        for (int i = 0; i < data.length() - 1; i++) {
+            String temp = "";
+            if (data.charAt(i) == '#') {
+                i++;
+                if (i >= data.length()) return tagsArray;
+                while (data.charAt(i) != '#') {
+                    if (data.charAt(i) == ' ' || data.charAt(i) == ',' || data.charAt(i) == '.') break;
+                    temp += data.charAt(i);
+                    i++;
+                    if (i >= data.length()) break;
+                }
+            }
+            if (!temp.equals("")) {
+                i--;
+                tagsArray.add(temp);
+            }
+        }
+        return tagsArray;
+    }
+}

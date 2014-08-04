@@ -26,6 +26,7 @@
                     <li ng-show="logined"><a href="#/profile/exit">Logout</a></li>
                     <li ng-show="logined"><a href="#/audio/upload">Upload Audio Track</a></li>
 					<li ng-hide="logined"><a href="#/profile/reg">Create new account</a></li>
+                    <li ng-show="logined"><a href="#/audio/private">Private audio</a></li>
 					<li ng-hide="logined"><a href="#/profile/signin" class="login-anchor">Sign in</a></li>
 				    <li ng-show="logined"><a href="{{'/#profile/user/' + myInfo.login}}">Profile</a></li>
                 </ul>
@@ -80,7 +81,7 @@
     <div id="player" ng-hide="player.active()">
         <img class="album" ng-src="{{player.music().linkImage}}" alt=""/>
         {{player.music().artist}} - {{player.music().name}}<br>
-        {{player.time}} / {{player.maxTime}}
+        {{player.time | timeFilter}} / {{player.maxTime | timeFilter}}
         <audio></audio>
     </div>
 

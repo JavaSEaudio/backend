@@ -55,7 +55,7 @@ public class Audio {
                            @QueryParam("count") int count,
                            @QueryParam("page") int page) {
         if(count > 100) count = 100;
-        //criterion = StringUtil.parse(criterion);
+        criterion = StringUtil.parse(criterion);
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userID = sessionDAO.haveKey(uid);
         List<AudioEntity> audio = new ArrayList<AudioEntity>();

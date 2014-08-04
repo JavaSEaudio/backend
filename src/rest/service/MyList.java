@@ -19,25 +19,25 @@ public class MyList {
     @GET
     @Path("/my")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response mylist(@CookieParam("name") String uid,
-                            @QueryParam("count") Integer count,
-                            @QueryParam("page") Integer page) {
-
+    public Response mylist(@QueryParam("id") Integer id,
+                           @CookieParam("name") String uid,
+                           @QueryParam("count") Integer count,
+                           @QueryParam("page") Integer page) {
+        if(id == null) {
+            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+            int userid = sessionDAO.haveKey(uid);
+            if(userid == -1)
+                return Response.status(400).build();
+        }
         if(count == null) count = 10;
         if(page == null) page = 1;
 
-
-
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
-        if(userid == -1)
-            return Response.status(400).build();
         ArrayList<AudioDTO> arrayList;
         ArrayList<AudioDTO> list =
                 (ArrayList<AudioDTO>)
-                        AudioListDTO.getListAudioDTO(Factory.getInstance().getAudioDAO().getByUserId(userid), userid);
-       if(count * (page-1) >= list.size())
-           return Response.ok(null).build();
+                        AudioListDTO.getListAudioDTO(Factory.getInstance().getAudioDAO().getByUserId(id), id);
+        if(count * (page-1) >= list.size())
+            return Response.ok(null).build();
         if(count * page >= list.size()){
             arrayList = new ArrayList<AudioDTO>(list.subList(count*(page-1),list.size()));
             return Response.ok(new GenericEntity<ArrayList<AudioDTO>>(arrayList){}).build();

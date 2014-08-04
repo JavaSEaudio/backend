@@ -34,6 +34,14 @@ public class PrivateEntity {
         this.userid = 0;
     }
 
+    public PrivateEntity(AudioEntity audioEntity){
+        this.name = audioEntity.getName();
+        this.album = audioEntity.getAlbum();
+        this.artist = audioEntity.getArtist();
+        this.userid = audioEntity.getUserid();
+        this.upload_date = audioEntity.getUpload_date();
+    }
+
     @Id
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")

@@ -13,7 +13,7 @@
                 <a href="#/song/{{music.id}}"> <span>{{music.artist}}</span> - {{music.name}}</a>
             </div>
             <div><i class="heart"></i> {{music.countLike}} Likes</div>
-            <div>{{music.price}}$</div>
+            <div ng-show="music.buy">{{music.price}}$</div>
             <div class="button" ng-show="logined && (music.buy)" ng-click="buy(music);">BUY</div>
             <div class="button" ng-show="logined && music.edit" ng-click="audioEdit(music)">Edit</div>
             <img class="freq" src="img/freq.png" height="45" width="317" alt="">

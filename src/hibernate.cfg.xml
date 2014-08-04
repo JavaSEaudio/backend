@@ -39,6 +39,7 @@
         <mapping class="Entity.LikeEntity"/>
         <mapping class="Entity.BannedEntity"/>
         <mapping class="Entity.PrivateEntity"/>
+        <mapping class="Entity.RestoreEntity"/>
 
 
     </session-factory>

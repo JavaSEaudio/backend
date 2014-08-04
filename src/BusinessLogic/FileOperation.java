@@ -8,6 +8,7 @@ import util.ProjectPath;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class FileOperation {
 
@@ -49,14 +50,20 @@ public class FileOperation {
     public int getYear() {
         return mp3.getYear();
     }
-    public boolean getImage(int id) {
+    public boolean getImage(String id) {
         AttachedPicture attachedPicture = mp3.getPicture(PictureType.FRONT_COVER);
-        File file = new File("C://upload//image//"+id+".jpg");
-        try{
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(attachedPicture.getImage());
-            return true;
-        } catch (Exception e) {}
+        File file = new File("C://upload//"+id+".jpg");
+        try {
+            OutputStream out = new FileOutputStream(file);
+            try {
+                out.write(attachedPicture.getImage());
+                return true;
+            } catch (Exception e) {
+            } finally {
+                out.flush();
+                out.close();
+            }
+        } catch (IOException e){}
         file.delete();
         return false;
     }

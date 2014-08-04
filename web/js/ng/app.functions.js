@@ -14,7 +14,31 @@ startup.directive('ngEnter', function () {
     };
 });
 
+startup.filter("timeFilter", function() {
+    return function(time) {
+          var m = Math.round(time / 60); // Минуты
+          var s = time % 60; // Секунды
+          if(s < 10) s = "0" + s;
+          return m + ":" + s;
+    };
+});
+
+startup.filter("userAccessFilter", function() {
+    return function(input) {
+       switch(input) {
+           case 0: return "User";
+           case 1: return "Moderator";
+           case 2: return "Admin";
+           default: return "UFO";
+       }
+    };
+});
+
 startup.run(function($interval, $rootScope, $http, $location) {
+
+    $rootScope._debug = function(e) {
+        console.log(e);
+    }
 
     $http.get("/rest/test/check").success(function(data) {
         $rootScope.logined = "false" !== data;
@@ -82,7 +106,6 @@ startup.run(function($interval, $rootScope, $http, $location) {
 
         // TODO:Сделать по человечески, event
         $rootScope.player.maxTime = Math.round($rootScope.player.node.duration);
-        console.log($($rootScope.player.node));
     }, 1000);
 
 

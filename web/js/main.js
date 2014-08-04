@@ -19,6 +19,10 @@ app.config(['$routeProvider',
                 templateUrl: 'partials/music.html',
                 controller: 'main'
             }).
+            when('/audio/private', {
+                    templateUrl: 'partials/private.music.html',
+                    controller: 'audio.private'
+            }).
             when('/audio/getbyrate', {
                 templateUrl: 'partials/music.html',
                 controller: 'audio.getbyrate'
@@ -27,9 +31,17 @@ app.config(['$routeProvider',
                 templateUrl: 'partials/song.html',
                 controller: 'song'
             }).
+            when('/private/song/:musicId', {
+                templateUrl: 'partials/private.song.html',
+                controller: 'private.song'
+            }).
             when("/profile/user/:user", {
                 templateUrl : "partials/profile.html",
                 controller: "profile.user"
+            }).
+            when("/profile/pwd/:user", {
+                templateUrl : "partials/pwd.html",
+                controller: "profile.pwd"
             }).
             //Profile
             when("/profile/exit", {
@@ -56,6 +68,10 @@ app.config(['$routeProvider',
             when("/audio/edit/:id", {
                 templateUrl : "partials/audio.edit.html",
                 controller: "audio.edit"
+            }).
+            when("/private/audio/edit/:id", {
+                templateUrl : "partials/private.audio.edit.html",
+                controller: "private.audio.edit"
             }).
             //Search
             when("/search/:q", {

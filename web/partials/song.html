@@ -3,14 +3,21 @@
     <div class="img" ng-click="play(song)"><img ng-src="{{song.linkImage}}" height="152" width="152" alt=""></div>
     <div class="right">
         <ul>
-            <!--<li ng-repeat="param in song">{{param}}</li>-->
             <li>Name: {{song.name}}</li>
             <li>Artist: {{song.artist}}</li>
             <li>Album: {{song.album}}</li>
+            <li>Uploaded: {{song.upload_date}}</li>
             <li>Genre: {{song.genre}}</li>
             <li>Comment: {{song.comment}}</li>
             <li>Price: {{song.price}}$</li>
-            <li>Юзер который залил: {{song.userid}}</li>
+            <li>Uploaded: {{song.upload_date}}</li>
+            <li>
+                Юзер который залил:
+                <a href="{{'/#/profile/user/' + user.login}}">
+                    <img width="20" height="20" ng-src="{{user.linkAvatar}}" alt=""/>
+                    {{user.login}}
+                </a>
+            </li>
         </ul>
         <div class="button" ng-show="logined && (song.buy)" ng-click="buy(song);">BUY</div>
         <div class="button" ng-show="logined && song.edit" ng-click="edit(song)">Edit</div>

@@ -1,6 +1,9 @@
 package rest.service;
 
 
+import DAO.SessionDAO;
+import DAO.util.Factory;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
@@ -78,6 +81,12 @@ public class AudioGet {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPrivate(@QueryParam(value = "id") int id,
                                @CookieParam("name") String uid) throws IOException, WebApplicationException, SocketException {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userid = sessionDAO.haveKey(uid);
+        if(userid == -1){
+            return Response.status(400).entity("login pls").build();
+        }
+
         String path = "C://upload//private//"+id+".mp3";
         File file;
         try {
@@ -92,5 +101,28 @@ public class AudioGet {
                 .header("Content-Disposition", "attachment; filename=\"" + file.getName()+ "\"" ) //optional
                 .build();
     }
-
+    @GET
+    @Path("/privateImage")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response getPrivateImage(@QueryParam(value = "id") int id,
+                                    @CookieParam("name") String uid) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userid = sessionDAO.haveKey(uid);
+        if(userid == -1){
+            return Response.status(400).entity("login pls").build();
+        }
+        String path = "C://upload//privateImage//"+id+".jpg";
+        File file;
+        try {
+            file = new File(path);
+        } catch (Exception e) {
+            file = new File("C://upload//image//0.jpg");
+        }
+        if (!file.exists() || file.isDirectory()) {
+            file = new File("C://upload//image//0.jpg");
+        }
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+                .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"" )
+                .build();
+    }
 }

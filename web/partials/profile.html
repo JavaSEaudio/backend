@@ -6,7 +6,7 @@
     <li>Name: {{user.name}}</li>
     <li>Money: {{user.money}}$</li>
     <li>Info: {{user.information}}</li>
-    <li>Status: {{user.access}}</li> <!-- TODO:Написать фильтр -->
+    <li>Status: {{user.access | userAccessFilter}}</li>
 </ul><br>
 <div class="button" ng-show="(user.id == myInfo.id) || (myInfo.access == 2)" ng-click="edit(user)">Edit user</div><br>
 <br>

@@ -6,6 +6,7 @@ import DAO.SessionDAO;
 import DAO.LikeDAO;
 import DAO.BannedDAO;
 import DAO.PrivateDAO;
+import DAO.RestoreDAO;
 
 public class Factory {
     private static Factory instance = null;
@@ -15,6 +16,7 @@ public class Factory {
     private static LikeDAO likeDAO = null;
     private static BannedDAO bannedDAO = null;
     private static PrivateDAO privateDAO = null;
+    private static RestoreDAO restoreDAO = null;
     private static DAO dao = null;
 
 
@@ -58,13 +60,18 @@ public class Factory {
         }
         return  bannedDAO;
     }
+    public RestoreDAO getRestoreDAO() {
+        if (restoreDAO == null){
+            restoreDAO = new RestoreDAO();
+        }
+        return  restoreDAO;
+    }
     public PrivateDAO getPrivateDAO() {
         if (privateDAO == null){
             privateDAO = new PrivateDAO();
         }
-        return  privateDAO;
+        return privateDAO;
     }
-
 
     public DAO getDao() {
         if (dao == null){

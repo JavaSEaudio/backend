@@ -1,5 +1,6 @@
 package Entity;
 
+import BusinessLogic.FileOperation;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,6 +40,20 @@ public class AudioEntity {
     }
 
     public AudioEntity() {
+    }
+
+    public AudioEntity(PrivateEntity privat) {
+        FileOperation fileOperation = new FileOperation("C://upload//private//"+privat.getId()+".mp3");
+        this.name = privat.getName();
+        this.album = privat.getAlbum();
+        this.artist = privat.getArtist();
+
+        this.type = ".mp3";
+        try{this.year = fileOperation.getYear();}catch (Exception e){}
+        this.price = 0;
+        try{this.length = fileOperation.getLength();}catch (Exception e){}
+        try{this.size = fileOperation.getSize();}catch (Exception e){}
+        try{this.userid = privat.getUserid();}catch (Exception e){}
     }
 
     public AudioEntity(String name, String artist, String album) {

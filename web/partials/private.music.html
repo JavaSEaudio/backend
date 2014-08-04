@@ -1,0 +1,14 @@
+<h1 class="h1">Your private tracks</h1>
+
+<div id="content-music">
+    <div class="music clearfix" ng-repeat="music in songs">
+        <div class="img" ng-click="play(music);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
+        <div class="right">
+            <div class="h3">
+                <a href="#/private/song/{{music.id}}"> <span>{{music.artist}}</span> - {{music.name}}</a>
+            </div>
+            <div class="button" ng-show="logined && music.edit" ng-click="audioEdit(music)">Edit</div>
+            <img class="freq" src="img/freq.png" height="45" width="317" alt="">
+        </div>
+    </div>
+</div>

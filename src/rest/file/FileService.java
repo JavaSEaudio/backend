@@ -14,6 +14,7 @@ import Entity.UserEntity;
 import com.sun.jersey.multipart.FormDataParam;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
+import util.CopyFiles;
 import util.FileWrite;
 import util.ProjectPath;
 
@@ -30,7 +31,7 @@ public class FileService {
                                @QueryParam(value = "nameAudio") String nameA,
                                @QueryParam(value = "artist") String artist,
                                @QueryParam(value = "album") String album,
-                               @QueryParam(value = "public") String access,
+                               @QueryParam(value = "access") String access,
                                @FormDataParam("audioFile") InputStream uploadAudioStream
     ) {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
@@ -39,10 +40,9 @@ public class FileService {
             log.info("Upload File: file can not write: sign in");
             return Response.status(402).entity("File not uploaded! Please sign in!!!").build();
         }
+        System.out.println();
         int acs= -1;
-        if(access == null) acs = 0;
-        else if(access.equals("private")) acs = 1;
-        else if(access.equals("public")) acs = 0;
+        if(access.equals("true")) acs = 1;
         String uploadedFileLocation;
         AudioEntity audioEntity = null;
         PrivateEntity privateEntity = null;
@@ -112,7 +112,7 @@ public class FileService {
                 }
 
                 if(acs != 1) {
-                    fileOperation.getImage(audioEntity.getId());
+                    fileOperation.getImage("image//"+audioEntity.getId());
                     audioEntity.setType(".mp3");
                     audioEntity.setUserid(userid);
                     try { audioEntity.setYear(fileOperation.getYear()); } catch (Exception e){}
@@ -121,10 +121,15 @@ public class FileService {
                     try { audioEntity.setLength(fileOperation.getLength()); } catch (Exception e){}
                     try { audioEntity.setSize(fileOperation.getSize()); } catch (Exception e){}
                 } else {
-                    fileOperation.getImage(privateEntity.getId());
+                    fileOperation.getImage("privateImage//"+privateEntity.getId());
                     privateEntity.setUserid(userid);
                 }
+        if(acs != 1) {
             Factory.getInstance().getAudioDAO().change(audioEntity);
+        } else {
+            Factory.getInstance().getPrivateDAO().change(privateEntity);
+        }
+
                 log.info("Upload File: audio save in the DB success");
 
         } catch (Exception e) {
@@ -191,14 +196,19 @@ public class FileService {
                 return Response.status(400).entity("You can't edit this file!!").build();
             }
         }
+
         File file = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
-        if (file.delete()) {
-            audioDAO.delete(audioEntity);
-            log.info("Delete File: " + file.getName() + " deleted");
-            return Response.status(200).build();
-        }
-        log.info("Delete File: " + file.getName() + " not removed");
-        return Response.status(400).entity("not removed").build();
+        file.delete();
+        file = new File("C://upload//image//"+audioEntity.getId()+".jpg");
+        file.delete();
+        try {
+            Factory.getInstance().getLikeDAO().delete(Factory.getInstance().getLikeDAO().getByAudio(audioEntity.getId()));
+        } catch (Exception e){}
+        audioDAO.delete(audioEntity);
+        log.info("Delete File: " + file.getName() + " deleted");
+        return Response.status(200).build();
+
+
 
     }
 
@@ -219,7 +229,7 @@ public class FileService {
         int userid = sessionDAO.haveKey(uid);
         if (userid == -1) {
             log.info("Edit File: not logged in");
-            return Response.status(200).entity("You can't edit file! Please sign in!!!").build();
+            return Response.status(404).entity("You can't edit file! Please sign in!!!").build();
         }
         AudioDAO audioDAO = Factory.getInstance().getAudioDAO();
         AudioEntity audioEntity = audioDAO.getById(id);
@@ -227,7 +237,7 @@ public class FileService {
             UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
             if (user.getAccess() < 1) {
                 log.info("Edit File: not access");
-                return Response.status(200).entity("You can't edit this file!!").build();
+                return Response.status(400).entity("You can't edit this file!!").build();
             }
         }
 
@@ -268,7 +278,7 @@ public class FileService {
             } catch (Exception e) {}
             audioEntity.setGenre(genre);
         }
-        if ((year >= 0) || year < 2015) {
+        if ((year >= 0) && year < 2015) {
             try {
                 fileEdit.setYear(year);
 
@@ -279,10 +289,40 @@ public class FileService {
             audioEntity.setPrice(price);
         } else {
             log.info("Edit File: price wrong");
-            return Response.status(203).entity("price wrong").build();
+            return Response.status(403).entity("price wrong").build();
         }
         Factory.getInstance().getAudioDAO().change(audioEntity);
-        log.info("Edit File: success");
-        return Response.status(200).entity("suc").build();
+        int acs = -1;
+        if(access == null);
+        else if(access.equals("private")) acs = 1;
+
+        if(acs != 1) {
+            log.info("Edit File: success");
+            return Response.status(200).entity("success").build();
+        } else {
+            PrivateEntity privateEntity = new PrivateEntity(audioEntity);
+            Factory.getInstance().getLikeDAO().delete(Factory.getInstance().getLikeDAO().getByAudio(audioEntity.getId()));
+            Factory.getInstance().getPrivateDAO().add(privateEntity);
+            File source = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
+            File destination = new File("C://upload//private//"+privateEntity.getId()+".mp3");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            source.delete();
+            source = new File("C://upload//image//"+audioEntity.getId()+".jpg");
+            destination = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            source.delete();
+            audioDAO.delete(audioEntity);
+
+            log.info("Edit File: private success");
+            return Response.status(200).entity("private success").build();
+        }
     }
 }

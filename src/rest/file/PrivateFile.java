@@ -4,8 +4,12 @@ import BusinessLogic.FileOperation;
 import DAO.PrivateDAO;
 import DAO.SessionDAO;
 import DAO.util.Factory;
+import DTO.PrivateDTO;
+import DTO.PrivateListDTO;
+import Entity.AudioEntity;
 import Entity.PrivateEntity;
 import org.apache.log4j.Logger;
+import util.CopyFiles;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -31,6 +35,7 @@ public class PrivateFile {
         int userID = sessionDAO.haveKey(uid);
         if(count > 100) count = 100;
         List<PrivateEntity> audio = new ArrayList<PrivateEntity>();
+        List<PrivateDTO> result;
 
         try {
             PrivateDAO aDAO = Factory.getInstance().getPrivateDAO();
@@ -38,11 +43,35 @@ public class PrivateFile {
         } catch (Exception e) {
             log.info("Private Get: exception");
         }
-        return Response.ok(new GenericEntity<ArrayList<PrivateEntity>>((ArrayList<PrivateEntity>)audio){}).build();
+        result = PrivateListDTO.getListPrivateDTO(audio);
+        return Response.ok(new GenericEntity<ArrayList<PrivateDTO>>((ArrayList<PrivateDTO>)result){}).build();
+    }
+    @GET
+    @Path("/audio/getbyid")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getbyid(@CookieParam(value = "name") String uid,
+                            @QueryParam("id") int idFile
+    ) {
+        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+        int userid = sessionDAO.haveKey(uid);
+        if (userid == -1) {
+            log.info("Delete File: not logged in");
+            return Response.status(400).entity("You can't edit file! Please sign in!!!").build();
+        }
+        PrivateEntity audio = null;
+        try {
+            PrivateDAO aDAO = Factory.getInstance().getPrivateDAO();
+            audio = aDAO.getById(idFile);
+        } catch(Exception e) {
+            log.info("Private ByID: exception");
+        }
+        PrivateDTO audioDTO = new PrivateDTO(audio);
+        return Response.ok().entity(audioDTO).build();
     }
 
+
     @GET
-    @Path("/delete")
+    @Path("/file/delete")
     public Response deleteFile(@CookieParam(value = "name") String uid,
                                @QueryParam("id") int idFile
     ) {
@@ -60,6 +89,8 @@ public class PrivateFile {
         }
         File file = new File("C://upload//private//"+privateEntity.getId()+".mp3");
         if (file.delete()) {
+            file = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");
+            file.delete();
             privateDAO.delete(privateEntity);
             log.info("Delete File: " + file.getName() + " deleted");
             return Response.status(200).build();
@@ -74,7 +105,8 @@ public class PrivateFile {
                              @QueryParam("idfile") int id,
                              @FormParam("title") String name,
                              @FormParam("album") String album,
-                             @FormParam("artist") String artist
+                             @FormParam("artist") String artist,
+                             @FormParam("access") String access
     ) {
         SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
         int userid = sessionDAO.haveKey(uid);
@@ -112,10 +144,34 @@ public class PrivateFile {
             } catch (Exception e) {}
             privateEntity.setArtist(artist);
         }
-
-        Factory.getInstance().getPrivateDAO().change(privateEntity);
-        log.info("Edit File: success");
-        return Response.status(200).entity("suc").build();
+        if(access == null){
+            AudioEntity audioEntity = new AudioEntity(privateEntity);
+            Factory.getInstance().getAudioDAO().add(audioEntity);
+            File source = new File("C://upload//private//"+privateEntity.getId()+".mp3");
+            File destination = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            source.delete();
+            source = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");
+            destination = new File("C://upload//image//"+audioEntity.getId()+".jpg");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            source.delete();
+            privateDAO.delete(privateEntity);
+            log.info("Edit File: private success");
+            return Response.status(200).entity("private success").build();
+        } else if(access.equals("private")){
+            Factory.getInstance().getPrivateDAO().change(privateEntity);
+            log.info("Edit File: success");
+            return Response.status(200).entity("suc").build();
+        }
+        return Response.status(404).build();
     }
     final int chunk_size = 1024 * 1024; // 1MB chunks
     private File audio = null;

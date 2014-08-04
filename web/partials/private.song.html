@@ -1,0 +1,17 @@
+<div class="music clearfix" >
+    <h2><span>{{song.artist}}</span> - {{song.name}}</h2>
+    <div class="img" ng-click="play(song)"><img ng-src="{{song.linkImage}}" height="152" width="152" alt=""></div>
+    <div class="right">
+        <ul>
+            <li>Name: {{song.name}}</li>
+            <li>Artist: {{song.artist}}</li>
+            <li>Album: {{song.album}}</li>
+            <li>Uploaded: {{song.upload_date}}</li>
+        </ul>
+        <div class="button" ng-show="logined" ng-click="edit(song)">Edit</div>
+
+        <a href="{{song.linkFile}}"><div class="button">DOWNLOAD</div></a>
+
+
+    </div>
+</div>

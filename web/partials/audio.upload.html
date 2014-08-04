@@ -3,7 +3,8 @@
     <input type="text" ng-model="sendAudio.nameAudio" placeholder="Audio name"><br>
     <input type="text" ng-model="sendAudio.artist" placeholder="Artist"><br>
     <input type="text" ng-model="sendAudio.album" placeholder="Album"><br>
-<form id="audio-upload" action="{{'/rest/file/uploadAudio?nameAudio=' + sendAudio.nameAudio + '&artist=' + sendAudio.artist + '&album=' + sendAudio.album}}" method="POST" enctype="multipart/form-data">
+    Private <input type="checkbox" name="access" value="private" ng-model="sendAudio.access"><br>
+<form id="audio-upload" action="{{'/rest/file/uploadAudio?nameAudio=' + sendAudio.nameAudio + '&artist=' + sendAudio.artist + '&album=' + sendAudio.album + '&access=' + sendAudio.access }}" method="POST" enctype="multipart/form-data">
     <input type="file" ng-model="sendAudio.audioFile" name="audioFile"><br>
     <input type="submit"/>
 </form>

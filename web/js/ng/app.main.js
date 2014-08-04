@@ -4,6 +4,7 @@ var main = angular.module("app.controllers", []);
 main.controller("main", function($location, $rootScope, $scope, $http) {
     $http.get("/rest/audio/get?count=20&page=1").success(function(data) {
         $scope.songs = data.audioDTO;
+        console.log(data);
         console.log("Songs was updated.");
     });
 
@@ -24,11 +25,18 @@ main.controller("song", function($location, $scope, $http, $routeParams) {
         .success(function(data) {
             $scope.song = data.audioDTO;
             console.log(data);
+
+            $http.get("/rest/user/id/?id=" + $scope.song.userid).success(function(data) {
+                console.log(data);
+                $scope.user = data.userDTO;
+            });
+
+            $scope.edit = function(music) {
+                $location.path("/audio/edit/" + $scope.song.id);
+            };
+
         });
 
-    $scope.edit = function(music) {
-        $location.path("/audio/edit/" + music.id);
-    };
 });
 
 //Profile
@@ -49,7 +57,7 @@ main.controller("profile.signin", function($scope, $http) {
 
 main.controller("profile.reg", function($http) {
     console.log("reg");
-    $http.get("");
+//    $http.get("");
 });
 
 main.controller("profile.user",
@@ -61,6 +69,10 @@ function($rootScope, $location, $http, $scope, $route, $routeParams) {
     $http.get("/rest/user/login/?login=" + $routeParams.user).success(function(data) {
         console.log(data);
         $scope.user = data.userDTO;
+
+        $http.get("/rest/list/my?id=" + $scope.user.id).success(function(data) {
+            $scope.musics = data.audioDTO;
+        });
 
     });
 
@@ -76,10 +88,6 @@ function($rootScope, $location, $http, $scope, $route, $routeParams) {
     $scope.audioEdit = function(music) {
         $location.path("/song/" + music.id);
     };
-
-        $http.get("/rest/list/my").success(function(data) {
-            $scope.musics = data.audioDTO;
-        });
 
 });
 
@@ -100,6 +108,17 @@ main.controller("profile.edit", function($http, $scope, $location) {
                    $location.path("/");
                }
         });
+});
+
+main.controller("profile.pwd", function($routeParams, $http, $scope) {
+    $scope.uniq = $routeParams.uniq;
+    $http.get("/rest/password/restore?uniq=" + $routeParams.uniq)
+     .error(function() {
+        alert("Пшел Вон!!!");
+    }).success(function(data) {
+        $scope.showPWD = true;
+    });
+    //uniq
 });
 
 
@@ -134,7 +153,7 @@ main.controller("audio.search", function($http, $scope, $routeParams) {
 
 
 
-//Admin
+// ----------------------------- Admin --------------------------
 main.controller("admin.users", function($http, $scope, $location) {
 
     $scope.userPage = function(user) {
@@ -156,5 +175,43 @@ main.controller("admin.users", function($http, $scope, $location) {
 main.controller("admin.useredit", function($http, $scope, $routeParams) {
     $http.get("/rest/user/id?id=" + $routeParams.id).success(function(data) {
         $scope.user = data.userDTO;
+    });
+});
+
+
+// --------------------------  Private -----------------------------------
+main.controller("private.audio.edit", function($routeParams, $scope, $http) {
+    $http.get("rest/private/audio/getbyid?id=" + $routeParams.id)
+        .success(function(data) {
+            console.log(data);
+            $scope.song = data.privateDTO;
+        });
+
+    $scope.audioDelete = function(song) {
+        $http.get("/rest/private/file/delete?id=" + song.id).success(function(data) {
+            alert("Audio was deleted!");
+            $location.path("/");
+        });
+    };
+});
+
+main.controller("private.song", function($location, $scope, $http, $routeParams) {
+    $http.get("rest/private/audio/getbyid?id=" + $routeParams.musicId)
+        .success(function(data) {
+            $scope.song = data.privateDTO;
+            console.log(data);
+        });
+
+    $scope.edit = function(music) {
+        $location.path("/private/audio/edit/" + music.id);
+    };
+
+});
+
+main.controller("audio.private", function($scope, $http) {
+    $http.get("/rest/private/get").success(function(data) {
+        console.log(data);
+        $scope.songs = data.privateDTO;
+        console.log("Songs was updated.");
     });
 });
