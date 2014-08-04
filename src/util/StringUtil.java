@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class StringUtil {
 
         private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$");
+        private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-z0-9_-]{3,15}$");
 
         public static boolean minLength(String str, int len)  { //throws IllegalArgumentException
             Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
@@ -60,7 +61,7 @@ public class StringUtil {
         }
 
     public static boolean validRegistration(String login, String passOne, String passTwo, String email){
-         if (!passOne.equals(passTwo)){
+     if (!passOne.equals(passTwo)){
              return false;
          } else
          if (!StringUtil.minMaxLength(passOne, 2 , 225)){
@@ -72,7 +73,18 @@ public class StringUtil {
          if (!StringUtil.validEmail(email)){
              return false;
          }
+        if(!validLogin(login) ){
+            return false;
+        }
          return true;
+     }
+    public static boolean validLogin (String login){
+        Matcher matcher = USERNAME_PATTERN.matcher(login);
+        boolean found = matcher.find();
+        if(!found){
+            return false;
+        }
+        return true;
     }
 
     public static boolean isValidUuid(String uuid) {

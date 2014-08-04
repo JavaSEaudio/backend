@@ -22,7 +22,7 @@ public class Login {
                           @FormParam("password") String password) {
 
         if (!StringUtil.minMaxLength(login , 2 , 30)  ||
-            !StringUtil.minMaxLength(password , 2 , 225)) {
+            !StringUtil.minMaxLength(password , 2 , 225) || !StringUtil.validLogin(login)) {
             log.info("not valid length");
             System.out.println("not valid length or type - login or password");
             return Response.ok("false").build();
