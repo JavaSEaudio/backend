@@ -1,12 +1,7 @@
 package DAO.util;
 
-import DAO.AudioDAO;
-import DAO.UserDAO;
-import DAO.SessionDAO;
-import DAO.LikeDAO;
-import DAO.BannedDAO;
-import DAO.PrivateDAO;
-import DAO.RestoreDAO;
+import DAO.*;
+
 
 public class Factory {
     private static Factory instance = null;
@@ -17,6 +12,7 @@ public class Factory {
     private static BannedDAO bannedDAO = null;
     private static PrivateDAO privateDAO = null;
     private static RestoreDAO restoreDAO = null;
+    private static TmpUserDAO tmpUserDAO = null;
     private static DAO dao = null;
 
 
@@ -71,6 +67,13 @@ public class Factory {
             privateDAO = new PrivateDAO();
         }
         return privateDAO;
+    }
+
+    public TmpUserDAO getTmpUserDAO() {
+        if (tmpUserDAO == null){
+            tmpUserDAO = new TmpUserDAO();
+        }
+        return tmpUserDAO;
     }
 
     public DAO getDao() {

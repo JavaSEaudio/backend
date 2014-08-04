@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@XmlRootElement
 @Table(name = "user")
 public class UserEntity {
 
@@ -48,6 +47,17 @@ public class UserEntity {
         this.name = "";
     }
 
+    public UserEntity(TmpUserEntity tmpUserEntity){
+        this.login = tmpUserEntity.getLogin();
+        this.password = tmpUserEntity.getPassword();
+        this.email = tmpUserEntity.getEmail();
+        this.money = 1000;
+        this.access = 0;
+        this.buylist = "";
+        this.information = "";
+        this.name = "";
+    }
+
     public void setDRO(UserDTO userDRO) {
         this.id = userDRO.getId();
         this.login = userDRO.getLogin();
@@ -57,7 +67,6 @@ public class UserEntity {
         this.access = userDRO.getAccess();
         this.buylist = userDRO.getBuylist();
         this.mylist = userDRO.getMylist();
-
     }
 
     @Id
@@ -126,7 +135,7 @@ public class UserEntity {
         this.access = access;
     }
 
-    @Column(name = "buylist")
+    @Column(name = "buylist", length = 1000)
     public String getBuylist() {
         return buylist;
     }
@@ -144,7 +153,7 @@ public class UserEntity {
         this.information = information;
     }
 
-    @Column(name = "mylist")
+    @Column(name = "mylist", length = 1000)
     public String getMylist() {
         return mylist;
     }

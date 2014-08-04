@@ -1,6 +1,6 @@
 package rest.user;
 
-import BusinessLogic.UserLogic;
+import BusinessLogic.Sessions;
 import DAO.UserDAO;
 import DAO.util.Factory;
 import Entity.BannedEntity;
@@ -60,7 +60,7 @@ public class Admin {
     public Response ban(@CookieParam("name") String uid,
                         @QueryParam("userID") int userID) {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
-        UserEntity admin = userDAO.getById(Factory.getInstance().getSessionDAO().haveKey(uid));
+        UserEntity admin = userDAO.getById(Sessions.uid(uid));
         if(admin.getAccess() == 2) {
             try {
                 UserEntity user = userDAO.getById(userID);
@@ -99,7 +99,7 @@ public class Admin {
                           @QueryParam("userID") int userID
     ) {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
-        UserEntity admin = userDAO.getById(Factory.getInstance().getSessionDAO().haveKey(uid));
+        UserEntity admin = userDAO.getById(Sessions.uid(uid));
         if(admin == null)
             return Response.status(400).entity("logged in pls").build();
         if (admin.getAccess() == 2) {

@@ -1,5 +1,6 @@
 package rest.goodies;
 
+import BusinessLogic.Sessions;
 import DAO.SessionDAO;
 import DAO.util.Factory;
 import Entity.LikeEntity;
@@ -15,8 +16,7 @@ public class LikesSystem {
     @Produces(MediaType.APPLICATION_JSON)
     public Response putlike(@CookieParam("name") String uid,
                             @QueryParam(value = "id") int id) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(userid == -1) {
             return Response.ok("false").build();
         }

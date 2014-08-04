@@ -2,8 +2,8 @@ package rest.user;
 
 import DAO.SessionDAO;
 import DAO.UserDAO;
+import DTO.GetListDTO;
 import DTO.UserDTO;
-import DTO.UserListDTO;
 import DAO.util.Factory;
 import Entity.UserEntity;
 import org.apache.log4j.Logger;
@@ -56,7 +56,7 @@ public class GetUser {
     public Response getAllUsers() {
         UserDAO userDAO = Factory.getInstance().getUserDAO();
         try {
-            ArrayList<UserDTO> users = (ArrayList<UserDTO>) UserListDTO.getListUserDTO(userDAO.getAll());
+            ArrayList<UserDTO> users = (ArrayList<UserDTO>) GetListDTO.getListUserDTO(userDAO.getAll());
             log.info("GetUser ALL: success");
             return Response.ok(new GenericEntity<ArrayList<UserDTO>>(users){}).build();
         } catch (Exception e) {

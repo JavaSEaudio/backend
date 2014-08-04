@@ -5,6 +5,7 @@ import Entity.SessionEntity;
 import Entity.UserEntity;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
+import util.Crypto;
 import util.StringUtil;
 
 import javax.ws.rs.*;
@@ -18,8 +19,12 @@ public class Login {
     private final static Logger log =  Logger.getLogger("com.audiostorage.report");
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@FormParam("login") String login,
+    public Response login(@CookieParam("name") String uid,
+                          @FormParam("login") String login,
                           @FormParam("password") String password) {
+        if(Sessions.uid(uid) != -1){
+            return Response.status(400).entity("u are logged in").build();
+        }
 
         if (!StringUtil.minMaxLength(login , 2 , 30)  ||
                 !StringUtil.minMaxLength(password , 2 , 225) || !StringUtil.validLogin(login)) {
@@ -27,6 +32,7 @@ public class Login {
             System.out.println("not valid length or type - login or password");
             return Response.ok("false").build();
         }
+        password = Crypto.MD5(password);
         UserEntity user = UserLogic.authorization(login, password);
         if(user != null ) {
             try {
@@ -39,10 +45,10 @@ public class Login {
                 return Response.status(400).entity("OOPS...").build();
             }
             try {
-                String uid = UserLogic.uid(64);
+                String usid = UserLogic.uid(64);
                 SessionEntity sess = new SessionEntity(user.getId(), uid);
                 Factory.getInstance().getSessionDAO().add(sess);
-                NewCookie cookie = new NewCookie("name", uid);
+                NewCookie cookie = new NewCookie("name", usid);
                 System.out.println("Logged success");
                 log.info("Logged success");
                 return Response.ok("true").cookie(cookie).header("Access-Control-Allow-Origin", "*").build();

@@ -1,11 +1,12 @@
 package rest.file;
 
 import BusinessLogic.FileOperation;
+import BusinessLogic.Sessions;
 import DAO.PrivateDAO;
 import DAO.SessionDAO;
 import DAO.util.Factory;
+import DTO.GetListDTO;
 import DTO.PrivateDTO;
-import DTO.PrivateListDTO;
 import Entity.AudioEntity;
 import Entity.PrivateEntity;
 import org.apache.log4j.Logger;
@@ -31,19 +32,18 @@ public class PrivateFile {
                               @QueryParam("page") int page,
                               @CookieParam("name") String uid
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userID = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(count > 100) count = 100;
         List<PrivateEntity> audio = new ArrayList<PrivateEntity>();
         List<PrivateDTO> result;
 
         try {
             PrivateDAO aDAO = Factory.getInstance().getPrivateDAO();
-            audio.addAll(aDAO.getSomePrivates((count * (page - 1)), count, userID));
+            audio.addAll(aDAO.getSomePrivates((count * (page - 1)), count, userid));
         } catch (Exception e) {
             log.info("Private Get: exception");
         }
-        result = PrivateListDTO.getListPrivateDTO(audio);
+        result = GetListDTO.getListPrivateDTO(audio);
         return Response.ok(new GenericEntity<ArrayList<PrivateDTO>>((ArrayList<PrivateDTO>)result){}).build();
     }
     @GET
@@ -52,8 +52,7 @@ public class PrivateFile {
     public Response getbyid(@CookieParam(value = "name") String uid,
                             @QueryParam("id") int idFile
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Delete File: not logged in");
             return Response.status(400).entity("You can't edit file! Please sign in!!!").build();
@@ -75,8 +74,7 @@ public class PrivateFile {
     public Response deleteFile(@CookieParam(value = "name") String uid,
                                @QueryParam("id") int idFile
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Delete File: not logged in");
             return Response.status(400).entity("You can't edit file! Please sign in!!!").build();
@@ -108,8 +106,7 @@ public class PrivateFile {
                              @FormParam("artist") String artist,
                              @FormParam("access") String access
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Edit File: not logged in");
             return Response.status(200).entity("You can't edit file! Please sign in!!!").build();
@@ -185,8 +182,7 @@ public class PrivateFile {
         public Response streamAudio(@QueryParam("id") int id,
                                     @CookieParam("name") String uid,
                                     @HeaderParam("Range") String range) throws Exception {
-            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-            int userid = sessionDAO.haveKey(uid);
+            int userid = Sessions.uid(uid);
             if (userid == -1) {
                 log.info("Edit File: not logged in");
                 return Response.status(400).entity("You can't listen file! Please sign in!!!").build();

@@ -1,5 +1,6 @@
 package rest.service;
 
+import BusinessLogic.Sessions;
 import DAO.AudioDAO;
 import DAO.util.Factory;
 import Entity.AudioEntity;
@@ -15,9 +16,9 @@ public class Test {
     @Path("/check")
     @Produces(MediaType.APPLICATION_JSON)
     public Response check(@CookieParam(value = "name") String uid) {
-        int id = Factory.getInstance().getSessionDAO().haveKey(uid);
-        if(id != -1) {
-            int access = Factory.getInstance().getUserDAO().getById(id).getAccess();
+        int userid = Sessions.uid(uid);
+        if(userid != -1) {
+            int access = Factory.getInstance().getUserDAO().getById(userid).getAccess();
             if(access == 0) return Response.ok("true").build();
             if(access == 1) return Response.ok("moderator").build();
             if(access == 2) return Response.ok("admin").build();
@@ -29,7 +30,7 @@ public class Test {
     @Produces(MediaType.APPLICATION_JSON)
     public Response check(@CookieParam(value = "name") String uid,
                           @QueryParam(value = "id") int idfile){
-        int userid = Factory.getInstance().getSessionDAO().haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
 
             return Response.ok("false").build();

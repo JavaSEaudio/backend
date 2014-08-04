@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity
-@XmlRootElement
 @Table(name = "privatefile")
 public class PrivateEntity {
     private int id;

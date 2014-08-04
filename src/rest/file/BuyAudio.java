@@ -1,5 +1,6 @@
 package rest.file;
 
+import BusinessLogic.Sessions;
 import DAO.AudioDAO;
         import DAO.SessionDAO;
         import DAO.UserDAO;
@@ -26,8 +27,7 @@ public class BuyAudio {
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
         int userID;
         try {
-            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-            userID = sessionDAO.haveKey(uid);
+            userID = Sessions.uid(uid);
         } catch (Exception e) {
             log.info("BUY: some troubles with getting cookie id");
             return Response.ok().status(400).build();

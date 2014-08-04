@@ -7,6 +7,7 @@ import Entity.LikeEntity;
 import Entity.UserEntity;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
+import util.Crypto;
 import util.StringUtil;
 
 import java.util.List;
@@ -22,9 +23,9 @@ public class Main {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             UserDAO uDao = Factory.getInstance().getUserDAO();
 
-            uDao.add(new UserEntity("Admin", "zky", "admin@email.com", 2));
-            uDao.add(new UserEntity("Moderator", "moder", "moder@gmail.com", 1));
-            uDao.add(new UserEntity("User", "user", "user@gmail.com", 0));
+            uDao.add(new UserEntity("Admin", Crypto.MD5("zky"), "admin@email.com", 2));
+            uDao.add(new UserEntity("Moderator", Crypto.MD5("moder"), "moder@gmail.com", 1));
+            uDao.add(new UserEntity("User", Crypto.MD5("user"), "user@gmail.com", 0));
 
             aDAO.add(new AudioEntity("Numb", "Linkin Park", "Numb", "Alternate rock"));
             aDAO.add(new AudioEntity("Highway to hell", "AC/DC", "Highway to hell", "rock"));

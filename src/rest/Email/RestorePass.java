@@ -1,11 +1,12 @@
 package rest.Email;
 
-import DAO.SessionDAO;
+import BusinessLogic.Sessions;
 import DAO.UserDAO;
 import DAO.util.Factory;
 import Entity.RestoreEntity;
 import Entity.UserEntity;
 import org.apache.log4j.Logger;
+import util.Crypto;
 import util.EmailSender;
 import javax.mail.MessagingException;
 import javax.ws.rs.*;
@@ -21,16 +22,13 @@ public class RestorePass {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editUser(@CookieParam(value = "name") String uid,
                              @QueryParam("uniq") String uniq) {
-
-        UserDAO userDAO = Factory.getInstance().getUserDAO();
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid != -1) {
             log.info("Pass Restore: logged in");
             return Response.status(404).entity("u are logged in").build();
         }
 
-        RestoreEntity restore = Factory.getInstance().getRestoreDAO().getUniq(uniq);
+        RestoreEntity restore = Factory.getInstance().getRestoreDAO().getByUniq(uniq);
         if(restore == null){
             log.info("Pass Restore: uniq wrong");
             return Response.status(404).entity("uniq wrong").build();
@@ -47,15 +45,13 @@ public class RestorePass {
                              @FormParam("passOne") String passOne,
                              @FormParam("passTwo") String passTwo) {
 
-        UserDAO userDAO = Factory.getInstance().getUserDAO();
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid != -1) {
             log.info("Pass Change: logged in");
             return Response.status(404).entity("u are logged in").build();
         }
 
-        RestoreEntity restore = Factory.getInstance().getRestoreDAO().getUniq(uniq);
+        RestoreEntity restore = Factory.getInstance().getRestoreDAO().getByUniq(uniq);
         if(restore == null){
             log.info("Pass Change: uniq wrong");
             return Response.status(404).entity("uniq wrong").build();
@@ -69,6 +65,7 @@ public class RestorePass {
             log.info("Pass Change: pass wrong");
             return Response.status(404).entity("pass wrong").build();
         }
+        passOne = Crypto.MD5(passOne);
         user.setPassword(passOne);
         Factory.getInstance().getUserDAO().change(user);
         Factory.getInstance().getRestoreDAO().delete(restore);
@@ -81,8 +78,8 @@ public class RestorePass {
         @Produces(MediaType.APPLICATION_JSON)
         public Response resetPassword(@CookieParam(value = "name") String uid,
                                       @FormParam("email") String email) {
-            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-            int userid = sessionDAO.haveKey(uid);
+
+            int userid = Sessions.uid(uid);
             if (userid != -1) {
                 log.info("Pass Forgot: is not restored: user is logged");
                 return Response.status(400).entity("is logged").build();
@@ -119,7 +116,4 @@ public class RestorePass {
             log.info("Pass Forgot: pass is restored user: " + user.getLogin());
             return Response.status(200).entity(email).build();
         }
-
-
-
 }

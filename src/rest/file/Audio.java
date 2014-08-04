@@ -1,9 +1,10 @@
 package rest.file;
 
+import BusinessLogic.Sessions;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
 import DTO.AudioDTO;
-import DTO.AudioListDTO;
+import DTO.GetListDTO;
 import Entity.AudioEntity;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
@@ -14,9 +15,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Path("/audio")
 public class Audio {
@@ -30,15 +29,14 @@ public class Audio {
                               @QueryParam("page") int page,
                               @CookieParam("name") String uid
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userID = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(count > 100) count = 100;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll(aDAO.getSomeAudios((count * (page - 1)), count));
-            audioDTOs = (ArrayList<AudioDTO>)AudioListDTO.getListAudioDTO(audio,userID);
+            audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid);
 
         } catch (Exception e) {
             log.info("Audio Get: exception");
@@ -56,8 +54,7 @@ public class Audio {
                            @QueryParam("page") int page) {
         if(count > 100) count = 100;
         criterion = StringUtil.parse(criterion);
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userID = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
         AudioDAO aDAO = Factory.getInstance().getAudioDAO();
@@ -111,7 +108,7 @@ public class Audio {
             }
             audio = lists[0];
         }
-        audioDTOs = (ArrayList<AudioDTO>)AudioListDTO.getListAudioDTO(audio,userID);
+        audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid);
         return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
     }
 
@@ -204,8 +201,7 @@ public class Audio {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getById(@QueryParam("id") int id,
                             @CookieParam("name") String uid) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userID = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         AudioEntity audio = null;
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
@@ -213,7 +209,7 @@ public class Audio {
         } catch(Exception e) {
             log.info("Audio ByID: exception");
         }
-        AudioDTO audioDTO = new AudioDTO(audio, userID);
+        AudioDTO audioDTO = new AudioDTO(audio, userid);
         return Response.ok().entity(audioDTO).build();
     }
 
@@ -224,15 +220,14 @@ public class Audio {
                             @QueryParam("page") int page,
                             @CookieParam("name") String uid
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userID = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(count > 100) count = 100;
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll(aDAO.getFree((count * (page - 1)), count));
-            audioDTOs = (ArrayList<AudioDTO>)AudioListDTO.getListAudioDTO(audio,userID);
+            audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid);
             log.info("Audio Free: success");
         } catch (Exception e) {
             log.info("Audio Free: exception");

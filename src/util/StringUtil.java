@@ -9,32 +9,6 @@ public class StringUtil {
     private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$");
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{3,15}$");
 
-    public static boolean minLength(String str, int len)  { //throws IllegalArgumentException
-        Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
-        Matcher matcher = pattern.matcher(str);
-        boolean found = matcher.find();
-
-        if(!found && !str.contains(" ")) {
-            if (str.length() > len) {
-                return true;    //throw new IllegalArgumentException();
-            }
-        }
-        return false;
-    }
-
-    public static boolean maxLength(String str, int len)  {
-        Pattern pattern = Pattern.compile("\\s");                                   //contain whitespace
-        Matcher matcher = pattern.matcher(str);
-        boolean found = matcher.find();
-
-        if(!found && !str.contains(" ")) {
-            if (str.length() < len) {
-                return true;    //throw new IllegalArgumentException();
-            }
-        }
-        return false;
-    }
-
     public static boolean minMaxLength(String str, int minLen, int maxLen)  {       //@return true if string is valid
         Pattern pattern = Pattern.compile("\\s");                                   //----contain whitespace
         Matcher matcher = pattern.matcher(str);
@@ -52,7 +26,7 @@ public class StringUtil {
     // @return true if email is valid
     public static boolean validEmail(String email)  {
 
-        if( !minMaxLength(email, 4 , 225)){
+        if( !minMaxLength(email, 3 , 225)){
             return false;
         }  else
         if (!email.contains("@") ) {

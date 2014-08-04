@@ -1,6 +1,7 @@
 package rest.service;
 
 
+import BusinessLogic.Sessions;
 import DAO.SessionDAO;
 import DAO.util.Factory;
 
@@ -81,8 +82,7 @@ public class AudioGet {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPrivate(@QueryParam(value = "id") int id,
                                @CookieParam("name") String uid) throws IOException, WebApplicationException, SocketException {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(userid == -1){
             return Response.status(400).entity("login pls").build();
         }
@@ -106,8 +106,7 @@ public class AudioGet {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response getPrivateImage(@QueryParam(value = "id") int id,
                                     @CookieParam("name") String uid) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(userid == -1){
             return Response.status(400).entity("login pls").build();
         }

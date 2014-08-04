@@ -1,9 +1,10 @@
 package rest.service;
 
+import BusinessLogic.Sessions;
 import DAO.SessionDAO;
 import DAO.util.Factory;
 import DTO.AudioDTO;
-import DTO.AudioListDTO;
+import DTO.GetListDTO;
 import DTO.UserDTO;
 
 import javax.ws.rs.*;
@@ -24,8 +25,7 @@ public class MyList {
                            @QueryParam("count") Integer count,
                            @QueryParam("page") Integer page) {
         if(id == null) {
-            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-            int userid = sessionDAO.haveKey(uid);
+            int userid = Sessions.uid(uid);
             if(userid == -1)
                 return Response.status(400).build();
         }
@@ -35,7 +35,7 @@ public class MyList {
         ArrayList<AudioDTO> arrayList;
         ArrayList<AudioDTO> list =
                 (ArrayList<AudioDTO>)
-                        AudioListDTO.getListAudioDTO(Factory.getInstance().getAudioDAO().getByUserId(id), id);
+                        GetListDTO.getListAudioDTO(Factory.getInstance().getAudioDAO().getByUserId(id), id);
         if(count * (page-1) >= list.size())
             return Response.ok(null).build();
         if(count * page >= list.size()){
@@ -52,8 +52,7 @@ public class MyList {
 
         if(count == null) count = 10;
         if(page == null) page = 1;
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if(userid == -1)
             return Response.status(400).build();
         UserDTO userDTO = new UserDTO(Factory.getInstance().getUserDAO().getById(userid));

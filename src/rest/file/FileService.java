@@ -6,6 +6,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import BusinessLogic.FileOperation;
+import BusinessLogic.Sessions;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
 import Entity.AudioEntity;
@@ -34,8 +35,7 @@ public class FileService {
                                @QueryParam(value = "access") String access,
                                @FormDataParam("audioFile") InputStream uploadAudioStream
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Upload File: file can not write: sign in");
             return Response.status(402).entity("File not uploaded! Please sign in!!!").build();
@@ -150,8 +150,7 @@ public class FileService {
     public Response uploadFile(@CookieParam(value = "name") String uid,
                                @QueryParam(value = "idA") Integer idA,
                                @FormDataParam("image") InputStream uploadImageStream) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("DUpload Image: not logged in");
             return Response.status(201).entity("You can't edit file! Please sign in!!!").build();
@@ -181,8 +180,7 @@ public class FileService {
      public Response deleteFile(@CookieParam(value = "name") String uid,
                                 @QueryParam("id") int idFile
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Delete File: not logged in");
             return Response.status(400).entity("You can't edit file! Please sign in!!!").build();
@@ -225,8 +223,7 @@ public class FileService {
                              @FormParam("price") double price,
                              @FormParam("access") String access
     ) {
-        SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
-        int userid = sessionDAO.haveKey(uid);
+        int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Edit File: not logged in");
             return Response.status(404).entity("You can't edit file! Please sign in!!!").build();

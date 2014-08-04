@@ -54,7 +54,7 @@ public class RestoreDAO {
         return audio;
     }
 
-    public RestoreEntity getUniq(String uiq) {
+    public RestoreEntity getByUniq(String uiq) {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         RestoreEntity audio;
         try {

@@ -1,33 +1,50 @@
 package rest.user;
 
-import DAO.UserDAO;
-import Entity.UserEntity;
+import BusinessLogic.Sessions;
+import BusinessLogic.UserLogic;
+import Entity.TmpUserEntity;
 import DAO.util.Factory;
+import util.Crypto;
+import util.EmailSender;
 import util.StringUtil;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+
+import javax.mail.MessagingException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/Registration")
 public class Registration {
     @POST
-    public Response registration (@FormParam("login") String login,
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registration (@CookieParam("name") String uid,
+                                  @FormParam("login") String login,
                                   @FormParam("passwordOne") String passwordOne,
                                   @FormParam("passwordTwo") String passwordTwo,
                                   @FormParam("email") String email) {
+        int userid = Sessions.uid(uid);
+        if(userid != -1) {
+            return Response.status(400).entity("u are logged in").build();
+        }
         if(!StringUtil.validRegistration(login, passwordOne, passwordTwo, email)){
             System.out.println("Bad information");
-            return Response.status(400).build();
+            return Response.status(400).entity("bad info").build();
         }
+        String uniq = UserLogic.uid(20);
         try {
-            UserDAO uDao = Factory.getInstance().getUserDAO();
-            UserEntity user = new UserEntity(login, passwordOne, email);
-            uDao.add(user);
+            String password = Crypto.MD5(passwordOne);
+            TmpUserEntity user = new TmpUserEntity(login, email, password, uniq);
+            Factory.getInstance().getTmpUserDAO().add(user);
+
         } catch(Exception e) {
             System.out.println("User do not created");
             return Response.status(400).build();
         }
+        String massege = "Hello, " + login +
+                " you are trying to register on THE BEST STORAGE EVER, go to http:/www.loacalhost:8080/rest/Registration/validation?uniq="+uniq +"to complete the operation ";
+        try {
+            EmailSender.generateAndSendEmail(email, massege);
+        } catch (MessagingException e) {}
         System.out.println("User created");
         return Response.ok().header("Registration-success", "*").build();
     }

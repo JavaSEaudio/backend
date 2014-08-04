@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @Entity
-@XmlRootElement
 @Table(name = "audiofile")
 public class AudioEntity {
     private int id;
