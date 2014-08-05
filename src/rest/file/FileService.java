@@ -16,6 +16,7 @@ import com.sun.jersey.multipart.FormDataParam;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
 import util.CopyFiles;
+import util.Cut;
 import util.FileWrite;
 import util.ProjectPath;
 
@@ -69,6 +70,9 @@ public class FileService {
 
             return Response.ok("can not").status(401).build();
         }
+//        if(acs != 1){
+//            Cut.file(uploadedFileLocation);
+//        }
         try {
                 FileOperation fileOperation = new FileOperation(uploadedFileLocation);
                 if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
@@ -199,6 +203,8 @@ public class FileService {
         file.delete();
         file = new File("C://upload//image//"+audioEntity.getId()+".jpg");
         file.delete();
+//        file = new File("C://upload//audio//cut"+audioEntity.getId()+".mp3");
+//        file.delete();
         try {
             Factory.getInstance().getLikeDAO().delete(Factory.getInstance().getLikeDAO().getByAudio(audioEntity.getId()));
         } catch (Exception e){}
@@ -307,6 +313,7 @@ public class FileService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+//            new File("C://upload//audio//cut"+audioEntity.getId()+".mp3").delete();
             source.delete();
             source = new File("C://upload//image//"+audioEntity.getId()+".jpg");
             destination = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");

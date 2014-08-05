@@ -11,6 +11,7 @@ import Entity.AudioEntity;
 import Entity.PrivateEntity;
 import org.apache.log4j.Logger;
 import util.CopyFiles;
+import util.Cut;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -148,9 +149,11 @@ public class PrivateFile {
             File destination = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
             try {
                 CopyFiles.copyFileUsingStream(source, destination);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+//            Cut.file("C://upload//audio//"+audioEntity.getId()+".mp3");
             source.delete();
             source = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");
             destination = new File("C://upload//image//"+audioEntity.getId()+".jpg");

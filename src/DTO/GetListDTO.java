@@ -1,6 +1,7 @@
 package DTO;
 
 import Entity.AudioEntity;
+import Entity.CommentsEntity;
 import Entity.PrivateEntity;
 import Entity.UserEntity;
 
@@ -33,6 +34,15 @@ public class GetListDTO {
         ArrayList<UserDTO> result = new ArrayList<UserDTO>();
         for(UserEntity uEntity : userEntity) {
             UserDTO uDro = new UserDTO(uEntity);
+            result.add(uDro);
+        }
+        return result;
+    }
+
+    public static List<CommentsDTO> getListCommentsDTO(List<CommentsEntity> userEntity) {
+        ArrayList<CommentsDTO> result = new ArrayList<CommentsDTO>();
+        for(CommentsEntity uEntity : userEntity) {
+            CommentsDTO uDro = new CommentsDTO(uEntity);
             result.add(uDro);
         }
         return result;

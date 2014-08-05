@@ -27,7 +27,7 @@ public class Login {
         }
 
         if (!StringUtil.minMaxLength(login , 2 , 30)  ||
-                !StringUtil.minMaxLength(password , 2 , 225) || !StringUtil.validLogin(login)) {
+                !StringUtil.minMaxLength(password , 2 , 225) /*|| !StringUtil.validLogin(login)*/) {
             log.info("not valid length");
             System.out.println("not valid length or type - login or password");
             return Response.ok("false").build();
@@ -46,7 +46,7 @@ public class Login {
             }
             try {
                 String usid = UserLogic.uid(64);
-                SessionEntity sess = new SessionEntity(user.getId(), uid);
+                SessionEntity sess = new SessionEntity(user.getId(), usid);
                 Factory.getInstance().getSessionDAO().add(sess);
                 NewCookie cookie = new NewCookie("name", usid);
                 System.out.println("Logged success");

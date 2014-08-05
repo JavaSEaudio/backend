@@ -4,6 +4,7 @@ package rest.service;
 import BusinessLogic.Sessions;
 import DAO.SessionDAO;
 import DAO.util.Factory;
+import DTO.UserDTO;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
@@ -22,8 +23,24 @@ public class AudioGet {
     @GET
     @Path("/audio")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getAudio(@QueryParam(value = "id") int id)throws IOException, WebApplicationException, SocketException {
+    public Response getAudio(@CookieParam("name") String uid,
+                             @QueryParam(value = "id") int id
+    )throws IOException, WebApplicationException, SocketException {
         String path = "C://upload//audio//"+id+".mp3";
+        int userid = Sessions.uid(uid);
+        if(userid == -1) {
+            Response.ok().build();
+        }
+        boolean bool = false;
+        for(int i : new UserDTO(Factory.getInstance().getUserDAO().getById(userid)).getBuyListArray()){
+            if(i == id) {
+                bool = true;
+                break;
+            }
+        }
+        if(!bool){
+            Response.ok().build();
+        }
         File file;
         try {
             file = new File(path);
@@ -86,6 +103,12 @@ public class AudioGet {
         if(userid == -1){
             return Response.status(400).entity("login pls").build();
         }
+        if(
+            Factory.getInstance().getPrivateDAO().getById(id).getUserid() != userid
+                ) {
+            return Response.status(400).entity("not access").build();
+        }
+
 
         String path = "C://upload//private//"+id+".mp3";
         File file;

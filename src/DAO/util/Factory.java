@@ -13,6 +13,7 @@ public class Factory {
     private static PrivateDAO privateDAO = null;
     private static RestoreDAO restoreDAO = null;
     private static TmpUserDAO tmpUserDAO = null;
+    private static CommentsDAO commentsDAO = null;
     private static DAO dao = null;
 
 
@@ -74,6 +75,13 @@ public class Factory {
             tmpUserDAO = new TmpUserDAO();
         }
         return tmpUserDAO;
+    }
+
+    public CommentsDAO getCommentsDAO() {
+        if (commentsDAO == null){
+            commentsDAO = new CommentsDAO();
+        }
+        return commentsDAO;
     }
 
     public DAO getDao() {

@@ -6,15 +6,24 @@ import Entity.AudioEntity;
 import Entity.LikeEntity;
 import Entity.UserEntity;
 import DAO.util.Factory;
+import com.google.code.mp3fenge.Mp3Fenge;
 import org.apache.log4j.Logger;
 import util.Crypto;
+import util.Cut;
 import util.StringUtil;
 
+import java.io.File;
 import java.util.List;
 
 public class Main {
     public static void main(final String[] args) throws Exception {
-        createDB();
+//        createDB();
+        String path = new String();
+//        for(int i = 1; i <= 21; i++){
+            path = "C://upload//audio//13.mp3";
+//            Cut.file(path);
+//        }
+//        System.out.println("the end");
         return;
     }
 
@@ -53,4 +62,6 @@ public class Main {
         }
         System.out.println("DB create success");
     }
+
+
 }

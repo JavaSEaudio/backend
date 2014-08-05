@@ -1,6 +1,10 @@
 package rest.service;
 
 
+import BusinessLogic.Sessions;
+import DAO.util.Factory;
+import DTO.UserDTO;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
@@ -19,9 +23,29 @@ public class MediaResource {
 
     @GET
     @Produces("audio/mp3")
-    public Response streamAudio(@QueryParam("id") int id,
+    public Response streamAudio(@CookieParam("name") String uid,
+                                @QueryParam("id") int id,
                                 @HeaderParam("Range") String range) throws Exception {
-        audio = new File("C://upload//audio//"+id+".mp3");
+        String path = "C://upload//audio//"+id+".mp3";
+//        int userid = Sessions.uid(uid);
+//        boolean bool = false;
+//        if(userid == -1) {
+//            path = "C://upload//audio//cut"+id+".mp3";
+//            bool = true;
+//        }
+//        if(!bool) {
+//            for (int i : new UserDTO(Factory.getInstance().getUserDAO().getById(userid)).getBuyListArray()) {
+//                if (i == id) {
+//                    bool = true;
+//                    break;
+//                }
+//            }
+//        }
+//        if(!bool){
+//            path = "C://upload//audio//cut"+id+".mp3";
+//        }
+        audio = new File(path);
+        System.out.println(path);
         return buildStream(audio, range);
     }
 
