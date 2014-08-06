@@ -8,6 +8,7 @@ import Entity.LikeEntity;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class CommentsDAO {
@@ -18,6 +19,8 @@ public class CommentsDAO {
     }
 
     public void add(CommentsEntity comment) {
+        Calendar calendar = Calendar.getInstance();
+        comment.setUpload_date(calendar.getTime());
         dao.add(comment);
     }
 
@@ -41,7 +44,7 @@ public class CommentsDAO {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM CommentsEntity WHERE audio = :audio");
+            Query query = session.createQuery("FROM CommentsEntity WHERE audio = :audio order by upload_date desc");
             query.setInteger("audio", id);
             query.setFirstResult(first);
             query.setMaxResults(second);

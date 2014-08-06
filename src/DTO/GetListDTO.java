@@ -16,7 +16,13 @@ public class GetListDTO {
         ArrayList<AudioDTO> result = new ArrayList<AudioDTO>();
         for(AudioEntity aEntity : userEntity) {
             AudioDTO aDro = new AudioDTO(aEntity, userid);
-            result.add(aDro);
+            if(!aDro.isLoad()) {
+                result.add(aDro);
+            } else {
+                if(aDro.getUserid() == userid){
+                    result.add(aDro);
+                }
+            }
         }
         return result;
     }
@@ -43,6 +49,24 @@ public class GetListDTO {
         ArrayList<CommentsDTO> result = new ArrayList<CommentsDTO>();
         for(CommentsEntity uEntity : userEntity) {
             CommentsDTO uDro = new CommentsDTO(uEntity);
+            result.add(uDro);
+        }
+        return result;
+    }
+
+    public static List<ArtistDTO> getListArtistDTO(List<String> artist) {
+        ArrayList<ArtistDTO> result = new ArrayList<ArtistDTO>();
+        for(String art : artist) {
+            ArtistDTO uDro = new ArtistDTO(art);
+            result.add(uDro);
+        }
+        return result;
+    }
+
+    public static List<AlbumsDTO> getListAlbumsDTO(List<String> album) {
+        ArrayList<AlbumsDTO> result = new ArrayList<AlbumsDTO>();
+        for(String art : album) {
+            AlbumsDTO uDro = new AlbumsDTO(art);
             result.add(uDro);
         }
         return result;

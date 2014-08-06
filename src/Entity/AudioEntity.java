@@ -23,6 +23,7 @@ public class AudioEntity {
     private int userid;
     @Temporal(TemporalType.DATE)
     private Date upload_date;
+    private String linkTube;
 
     public AudioEntity(String name, String artist, String album, String genre){
         this.name = name;
@@ -55,7 +56,7 @@ public class AudioEntity {
         try{this.userid = privat.getUserid();}catch (Exception e){}
     }
 
-    public AudioEntity(String name, String artist, String album) {
+    public AudioEntity(String name, String artist, String album, int userid) {
         this.name = name;
         this.album = album;
         this.artist = artist;
@@ -66,7 +67,7 @@ public class AudioEntity {
         this.price = 0;
         this.length = 0;
         this.size = 0;
-        this.userid = 0;
+        this.userid = userid;
     }
 
     @Id
@@ -190,4 +191,12 @@ public class AudioEntity {
         this.userid = userid;
     }
 
+    @Column(name = "linkTube")
+    public String getLinkTube() {
+        return linkTube;
+    }
+
+    public void setLinkTube(String linkTube) {
+        this.linkTube = linkTube;
+    }
 }

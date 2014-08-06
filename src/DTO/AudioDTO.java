@@ -31,6 +31,8 @@ public class AudioDTO {
     private boolean buy;
     private boolean like;
     private int countLike;
+    private boolean load;
+    private  String linkTube;
 
     public AudioDTO(){}
 
@@ -48,6 +50,7 @@ public class AudioDTO {
          this.length = audioEntity.getLength();
          this.size = audioEntity.getSize();
          this.userid = audioEntity.getUserid();
+         this.linkTube= audioEntity.getLinkTube();
          this.linkImage = "/rest/get/image?id="+audioEntity.getId();
          this.linkFile = "/rest/listen?id="+audioEntity.getId();
          this.upload_date = audioEntity.getUpload_date();
@@ -80,8 +83,15 @@ public class AudioDTO {
         }
         this.countLike = LikesSystem.count(this.id);
         this.like = LikesSystem.check(userid, this.id);
+        if(this.album.equals("luaged")) {
+            this.load = true;
+        }else {
+            this.load = false;
+        }
         System.out.println(like);
     }
+
+
 
     public AudioDTO(PrivateEntity privateEntity) {
         this.id = privateEntity.getId();
@@ -255,5 +265,21 @@ public class AudioDTO {
 
     public void setCountLike(int countLike) {
         this.countLike = countLike;
+    }
+
+    public boolean isLoad() {
+        return load;
+    }
+
+    public void setLoad(boolean load) {
+        this.load = load;
+    }
+
+    public String getLinkTube() {
+        return linkTube;
+    }
+
+    public void setLinkTube(String linkTube) {
+        this.linkTube = linkTube;
     }
 }

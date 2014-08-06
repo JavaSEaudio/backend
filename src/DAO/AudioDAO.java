@@ -213,4 +213,84 @@ public class AudioDAO {
         }
         return audio;
     }
+
+    public List<String> getArtistAll(int first, int second) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        List<String> audio = new ArrayList<String>();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("SELECT artist FROM AudioEntity");
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+            audio = (List<String>) query.uniqueResult();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getbyArtistTracks(String artist, int first, int second) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("SELECT artist FROM AudioEntity WHERE artist = :artist");
+            query.setString("artist", artist);
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+            audio = (List<AudioEntity>) query.list();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<String> getbyArtistAlbum(String artist, int first, int second) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        List<String> audio = new ArrayList<String>();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("SELECT album FROM AudioEntity WHERE artist = :artist");
+            query.setString("artist", artist);
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+            audio = (List<String>) query.uniqueResult();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AudioEntity> getbyAlbumTracks(String album, String artist, int first, int second) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        List<AudioEntity> audio = new ArrayList<AudioEntity>();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AudioEntity WHERE album = :album AND artist = :artist");
+            query.setString("album", album);
+            query.setString("artist", artist);
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+            audio = (List<AudioEntity>) query.list();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
 }

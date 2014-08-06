@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import BusinessLogic.FileOperation;
 import BusinessLogic.Sessions;
 import DAO.AudioDAO;
-import DAO.SessionDAO;
 import DAO.TagDAO;
 import Entity.AudioEntity;
 import Entity.PrivateEntity;
@@ -42,111 +41,13 @@ public class FileService {
             log.info("Upload File: file can not write: sign in");
             return Response.status(402).entity("File not uploaded! Please sign in!!!").build();
         }
-        System.out.println();
-        int acs= -1;
-        if(access.equals("true")) acs = 1;
-        String uploadedFileLocation;
-        AudioEntity audioEntity = null;
-        PrivateEntity privateEntity = null;
-        if(acs != 1) {
-            audioEntity = new AudioEntity(nameA, artist, album);
-            Factory.getInstance().getAudioDAO().add(audioEntity);
-            uploadedFileLocation = "C://upload//audio//" + audioEntity.getId() + ".mp3";
+
+
+        if(!access.equals("true")){
+            return savePublic(nameA, artist, album, uploadAudioStream, userid);
         } else {
-            privateEntity = new PrivateEntity(nameA, artist, album);
-            Factory.getInstance().getPrivateDAO().add(privateEntity);
-            uploadedFileLocation = "C://upload//private//" + privateEntity.getId() + ".mp3";
+            return savePrivate(nameA, artist, album, uploadAudioStream, userid);
         }
-
-        try {
-            FileWrite.writeToFile(uploadAudioStream, uploadedFileLocation);
-        } catch (Exception e) {
-            log.info("Upload File: file can not write");
-            new File(uploadedFileLocation).delete();
-            if(acs != 1) {
-                Factory.getInstance().getAudioDAO().delete(audioEntity);
-            } else {
-                Factory.getInstance().getPrivateDAO().delete(privateEntity);
-            }
-
-            return Response.ok("can not").status(401).build();
-        }
-//        if(acs != 1){
-//            Cut.file(uploadedFileLocation);
-//        }
-        try {
-                FileOperation fileOperation = new FileOperation(uploadedFileLocation);
-                if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
-                    nameA = fileOperation.getName();
-                    if(nameA == null || nameA.equals("") || nameA.equals(" ")) {
-                        nameA = "Unknown";
-                    }
-                    if(acs != 1) {
-                        audioEntity.setName(nameA);
-                    } else {
-                        privateEntity.setName(nameA);
-                    }
-                } else {
-                    try { fileOperation.setName(nameA); } catch (Exception e){}
-                }
-                if (artist == null || artist.equals("") || artist.equals(" ")) {
-                    artist = fileOperation.getArtist();
-                    if(artist == null || artist.equals("") || artist.equals(" ")) {
-                        artist = "Unknown";
-                    }
-                    if(acs != 1) {
-                        audioEntity.setArtist(artist);
-                    } else {
-                        privateEntity.setArtist(artist);
-                    }
-                } else {
-                    try { fileOperation.setArtist(artist); } catch (Exception e){}
-                }
-                if (album == null || album.equals("") || album.equals(" ")) {
-                    album = fileOperation.getAlbum();
-                    if(album == null || album.equals("") || album.equals(" ")) {
-                        album = "Unknown";
-                    }
-                    if(acs != 1) {
-                        audioEntity.setAlbum(album);
-                    } else {
-                        privateEntity.setAlbum(album);
-                    }
-                } else {
-                    try { fileOperation.setAlbum(album); } catch (Exception e){}
-                }
-
-                if(acs != 1) {
-                    fileOperation.getImage("image//"+audioEntity.getId());
-                    audioEntity.setType(".mp3");
-                    audioEntity.setUserid(userid);
-                    try { audioEntity.setYear(fileOperation.getYear()); } catch (Exception e){}
-                    try { audioEntity.setComment(fileOperation.getComments()); } catch (Exception e){}
-                    try { audioEntity.setGenre(fileOperation.getGenre()); } catch (Exception e){}
-                    try { audioEntity.setLength(fileOperation.getLength()); } catch (Exception e){}
-                    try { audioEntity.setSize(fileOperation.getSize()); } catch (Exception e){}
-                } else {
-                    fileOperation.getImage("privateImage//"+privateEntity.getId());
-                    privateEntity.setUserid(userid);
-                }
-        if(acs != 1) {
-            Factory.getInstance().getAudioDAO().change(audioEntity);
-        } else {
-            Factory.getInstance().getPrivateDAO().change(privateEntity);
-        }
-
-                log.info("Upload File: audio save in the DB success");
-
-        } catch (Exception e) {
-            if(new File(uploadedFileLocation).delete());
-            if(acs != 1) {
-                Factory.getInstance().getAudioDAO().delete(audioEntity);
-            } else {
-                Factory.getInstance().getPrivateDAO().delete(privateEntity);
-            }
-            return Response.ok("chren").status(403).build();
-        }
-        return Response.status(200).build();
     }
 
     @Path("/uploadImage")
@@ -200,17 +101,18 @@ public class FileService {
             }
         }
 
-        File file = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
-        file.delete();
-        file = new File("C://upload//image//"+audioEntity.getId()+".jpg");
-        file.delete();
+        new File("C://upload//audio//"+audioEntity.getId()+".mp3").delete();
+        new File("C://upload//audio//"+audioEntity.getId()+".ogg").delete();
+        new File("C://upload//audio//"+audioEntity.getId()+".wav").delete();
+        new File("C://upload//audio//"+audioEntity.getId()+".tmp").delete();
+        new File("C://upload//image//"+audioEntity.getId()+".jpg").delete();
 //        file = new File("C://upload//audio//cut"+audioEntity.getId()+".mp3");
 //        file.delete();
         try {
             Factory.getInstance().getLikeDAO().delete(Factory.getInstance().getLikeDAO().getByAudio(audioEntity.getId()));
         } catch (Exception e){}
         audioDAO.delete(audioEntity);
-        log.info("Delete File: " + file.getName() + " deleted");
+        log.info("Delete File:  deleted");
         return Response.status(200).build();
 
 
@@ -228,7 +130,8 @@ public class FileService {
                              @FormParam("genre") String genre,
                              @FormParam("year") int year,
                              @FormParam("price") double price,
-                             @FormParam("access") String access
+                             @FormParam("access") String access,
+                             @FormParam("youTube") String linkTube
     ) {
         int userid = Sessions.uid(uid);
         if (userid == -1) {
@@ -245,7 +148,7 @@ public class FileService {
             }
         }
 
-        FileOperation fileEdit = new FileOperation("C://upload//private//"+audioEntity.getId()+".mp3");
+        FileOperation fileEdit = new FileOperation("C://upload//audio//"+audioEntity.getId()+".mp3");
         if ((name != null) || (!name.equals(""))) {
             try {
                 fileEdit.setName(name);
@@ -282,22 +185,24 @@ public class FileService {
                     }
                     result += s.get(i) + " ";
                 }
-                if (result != null) {
+                if (!result.equals("")) {
                     for (int i = 0; i < s.size(); i ++) {
-                        if (tDAO.getByName(s.get(i)) == null) {
-                            TagEntity tag = new TagEntity(s.get(i));
+                        String temp = s.get(i);
+                        if (s.get(i).charAt(s.get(i).length() - 1) == '\n') {
+                            temp = s.get(i).substring(0,(s.get(i).length() - 1));
+                        }
+                        if (tDAO.getByName(temp) == null) {
+                            TagEntity tag = new TagEntity(temp);
                             tag.addAudioIds(id);
                             tDAO.add(tag);
                         }
                         else {
-                            TagEntity tag = tDAO.getByName(s.get(i));
+                            TagEntity tag = tDAO.getByName(temp);
                             tag.addAudioIds(id);
                             tDAO.change(tag);
                         }
                     }
                 }
-
-                //fileEdit.setGenre(result);
 
             } catch (Exception e) {}
             audioEntity.setComment(comment);
@@ -309,6 +214,7 @@ public class FileService {
                 String result = "";
                 String[] s = genre.split(" ");
                 for (int i = 0; i < s.length; i ++) {
+
                     if (tDAO.getByName(s[i]) == null) {
                         TagEntity tag = new TagEntity(s[i]);
                         tag.addAudioIds(id);
@@ -338,7 +244,13 @@ public class FileService {
             log.info("Edit File: price wrong");
             return Response.status(403).entity("price wrong").build();
         }
+        if(linkTube != null && !linkTube.equals("") && !linkTube.equals(" ")){
+            audioEntity.setLinkTube(linkTube);
+        }
         Factory.getInstance().getAudioDAO().change(audioEntity);
+
+
+
         int acs = -1;
         if(access == null);
         else if(access.equals("private")) acs = 1;
@@ -348,7 +260,9 @@ public class FileService {
             return Response.status(200).entity("success").build();
         } else {
             PrivateEntity privateEntity = new PrivateEntity(audioEntity);
-            Factory.getInstance().getLikeDAO().delete(Factory.getInstance().getLikeDAO().getByAudio(audioEntity.getId()));
+            try {
+                Factory.getInstance().getLikeDAO().delete(Factory.getInstance().getLikeDAO().getByAudio(audioEntity.getId()));
+            } catch (Exception e) {}
             Factory.getInstance().getPrivateDAO().add(privateEntity);
             File source = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
             File destination = new File("C://upload//private//"+privateEntity.getId()+".mp3");
@@ -357,7 +271,21 @@ public class FileService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//            new File("C://upload//audio//cut"+audioEntity.getId()+".mp3").delete();
+            source = new File("C://upload//audio//"+audioEntity.getId()+".wav");
+            destination = new File("C://upload//private//"+privateEntity.getId()+".mp3");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            source = new File("C://upload//audio//"+audioEntity.getId()+".ogg");
+            destination = new File("C://upload//private//"+privateEntity.getId()+".mp3");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//          new File("C://upload//audio//cut"+audioEntity.getId()+".mp3").delete();
             source.delete();
             source = new File("C://upload//image//"+audioEntity.getId()+".jpg");
             destination = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");
@@ -372,5 +300,144 @@ public class FileService {
             log.info("Edit File: private success");
             return Response.status(200).entity("private success").build();
         }
+    }
+
+    private Response savePublic(String nameA,
+                                String artist,
+                                String album,
+                                InputStream uploadAudioStream,
+                                int userid
+    ){
+        AudioEntity audioEntity = new AudioEntity(nameA, artist, "luaged", userid);
+        Factory.getInstance().getAudioDAO().add(audioEntity);
+        String uploadedFileLocation = "C://upload//audio//" + audioEntity.getId() + ".tmp";
+        File file = new File(uploadedFileLocation);
+
+
+        try {
+            FileWrite.writeToFile(uploadAudioStream, uploadedFileLocation);
+        } catch (Exception e) {
+            log.info("Upload File: Public file can not write");
+            new File(uploadedFileLocation).delete();
+            Factory.getInstance().getAudioDAO().delete(audioEntity);
+            return Response.ok("can not").status(401).build();
+        }
+//      Cut.file(uploadedFileLocation);
+        try {
+            FileOperation fileOperation = new FileOperation(uploadedFileLocation);
+            if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
+                nameA = fileOperation.getName();
+                if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
+                    nameA = "Unknown";
+                }
+                audioEntity.setName(nameA);
+            } else {
+                try {fileOperation.setName(nameA);} catch (Exception e) {}
+            }
+            if (artist == null || artist.equals("") || artist.equals(" ")) {
+                artist = fileOperation.getArtist();
+                if (artist == null || artist.equals("") || artist.equals(" ")) {
+                    artist = "Unknown";
+                }
+                audioEntity.setArtist(artist);
+            } else {
+                try {fileOperation.setArtist(artist);} catch (Exception e) {}
+            }
+            if (album == null || album.equals("") || album.equals(" ")) {
+                album = fileOperation.getAlbum();
+                if (album == null || album.equals("") || album.equals(" ")) {
+                    album = "Unknown";
+                }
+                audioEntity.setAlbum(album);
+            } else {
+                try {fileOperation.setAlbum(album);} catch (Exception e) {}
+            }
+            fileOperation.getImage("image//" + audioEntity.getId());
+            audioEntity.setType(".mp3");
+            audioEntity.setUserid(userid);
+            try { audioEntity.setYear(fileOperation.getYear());       } catch (Exception e) {}
+            try { audioEntity.setComment(fileOperation.getComments());} catch (Exception e) {}
+            try { audioEntity.setGenre(fileOperation.getGenre());     } catch (Exception e) {}
+            try { audioEntity.setLength(fileOperation.getLength());   } catch (Exception e) {}
+            try { audioEntity.setSize(fileOperation.getSize());       } catch (Exception e) {}
+            Factory.getInstance().getAudioDAO().change(audioEntity);
+        } catch (Exception e) {
+            new File(uploadedFileLocation).delete();
+            new File("C://upload//audio//"+audioEntity.getId()+".mp3").delete();
+            new File("C://upload//audio//"+audioEntity.getId()+".wav").delete();
+            new File("C://upload//audio//"+audioEntity.getId()+".ogg").delete();
+            Factory.getInstance().getAudioDAO().delete(audioEntity);
+            return Response.status(406).build();
+        }
+        new File(uploadedFileLocation).delete();
+        new ThreadFuck2(file, audioEntity.getId()).start();
+
+        return Response.status(200).build();
+    }
+
+    private Response savePrivate(String nameA,
+                                 String artist,
+                                 String album,
+                                 InputStream uploadAudioStream,
+                                 int userid
+    ){
+        PrivateEntity privateEntity = new PrivateEntity(nameA, artist, "luaged");
+        Factory.getInstance().getPrivateDAO().add(privateEntity);
+        String uploadedFileLocation = "C://upload//private//" + privateEntity.getId() + ".tmp";
+        File file = new File(uploadedFileLocation);
+
+        try {
+            FileWrite.writeToFile(uploadAudioStream, uploadedFileLocation);
+        } catch (Exception e) {
+            log.info("Upload File: Public file can not write");
+            new File(uploadedFileLocation).delete();
+            Factory.getInstance().getPrivateDAO().delete(privateEntity);
+            return Response.ok("can not").status(401).build();
+        }
+        try {
+            FileOperation fileOperation = new FileOperation(uploadedFileLocation);
+            if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
+                nameA = fileOperation.getName();
+                if (nameA == null || nameA.equals("") || nameA.equals(" ")) {
+                    nameA = "Unknown";
+                }
+                privateEntity.setName(nameA);
+            } else {
+                try {fileOperation.setName(nameA);} catch (Exception e) {}
+            }
+            if (artist == null || artist.equals("") || artist.equals(" ")) {
+                artist = fileOperation.getArtist();
+                if (artist == null || artist.equals("") || artist.equals(" ")) {
+                    artist = "Unknown";
+                }
+                privateEntity.setArtist(artist);
+            } else {
+                try {fileOperation.setArtist(artist);} catch (Exception e) {}
+            }
+            if (album == null || album.equals("") || album.equals(" ")) {
+                album = fileOperation.getAlbum();
+                if (album == null || album.equals("") || album.equals(" ")) {
+                    album = "Unknown";
+                }
+                privateEntity.setAlbum(album);
+            } else {
+                try {fileOperation.setAlbum(album);} catch (Exception e) {}
+            }
+            fileOperation.getImage("privateImage//"+privateEntity.getId());
+            privateEntity.setUserid(userid);
+            Factory.getInstance().getPrivateDAO().change(privateEntity);
+        } catch (Exception e) {
+            new File(uploadedFileLocation).delete();
+            new File("C://upload//private//"+privateEntity.getId()+".mp3").delete();
+            new File("C://upload//private//"+privateEntity.getId()+".wav").delete();
+            new File("C://upload//private//"+privateEntity.getId()+".ogg").delete();
+            Factory.getInstance().getPrivateDAO().delete(privateEntity);
+            return Response.status(400).build();
+        }
+        new File(uploadedFileLocation).delete();
+        new ThreadFuck(file, userid).start();
+
+        return Response.status(200).build();
+
     }
 }

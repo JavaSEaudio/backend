@@ -123,4 +123,20 @@ public class StringUtil {
         }
         return tagsArray;
     }
+
+    public static String fromRusToEng(String data) {
+        String result = "";
+        char[] rus = {'й','ц','у','к','е','н','г','ш','щ','з','х','ъ','ф','ы','в','а','п','р','о','л','д','ж','э','я','ч','с','м','и','т','ь','б','ю','.'};
+        char[] eng = {'q','w','e','r','t','y','u','i','o','p','[',']','a','s','d','f','g','h','j','k','l',';','\'','z','x','c','v','b','n','m',',','.','/'};
+        char[] array = data.toCharArray();
+        for (int i = 0; i < array.length; i ++) {
+            for (int j = 0; j < rus.length; j ++) {
+                if (array[i] == rus[j]) {
+                    array[i] = eng[j];
+                }
+            }
+            result += array[i];
+        }
+        return result;
+    }
 }

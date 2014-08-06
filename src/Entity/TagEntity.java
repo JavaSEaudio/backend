@@ -84,8 +84,11 @@ public class TagEntity {
     }
 
     public void addAudioIds(int audioId){
-        this.audioIds += audioId + " ";
-        counts ++;
+        List<Integer> array = addAudioIdsArray();
+        if (!array.contains(audioId)) {
+            this.audioIds += audioId + " ";
+            counts ++;
+        }
     }
 
     public int audioCount() {

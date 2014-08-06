@@ -3,6 +3,7 @@ package Entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "comments")
@@ -11,6 +12,8 @@ public class CommentsEntity {
     private int audio;
     private int user;
     private String comment;
+    @Temporal(TemporalType.DATE)
+    private Date upload_date;
 
     public CommentsEntity(){}
 
@@ -57,5 +60,14 @@ public class CommentsEntity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Column(name = "upload_date")
+    public Date getUpload_date() {
+        return upload_date;
+    }
+
+    public void setUpload_date(Date upload_date) {
+        this.upload_date = upload_date;
     }
 }

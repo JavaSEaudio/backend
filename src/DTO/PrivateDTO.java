@@ -16,6 +16,7 @@ public class PrivateDTO {
     private Date upload_date;
     private String linkFile;
     private String linkImage;
+    private boolean load;
 
     public PrivateDTO(){}
 
@@ -28,6 +29,11 @@ public class PrivateDTO {
         this.upload_date = privat.getUpload_date();
         this.linkFile = "/rest/private/listen?id="+privat.getId();
         this.linkImage = "/rest/get/privateImage?id="+privat.getId();
+        if(this.album.equals("luaged")) {
+            this.load = true;
+        } else {
+            this.load = false;
+        }
     }
 
 
@@ -93,5 +99,13 @@ public class PrivateDTO {
 
     public void setLinkImage(String linkImage) {
         this.linkImage = linkImage;
+    }
+
+    public boolean isLoad() {
+        return load;
+    }
+
+    public void setLoad(boolean load) {
+        this.load = load;
     }
 }

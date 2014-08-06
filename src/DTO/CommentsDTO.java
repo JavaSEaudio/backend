@@ -4,6 +4,7 @@ import DAO.util.Factory;
 import Entity.CommentsEntity;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 @XmlRootElement
 public class CommentsDTO {
@@ -11,13 +12,14 @@ public class CommentsDTO {
     private String login;
     private String comment;
     private String linkAvatar;
+    private Date date;
 
     public CommentsDTO(CommentsEntity commentsEntity){
         this.id = commentsEntity.getId();
         this.login = Factory.getInstance().getUserDAO().getById(commentsEntity.getUser()).getLogin();
         this.comment = commentsEntity.getComment();
         this.linkAvatar = "/rest/get/avatar?id="+Factory.getInstance().getUserDAO().getByLogin(this.login).getId();
-
+        this.date = commentsEntity.getUpload_date();
     }
 
     public int getId() {
@@ -38,7 +40,13 @@ public class CommentsDTO {
 
     public CommentsDTO(){}
 
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getLogin() {
         return login;

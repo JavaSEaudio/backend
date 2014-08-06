@@ -88,8 +88,10 @@ public class PrivateFile {
         }
         File file = new File("C://upload//private//"+privateEntity.getId()+".mp3");
         if (file.delete()) {
-            file = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");
-            file.delete();
+            new File("C://upload//privateImage//"+privateEntity.getId()+".jpg").delete();
+            new File("C://upload//private//"+privateEntity.getId()+".tmp").delete();
+            new File("C://upload//private//"+privateEntity.getId()+".ogg").delete();
+            new File("C://upload//private//"+privateEntity.getId()+".wav").delete();
             privateDAO.delete(privateEntity);
             log.info("Delete File: " + file.getName() + " deleted");
             return Response.status(200).build();
@@ -147,6 +149,22 @@ public class PrivateFile {
             Factory.getInstance().getAudioDAO().add(audioEntity);
             File source = new File("C://upload//private//"+privateEntity.getId()+".mp3");
             File destination = new File("C://upload//audio//"+audioEntity.getId()+".mp3");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            source = new File("C://upload//private//"+privateEntity.getId()+".wav");
+            destination = new File("C://upload//audio//"+audioEntity.getId()+".wav");
+            try {
+                CopyFiles.copyFileUsingStream(source, destination);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            source = new File("C://upload//private//"+privateEntity.getId()+".ogg");
+            destination = new File("C://upload//audio//"+audioEntity.getId()+".ogg");
             try {
                 CopyFiles.copyFileUsingStream(source, destination);
 

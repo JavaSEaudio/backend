@@ -29,12 +29,14 @@ public class CommentSystem {
         if(audioEntity == null){
             return Response.status(401).entity("audio is not defined").build();
         }
+        CommentsEntity commentsEntity = new CommentsEntity(id, userid, comment);
         try {
-            Factory.getInstance().getCommentsDAO().add(new CommentsEntity(id, userid, comment));
+            Factory.getInstance().getCommentsDAO().add(commentsEntity);
         } catch (Exception e) {
             return Response.status(401).entity("length not supported").build();
         }
-        return Response.status(200).entity("success").build();
+        CommentsDTO commentsDTO = new CommentsDTO(commentsEntity);
+        return Response.status(200).entity(commentsDTO).build();
     }
 
     @GET
