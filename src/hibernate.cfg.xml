@@ -42,6 +42,7 @@
         <mapping class="Entity.RestoreEntity"/>
         <mapping class="Entity.TmpUserEntity"/>
         <mapping class="Entity.CommentsEntity"/>
+        <mapping class="Entity.TagEntity"/>
 
 
     </session-factory>

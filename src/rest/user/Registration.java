@@ -30,6 +30,10 @@ public class Registration {
             System.out.println("Bad information");
             return Response.status(400).entity("bad info").build();
         }
+        if(!StringUtil.valid(login))
+            return Response.status(400).entity("incorrect login").build();
+        if(!StringUtil.valid(email))
+            return Response.status(400).entity("incorrect email").build();
         String uniq = UserLogic.uid(20);
         try {
             String password = Crypto.MD5(passwordOne);
@@ -41,7 +45,7 @@ public class Registration {
             return Response.status(400).build();
         }
         String massege = "Hello, " + login +
-                " you are trying to register on THE BEST STORAGE EVER, go to http:/www.loacalhost:8080/rest/Registration/validation?uniq="+uniq +"to complete the operation ";
+                " you are trying to register on THE BEST STORAGE EVER, go to \nhttp://localhost:8080/rest/validation?uniq="+uniq +"   to complete the operation ";
         try {
             EmailSender.generateAndSendEmail(email, massege);
         } catch (MessagingException e) {}

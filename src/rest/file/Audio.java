@@ -3,10 +3,12 @@ package rest.file;
 import BusinessLogic.Sessions;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
+import DAO.TagDAO;
 import DTO.AudioDTO;
 import DTO.GetListDTO;
 import Entity.AudioEntity;
 import DAO.util.Factory;
+import Entity.TagEntity;
 import org.apache.log4j.Logger;
 import util.StringUtil;
 
@@ -45,58 +47,55 @@ public class Audio {
         return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
     }
 
-    @GET
+    @POST
     @Path("/search")
+//    @Consumes({"application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response search(@QueryParam("criterion") String criterion,
+    public Response search(@FormParam("criterion") String criterion,
                            @CookieParam("name") String uid,
-                           @QueryParam("count") int count,
-                           @QueryParam("page") int page) {
+                           @FormParam("count") Integer count,
+                           @FormParam("page") Integer page) {
+
+        if(count == null) count = 10;
+        if(page == null) page = 1;
         if(count > 100) count = 100;
-        criterion = StringUtil.parse(criterion);
-        int userid = Sessions.uid(uid);
-        List<AudioEntity> audio = new ArrayList<AudioEntity>();
-        ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
-        AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-        try {
-            audio.addAll( aDAO.search(criterion, (count * (page - 1)), count) );
-        } catch (Exception e) {
-            log.info("Audio Search: exception");
+        if(criterion == null){
+            return Response.status(405).entity("null").build();
         }
-        if (audio.size() == 0) {
-            String[] parts = criterion.split(" ");
-            List<AudioEntity>[] lists = new List[parts.length];
-            for (int i = 0; i < parts.length; i ++) {
-                lists[i] = (List)aDAO.search(parts[i], (count * (page - 1)), count);
-            }
-            boolean flag;
-            for (int i = 1; i < parts.length; i ++) {
-                            for (int j = 0; j < parts.length; j ++) {
-                                flag = false;
-                                for (int q = 0; q < parts.length; q ++) {
-                                    if (lists[0].get(j).getName().equals(lists[1].get(q).getName())) {
-                                        flag = true;
-                                        continue;
-                                    }
-                    }
-                    if (!flag) {
-                        lists[0].remove(j);
-                    }
+        if (criterion.charAt(0) == '#') {
+            ArrayList<String> tags = StringUtil.tagParse(criterion);
+            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+            int userID = sessionDAO.haveKey(uid);
+            List<AudioEntity> audio = new ArrayList<AudioEntity>();
+            ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
+            TagDAO tDAO = Factory.getInstance().getTagDAO();
+            AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+            List<TagEntity> tagEntities = new ArrayList<TagEntity>();
+            //System.out.println(tags.size());
+            if (tags.size() == 1){
+                for (int i = 0; i < tDAO.getByName(tags.get(0)).addAudioIdsArray().size(); i ++) {
+                    audio.add(aDAO.getById(tDAO.getByName(tags.get(0)).addAudioIdsArray().get(i)));
                 }
+                audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID);
+                return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
             }
-            audio = lists[0];
-        }if (audio.size() == 0) {
-            String[] parts = criterion.split(" ");
-            List<AudioEntity>[] lists = new List[parts.length];
-            for (int i = 0; i < parts.length; i ++) {
-                lists[i] = (List)aDAO.search(parts[i], (count * (page - 1)), count);
+            for (int i = 0; i < tags.size(); i ++) {
+                System.out.println(tDAO.getById(1).getName());
+                tagEntities.add(tDAO.getByName(tags.get(i)));
+                //tagEntities.add(tDAO.getById(1));
+            }
+            List<Integer>[] lists = new List[tags.size()];
+            //System.out.println(tags.size());
+            for (int i = 0; i < tags.size(); i ++) {
+                System.out.println(tagEntities.get(i).getName());
+                lists[i] = tagEntities.get(i).addAudioIdsArray();
             }
             boolean flag;
-            for (int i = 1; i < parts.length; i ++) {
-                for (int j = 0; j < parts.length; j ++) {
+            for (int i = 1; i < tags.size(); i ++) {
+                for (int j = 0; j < lists[0].size(); j ++) {
                     flag = false;
-                    for (int q = 0; q < parts.length; q ++) {
-                        if (lists[0].get(j).getName().equals(lists[1].get(q).getName())) {
+                    for (int q = 0; q < lists[i].size(); q ++) {
+                        if (lists[0].get(j) == lists[i].get(q)) {
                             flag = true;
                             continue;
                         }
@@ -106,10 +105,71 @@ public class Audio {
                     }
                 }
             }
-            audio = lists[0];
+            for (int i = 0; i < lists[0].size(); i ++) {
+                audio.add(aDAO.getById(lists[0].get(i)));
+            }
+            audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID);
+            return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
+
+        } else {
+            SessionDAO sessionDAO = Factory.getInstance().getSessionDAO();
+            int userID = sessionDAO.haveKey(uid);
+            List<AudioEntity> audio = new ArrayList<AudioEntity>();
+            ArrayList<AudioDTO> audioDTOs = new ArrayList<AudioDTO>();
+            AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+            try {
+                audio.addAll( aDAO.search(criterion, (count * (page - 1)), count) );
+            } catch (Exception e) {
+                log.info("Audio Search: exception");
+            }
+            if (audio.size() == 0) {
+                String[] parts = criterion.split(" ");
+                List<AudioEntity>[] lists = new List[parts.length];
+                for (int i = 0; i < parts.length; i ++) {
+                    lists[i] = (List)aDAO.search(parts[i], (count * (page - 1)), count);
+                }
+                boolean flag;
+                for (int i = 1; i < parts.length; i ++) {
+                    for (int j = 0; j < parts.length; j ++) {
+                        flag = false;
+                        for (int q = 0; q < parts.length; q ++) {
+                            if (lists[0].get(j).getName().equals(lists[1].get(q).getName())) {
+                                flag = true;
+                                continue;
+                            }
+                        }
+                        if (!flag) {
+                            lists[0].remove(j);
+                        }
+                    }
+                }
+                audio = lists[0];
+            }if (audio.size() == 0) {
+                String[] parts = criterion.split(" ");
+                List<AudioEntity>[] lists = new List[parts.length];
+                for (int i = 0; i < parts.length; i ++) {
+                    lists[i] = (List)aDAO.search(parts[i], (count * (page - 1)), count);
+                }
+                boolean flag;
+                for (int i = 1; i < parts.length; i ++) {
+                    for (int j = 0; j < parts.length; j ++) {
+                        flag = false;
+                        for (int q = 0; q < parts.length; q ++) {
+                            if (lists[0].get(j).getName().equals(lists[1].get(q).getName())) {
+                                flag = true;
+                                continue;
+                            }
+                        }
+                        if (!flag) {
+                            lists[0].remove(j);
+                        }
+                    }
+                }
+                audio = lists[0];
+            }
+            audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID);
+            return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
         }
-        audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid);
-        return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
     }
 
     @GET

@@ -1,12 +1,12 @@
 <h1 class="h1">Play and buy good music</h1>
 <ul class="sort">sort by
     <li><a href="/">DATE</a></li>
-    <!--<li>Price</li>-->
+    <li><a href="/#/audio/getfree">FREE</a></li>
     <li><a href="/#/audio/getbyrate">Rating</a></li>
 </ul>
 
 <div id="content-music">
-    <div class="music clearfix" ng-repeat="music in songs">
+    <div ng-repeat="music in songs" ng-animate="{enter: 'animate-enter'}" class="music clearfix repeat-item">
         <div class="img" ng-click="play(music);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
         <div class="right">
             <div class="h3">
@@ -22,3 +22,5 @@
         </div>
     </div>
 </div>
+
+<div class="button" style="width:100%" ng-click="loadMore();">See more music</div>

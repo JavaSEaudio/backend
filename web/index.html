@@ -10,8 +10,10 @@
     <script src="http://malsup.github.com/jquery.form.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/ng-route.js"></script>
+    <script src="js/angular-animate.min.js"></script>
     <script src="js/ng/app.functions.js"></script>
     <script src="js/ng/app.main.js"></script>
+    <script src="js/ng/app.profile.js"></script>
     <script src="js/main.js"></script>
 </head>
 <body>
@@ -37,7 +39,7 @@
 		<div class="header__search container">
             <form action="" class="search-form">
                 <input id="search-text" type="text" placeholder="SEARCH" ng-model="searchQuery" ng-keyup="search(searchQuery);" ng-enter="search(searchQuery);">
-                {{search.searchQuery}}
+
             </form>
 		</div>
 	</div>

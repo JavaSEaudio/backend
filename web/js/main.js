@@ -10,7 +10,7 @@ $(function() {
 });
 
 
-var app = angular.module("app", ["ngRoute", "app.controllers", "app.startup"]);
+var app = angular.module("app", ["ngRoute",'ngAnimate', "app.controllers", "app.startup"]);
 
 app.config(['$routeProvider',
     function($routeProvider) {
@@ -27,6 +27,10 @@ app.config(['$routeProvider',
                 templateUrl: 'partials/music.html',
                 controller: 'audio.getbyrate'
             }).
+            when('/audio/getfree', {
+                templateUrl: 'partials/music.html',
+                controller: 'audio.getfree'
+            }).
             when('/song/:musicId', {
                 templateUrl: 'partials/song.html',
                 controller: 'song'
@@ -39,7 +43,7 @@ app.config(['$routeProvider',
                 templateUrl : "partials/profile.html",
                 controller: "profile.user"
             }).
-            when("/profile/pwd/:user", {
+            when("/profile/pwd/:uniq", {
                 templateUrl : "partials/pwd.html",
                 controller: "profile.pwd"
             }).
@@ -59,6 +63,10 @@ app.config(['$routeProvider',
             when("/profile/edit", {
                 templateUrl : "partials/profile.edit.html",
                 controller: "profile.edit"
+            }).
+            when("/profile/confirm/email/:uniq", {
+                templateUrl : "partials/confirm-email.html",
+                controller: "profile.confirm.email"
             }).
             //Audio
             when("/audio/upload", {

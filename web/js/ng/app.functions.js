@@ -14,6 +14,7 @@ startup.directive('ngEnter', function () {
     };
 });
 
+
 startup.filter("timeFilter", function() {
     return function(time) {
           var m = Math.round(time / 60); // Минуты
@@ -38,7 +39,7 @@ startup.run(function($interval, $rootScope, $http, $location) {
 
     $rootScope._debug = function(e) {
         console.log(e);
-    }
+    };
 
     $http.get("/rest/test/check").success(function(data) {
         $rootScope.logined = "false" !== data;
@@ -51,14 +52,16 @@ startup.run(function($interval, $rootScope, $http, $location) {
 
     // Покупка
     $rootScope.buy = function(music) {
-        $http.get("/rest/buy/audio?audioID="+music.id).success(function(data) {
-            console.log("Куплено!");
-            alert("Куплено!");
-            window.location.replace("/");
-            $http.get("/rest/user/mylogin").success(function(data) {
-                console.log(data);
+        if(confirm("Are you sure?")) {
+            $http.get("/rest/buy/audio?audioID=" + music.id).success(function (data) {
+                console.log("Куплено!");
+                alert("Куплено!");
+                window.location.replace("/");
+                $http.get("/rest/user/mylogin").success(function (data) {
+                    console.log(data);
+                });
             });
-        });
+        }
     };
 
     $rootScope.like = function(music) {
@@ -72,7 +75,7 @@ startup.run(function($interval, $rootScope, $http, $location) {
         $location.path("/audio/edit/" + music.id);
     };
 
-    //Player
+    // --------------------- Player -----------------------------------------
     $rootScope.player = {
         node: $("#player audio")[0],
         setMusic: function(cm) {
@@ -110,9 +113,20 @@ startup.run(function($interval, $rootScope, $http, $location) {
 
 
     $rootScope.play = function(music) {
-        $rootScope.player.setMusic(music);
-        $rootScope.player.play();
+        if($rootScope.player.currentMusic === music) {
+            if(!$rootScope.player.node.paused) {
+                console.log("PAUSE");
+                $rootScope.player.node.pause();
+            } else {
+                console.log("PLAY");
+                $rootScope.player.node.play();
+            }
+        } else {
+            $rootScope.player.setMusic(music);
+            $rootScope.player.play();
+        }
     };
+    // --------------------------------------------------------------------------------------
 
     // Search
     $rootScope.search = function(q) {

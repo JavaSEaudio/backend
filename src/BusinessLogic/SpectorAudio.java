@@ -2,8 +2,6 @@ package BusinessLogic;
 
 
 import com.beaglebuddy.mp3.MP3;
-import krister.Ess.AudioChannel;
-import krister.Ess.AudioInput;
 
 
 import javax.sound.sampled.AudioInputStream;

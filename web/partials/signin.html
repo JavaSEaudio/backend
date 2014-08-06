@@ -1,15 +1,14 @@
-Sign in
+<h1 class="h1">Sign in</h1>
 <form action="/rest/Login" method="POST" id="login-form">
     <input type="text" name="login"><br>
     <input type="password" name="password"><br>
-    <input type="submit" value="Sign In">
+    <input type="submit" value="Sign In" class="button">
 </form>
-<a href="/rest/pwd"></a>
 
-<form action="/rest/pwd">
-    Input E-Mail for recover password
-    <input type="email" name="email" placeholder="E-mail">
-    <input type="submit" ng-click="login();"/>
+<form action="/rest/password/forgot">
+    <h2 class="h2">Input E-Mail for recover password</h2>
+    <input type="email" name="email" placeholder="E-mail"><br>
+    <input class="button" type="submit" ng-click="login();"/>
 </form>
 
 <script>

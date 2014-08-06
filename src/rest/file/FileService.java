@@ -2,6 +2,8 @@ package rest.file;
 
 import java.io.*;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -9,16 +11,15 @@ import BusinessLogic.FileOperation;
 import BusinessLogic.Sessions;
 import DAO.AudioDAO;
 import DAO.SessionDAO;
+import DAO.TagDAO;
 import Entity.AudioEntity;
 import Entity.PrivateEntity;
+import Entity.TagEntity;
 import Entity.UserEntity;
 import com.sun.jersey.multipart.FormDataParam;
 import DAO.util.Factory;
 import org.apache.log4j.Logger;
-import util.CopyFiles;
-import util.Cut;
-import util.FileWrite;
-import util.ProjectPath;
+import util.*;
 
 
 @Path("/file")
@@ -157,17 +158,17 @@ public class FileService {
         int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("DUpload Image: not logged in");
-            return Response.status(201).entity("You can't edit file! Please sign in!!!").build();
+            return Response.status(401).entity("You can't edit file! Please sign in!!!").build();
         }
         AudioEntity audioEntity = Factory.getInstance().getAudioDAO().getById(idA);
         if (userid != audioEntity.getUserid()) {
             UserEntity user = Factory.getInstance().getUserDAO().getById(userid);
             if (user.getAccess() < 1) {
                 log.info("Delete File: not access");
-                return Response.status(200).entity("You can't edit this file!!").build();
+                return Response.status(402).entity("You can't edit this file!!").build();
             }
         }
-        String uploadImageLocation = ProjectPath.getPath() + "image//" + idA + ".jpg";
+        String uploadImageLocation = "C://upload//image//" + idA + ".jpg";
         try {
             FileWrite.writeToFile(uploadImageStream, uploadImageLocation);
         } catch (Exception e) {
@@ -268,7 +269,35 @@ public class FileService {
         }
         if ((comment != null) || (!comment.equals(""))) {
             try {
+                TagDAO tDAO = Factory.getInstance().getTagDAO();
+                List<String> s = new ArrayList<String>();
+                String result = "";
+                s.addAll(StringUtil.tagParse(comment));
+                System.out.println(s);
                 fileEdit.setComments(comment);
+                for (int i = 0; i < s.size(); i ++) {
+                    if (i == s.size() - 1) {
+                        result += s.get(i);
+                        break;
+                    }
+                    result += s.get(i) + " ";
+                }
+                if (result != null) {
+                    for (int i = 0; i < s.size(); i ++) {
+                        if (tDAO.getByName(s.get(i)) == null) {
+                            TagEntity tag = new TagEntity(s.get(i));
+                            tag.addAudioIds(id);
+                            tDAO.add(tag);
+                        }
+                        else {
+                            TagEntity tag = tDAO.getByName(s.get(i));
+                            tag.addAudioIds(id);
+                            tDAO.change(tag);
+                        }
+                    }
+                }
+
+                //fileEdit.setGenre(result);
 
             } catch (Exception e) {}
             audioEntity.setComment(comment);
@@ -276,6 +305,21 @@ public class FileService {
 
         if ((genre != null) || (!genre.equals(""))) {
             try {
+                TagDAO tDAO = Factory.getInstance().getTagDAO();
+                String result = "";
+                String[] s = genre.split(" ");
+                for (int i = 0; i < s.length; i ++) {
+                    if (tDAO.getByName(s[i]) == null) {
+                        TagEntity tag = new TagEntity(s[i]);
+                        tag.addAudioIds(id);
+                        tDAO.add(tag);
+                    }
+                    else {
+                        TagEntity tag = tDAO.getByName(s[i]);
+                        tag.addAudioIds(id);
+                        tDAO.change(tag);
+                    }
+                }
                 fileEdit.setGenre(genre);
 
             } catch (Exception e) {}

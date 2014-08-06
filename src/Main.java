@@ -13,17 +13,12 @@ import util.Cut;
 import util.StringUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(final String[] args) throws Exception {
-//        createDB();
-        String path = new String();
-//        for(int i = 1; i <= 21; i++){
-            path = "C://upload//audio//13.mp3";
-//            Cut.file(path);
-//        }
-//        System.out.println("the end");
+        createDB();
         return;
     }
 

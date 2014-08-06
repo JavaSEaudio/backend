@@ -44,10 +44,10 @@ public class Mailings {
                 System.out.println(message);
                 EmailSender.generateAndSendEmail(user.getEmail(), "Hi, " + user.getName() + "!\n" +
                         "Here are current newest 10 audios:\n" +message +
-                        "join our site and listen them up! http://www.cacophony.com");
+                        "join our site and listen them up! http://localhost:8080/");
                 System.out.println("Hi, " + user.getName() + "!\n" +
                         "Here are current newest 10 audios:\n" +message +
-                        "join our site and listen them up! http://www.cacophony.com");
+                        "join our site and listen them up! http://localhost:8080/");
             }
             System.out.println("Success in sending email");
             return Response.ok().status(200).build();

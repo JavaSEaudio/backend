@@ -37,12 +37,14 @@ public class CommentsDAO {
         return dao.getById(CommentsEntity.class, id);
     }
 
-    public List<CommentsEntity> getByAudio(int id) {
+    public List<CommentsEntity> getByAudio(int id, int first, int second) {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM CommentsEntity WHERE audio = :audio");
             query.setInteger("audio", id);
+            query.setFirstResult(first);
+            query.setMaxResults(second);
             List<CommentsEntity> commentEntity = null;
             commentEntity = (List<CommentsEntity>) query.list();
             session.getTransaction().commit();

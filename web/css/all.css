@@ -4,6 +4,14 @@ html, body {
 	min-height: 100%;
 }
 
+input[type=text], input[type=email], input[type=password] {
+    padding: 5px;
+    min-width: 300px;
+    border: 1px solid #ccc;
+    font-size: 20px;
+    font-family: "Myriad Pro", sans-serif;
+}
+
 .clearfix:after {
 	visibility: hidden;
 	height: 0;
@@ -299,4 +307,35 @@ footer {
 #player .album {
     height: 50px;
     width: 50px;
+}
+
+
+/* ---------------------------- ANIMATION ---------------------------- */
+
+/* you can also define the transition style
+   on the base class as well (.repeat-item) */
+.repeat-item.ng-enter,
+.repeat-item.ng-leave {
+    -webkit-transition:0.5s linear all;
+    transition:0.5s linear all;
+}
+
+.repeat-item.ng-enter,
+.repeat-item.ng-leave.ng-leave-active {
+    opacity:0;
+}
+.repeat-item.ng-leave,
+.repeat-item.ng-enter.ng-enter-active {
+    opacity:1;
+}
+
+.comments .comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.comments .comment .login img {
+    height: 20px;
+    width: 20px;
 }

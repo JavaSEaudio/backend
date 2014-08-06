@@ -5,6 +5,7 @@ import DAO.AudioDAO;
 import DAO.util.Factory;
 import Entity.AudioEntity;
 import Entity.UserEntity;
+import util.StringUtil;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -45,6 +46,49 @@ public class Test {
             }
         }
         return Response.ok("true").build();
+    }
+
+    @GET
+    @Path("/checkUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response user(@FormParam(value = "login") String login) {
+        if(login == null)
+            return Response.status(401).entity("false").build();
+        if(login.length() < 3)
+            return Response.status(402).entity("false").build();
+        if(!StringUtil.valid(login))
+            return Response.status(403).entity("false").build();
+        if(!StringUtil.validLogin(login))
+            return Response.status(405).entity("false").build();
+        return Response.status(200).entity("true").build();
+    }
+
+    @GET
+    @Path("/checkMail")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response mail(@FormParam(value = "mail") String login) {
+        if(login == null)
+            return Response.status(401).entity("false").build();
+        if(login.length() < 3)
+            return Response.status(402).entity("false").build();
+        if(!StringUtil.valid(login))
+            return Response.status(403).entity("false").build();
+        return Response.status(200).entity("true").build();
+    }
+
+    @GET
+    @Path("/checkPass")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response pass(@FormParam(value = "passOne") String passOne,
+                         @FormParam(value = "passTwo") String passTwo) {
+        if(passOne == null)
+            return Response.status(401).entity("false").build();
+        if(passOne.length() < 3)
+            return Response.status(402).entity("false").build();
+        if(!passOne.equals(passTwo))
+            return Response.status(403).entity("false").build();
+
+        return Response.status(200).entity("true").build();
     }
 
 

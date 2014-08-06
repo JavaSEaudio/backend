@@ -6,7 +6,6 @@
             <li>Name: {{song.name}}</li>
             <li>Artist: {{song.artist}}</li>
             <li>Album: {{song.album}}</li>
-            <li>Uploaded: {{song.upload_date}}</li>
             <li>Genre: {{song.genre}}</li>
             <li>Comment: {{song.comment}}</li>
             <li>Price: {{song.price}}$</li>
@@ -21,9 +20,35 @@
         </ul>
         <div class="button" ng-show="logined && (song.buy)" ng-click="buy(song);">BUY</div>
         <div class="button" ng-show="logined && song.edit" ng-click="edit(song)">Edit</div>
+        <br>
 
-        <a href="{{song.linkFile}}" ng-show="logined && (!song.buy || song.edit)"><div class="button">DOWNLOAD</div></a>
+        <form ng-show="logined && (!song.buy || song.edit)" action="/rest/get/audio">
+            <select name="ext" ng-model="ext">
+                <option value="mp3">mp3</option>
+                <option value="wav">wav</option>
+                <option value="flac">flac</option>
+                <option value="ogg">ogg</option>
+            </select>
+            <input type="hidden" name="id" value="{{song.id}}">
+            <input class="button" type="submit" value="DOWNLOAD">
+        </form>
+        </div>
 
+    <form action="/rest/comment/put" method="post">
+        <input type="hidden" name="audio" value="{{song.id}}">
+        <textarea name="comment" cols="30" rows="10"></textarea>
+        <input type="submit"/>
+    </form>
 
+    <div class="comments">
+        <div class="comment clearfix" ng-repeat="comment in comments">
+            <div class="login"><a href="{{'/#/profile/user/' + comment.login}}">
+                <img ng-src="{{comment.linkAvatar}}" alt=""/>{{comment.login}}
+            </a>
+        </div>
+            <div ng-click="deleteComment(comment)" class="button" style="float: right">DELETE</div>
+            {{comment.comment}}
+        </div>
     </div>
+
 </div>

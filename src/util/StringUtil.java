@@ -1,5 +1,7 @@
 package util;
 
+import DAO.util.Factory;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,6 +10,14 @@ public class StringUtil {
 
     private static final Pattern UUID_PATTERN = Pattern.compile("^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$");
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[а-яА-ЯёЁa-zA-Z0-9_-]{3,15}$");       //("^[a-z0-9_-]{3,15}$");
+
+    public static boolean valid(String login){
+        if(Factory.getInstance().getUserDAO().getByEmail(login) != null) return false;
+        if(Factory.getInstance().getUserDAO().getByLogin(login) != null) return false;
+        if(Factory.getInstance().getTmpUserDAO().isEmail(login) != null) return false;
+        if(Factory.getInstance().getTmpUserDAO().isLogin(login) != null) return false;
+        return true;
+    }
 
     public static boolean minMaxLength(String str, int minLen, int maxLen)  {       //@return true if string is valid
         Pattern pattern = Pattern.compile("\\s");                                   //----contain whitespace
