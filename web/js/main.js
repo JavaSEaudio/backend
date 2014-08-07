@@ -23,6 +23,10 @@ app.config(['$routeProvider',
                     templateUrl: 'partials/private.music.html',
                     controller: 'audio.private'
             }).
+            when('/audio/buylist', {
+                templateUrl: 'partials/music.html',
+                controller: 'audio.buylist'
+            }).
             when('/audio/getbyrate', {
                 templateUrl: 'partials/music.html',
                 controller: 'audio.getbyrate'

@@ -14,12 +14,12 @@
 <script>
     $("#audio-edit").ajaxForm({
         success: function(d) {
-            alert("Информация обновлена!");
+            alertify.alert("Information was updated!");
             console.log(d);
         },
         error: function(d) {
             console.log(d);
-            alert("Ошибка! Печаль, беда");
+            alertify.error("Error.");
         }
     });
 </script>

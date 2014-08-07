@@ -29,7 +29,9 @@ public class Artist {
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             artistDTO = GetListDTO.getListArtistDTO(aDAO.getArtistAll(count*(page-1), count));
-        } catch(Exception e) {}
+        } catch(Exception e) {
+            System.out.println("Trouble");
+        }
         return Response.ok(new GenericEntity<ArrayList<ArtistDTO>>
                 ((ArrayList<ArtistDTO>)artistDTO){}).build();
     }
@@ -41,18 +43,25 @@ public class Artist {
                                @QueryParam("count") Integer count,
                                @QueryParam("page") Integer page
     ) {
+
         if(count == null) count = 10;
         if(page == null) page = 1;
         if(count > 100) count = 100;
-        List<AlbumsDTO> artistDTO = new ArrayList<AlbumsDTO>();
+
+
+        List<AlbumsDTO> albumDTO = new ArrayList<AlbumsDTO>();
+
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-            artistDTO = GetListDTO.getListAlbumsDTO(
-                    aDAO.getbyArtistAlbum(artist, count * (page - 1), count)
+            if(artist == null) {
+                albumDTO = aDAO.getAlbums(count * (page - 1), count);
+            }
+            albumDTO = GetListDTO.getListAlbumsDTO(
+                    aDAO.getbyArtistAlbum(artist, count * (page - 1), count), artist
             );
         } catch(Exception e) {}
         return Response.ok(new GenericEntity<ArrayList<AlbumsDTO>>
-                ((ArrayList<AlbumsDTO>)artistDTO){}).build();
+                ((ArrayList<AlbumsDTO>)albumDTO){}).build();
     }
 
     @GET
@@ -68,15 +77,15 @@ public class Artist {
         if(count == null) count = 10;
         if(page == null) page = 1;
         if(count > 100) count = 100;
-        List<AudioDTO> artistDTO = new ArrayList<AudioDTO>();
+        List<AudioDTO> audioDTO = new ArrayList<AudioDTO>();
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-            artistDTO = GetListDTO.getListAudioDTO(aDAO.getbyAlbumTracks(
+            audioDTO = GetListDTO.getListAudioDTO(aDAO.getbyAlbumTracks(
                     album, artist, count * (page - 1), count
             ), userid);
 
         } catch(Exception e) {}
         return Response.ok(new GenericEntity<ArrayList<AudioDTO>>
-                ((ArrayList<AudioDTO>)artistDTO){}).build();
+                ((ArrayList<AudioDTO>)audioDTO){}).build();
     }
 }

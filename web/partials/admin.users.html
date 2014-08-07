@@ -4,14 +4,14 @@
         <td>ID</td>
         <td>Login</td>
         <td>User Name</td>
-        <td>E-Mail</td>
+        <!--<td>E-Mail</td>-->
         <td>Ban</td>
     </tr>
     <tr ng-repeat="user in users" ng-click="userPage(user);">
         <td>{{user.id}}</td>
         <td>{{user.login}}</td>
         <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
+        <!--<td>{{user.email}}</td>-->
         <td>
             <div ng-click="ban(user)" ng-hide="user.banned" class="button">Kill</div>
             <div class="button" ng-show="user.banned" ng-click="unban(user)">Pardon</div>

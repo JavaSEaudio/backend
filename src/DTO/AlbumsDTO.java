@@ -8,12 +8,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AlbumsDTO {
     private String album;
     private int tracks;
+    private String artist;
 
     public AlbumsDTO(){}
 
-    public AlbumsDTO(String album) {
+    public AlbumsDTO(String album, String artist) {
         this.album = album;
-        this.tracks = Factory.getInstance().getAudioDAO().getbyAlbumTracks(album, 0, Integer.MAX_VALUE).size();
+        this.artist = artist;
+        this.tracks = Factory.getInstance().getAudioDAO().getbyAlbumTracks(album, artist, 0, Integer.MAX_VALUE).size();
     }
 
     public String getAlbum() {
@@ -30,5 +32,13 @@ public class AlbumsDTO {
 
     public void setTracks(int tracks) {
         this.tracks = tracks;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 }

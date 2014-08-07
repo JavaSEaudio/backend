@@ -63,10 +63,10 @@ public class GetListDTO {
         return result;
     }
 
-    public static List<AlbumsDTO> getListAlbumsDTO(List<String> album) {
+    public static List<AlbumsDTO> getListAlbumsDTO(List<String> album, String artist) {
         ArrayList<AlbumsDTO> result = new ArrayList<AlbumsDTO>();
         for(String art : album) {
-            AlbumsDTO uDro = new AlbumsDTO(art);
+            AlbumsDTO uDro = new AlbumsDTO(art, artist);
             result.add(uDro);
         }
         return result;

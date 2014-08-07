@@ -1,5 +1,6 @@
 package rest.user;
 
+import BusinessLogic.Sessions;
 import DAO.SessionDAO;
 import DAO.UserDAO;
 import DTO.GetListDTO;
@@ -53,16 +54,21 @@ public class GetUser {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllUsers() {
-        UserDAO userDAO = Factory.getInstance().getUserDAO();
-        try {
-            ArrayList<UserDTO> users = (ArrayList<UserDTO>) GetListDTO.getListUserDTO(userDAO.getAll());
-            log.info("GetUser ALL: success");
-            return Response.ok(new GenericEntity<ArrayList<UserDTO>>(users){}).build();
-        } catch (Exception e) {
-            log.info("GetUser ALL: exception");
-            return null;
+    public Response getAllUsers(@CookieParam("name") String uid) {
+        int userid = Sessions.uid(uid);
+        if(Factory.getInstance().getUserDAO().getById(userid).getAccess() == 2) {
+            UserDAO userDAO = Factory.getInstance().getUserDAO();
+            try {
+                ArrayList<UserDTO> users = (ArrayList<UserDTO>) GetListDTO.getListUserDTO(userDAO.getAll());
+                log.info("GetUser ALL: success");
+                return Response.ok(new GenericEntity<ArrayList<UserDTO>>(users) {
+                }).build();
+            } catch (Exception e) {
+                log.info("GetUser ALL: exception");
+                return null;
+            }
         }
+        return Response.status(400).entity("not access").build();
     }
 
      @GET

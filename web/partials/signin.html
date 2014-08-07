@@ -1,29 +1,52 @@
 <h1 class="h1">Sign in</h1>
 <form action="/rest/Login" method="POST" id="login-form">
-    <input type="text" name="login"><br>
-    <input type="password" name="password"><br>
+    <input placeholder="Login" type="text" name="login"><br>
+    <input placeholder="Password" type="password" name="password"><br>
     <input type="submit" value="Sign In" class="button">
 </form>
 
-<form action="/rest/password/forgot">
+<form id="forgot-pass" action="/rest/password/forgot">
     <h2 class="h2">Input E-Mail for recover password</h2>
     <input type="email" name="email" placeholder="E-mail"><br>
-    <input class="button" type="submit" ng-click="login();"/>
+    <input class="button" type="submit"/>
 </form>
+
+<script>
+    $("#forgot-pass").ajaxForm({
+        statusCode:  {
+            200: function() {
+                alertify.success("Check your e-mail!");
+                console.log("success", d);
+            }
+        }/*,
+        success: function(d) {
+            alertify.success("Check your e-mail!");
+            console.log("success", d);
+        },
+        error: function(d) {
+            console.log("error", d);
+            alertify.error("Unknown e-mail!");
+        }*/
+    });
+</script>
+
 
 <script>
     $("#login-form").ajaxForm({
         success: function(d) {
             console.log(d);
             if(d == false) {
-                alert("Данные не верны!");
+                alertify.error("Your password or login is incorrect.");
             } else {
-                window.location.replace("/");
+                var scope = angular.element($("#login-form")).scope();
+                console.log(scope);
+                scope.login();
             }
         },
-        error: function(d) {
-            console.log(d);
-            alert("Ошибка, данные не верны!");
+        statusCode: {
+            400: function() {
+                alertify.error("Your are already sign in.");
+            }
         }
     });
 </script>

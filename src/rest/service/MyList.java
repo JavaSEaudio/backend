@@ -45,7 +45,9 @@ public class MyList {
         arrayList = new ArrayList<AudioDTO>(list.subList(count*(page-1), count*page));
         return Response.ok(new GenericEntity<ArrayList<AudioDTO>>(arrayList){}).build();
     }
+    @GET
     @Path("/buy")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response buylist(@CookieParam("name") String uid,
                            @QueryParam("count") Integer count,
                            @QueryParam("page") Integer  page) {
@@ -61,6 +63,14 @@ public class MyList {
         for(int id : userDTO.getBuyListArray()) {
             list.add(new AudioDTO(Factory.getInstance().getAudioDAO().getById(id), userid));
         }
-        return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)list.subList(count*(page-1) ,count*page)){}).build();
+        ArrayList<AudioDTO> arrayList;
+        if(count * (page-1) >= list.size())
+            return Response.ok(null).build();
+        if(count * page >= list.size()){
+            arrayList = new ArrayList<AudioDTO>(list.subList(count*(page-1),list.size()));
+            return Response.ok(new GenericEntity<ArrayList<AudioDTO>>(arrayList){}).build();
+        }
+        arrayList = new ArrayList<AudioDTO>(list.subList(count*(page-1), count*page));
+        return Response.ok(new GenericEntity<ArrayList<AudioDTO>>(arrayList){}).build();
     }
 }

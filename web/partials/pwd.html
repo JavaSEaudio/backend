@@ -1,6 +1,25 @@
 <h1 class="h1">Restore password</h1>
-<form ng-show="showPWD" action="{{'/rest/password/change?uniq=' + uniq}}" method="POST">
+<form id="pwd-form" ng-show="showPWD" action="{{'/rest/password/change?uniq=' + uniq}}" method="POST">
 	<input placeholder="Input new password" type="password" name="passOne">
 	<input placeholder="Input new password" type="password" name="passTwo">
 	<input type="submit">
 </form>
+
+<script>
+    $("#pwd-form").ajaxForm({
+        /*success: function(d) {
+            alertify.alert("Password was recover!");
+            console.log(d);
+        },
+        error: function(d) {
+            console.log(d);
+            alertify.alert("Unknown e-mail!");
+        }*/
+        statusCode:  {
+            200: function() {
+                alertify.success("Password was recover!");
+                console.log("success", d);
+            }
+        }
+    });
+</script>

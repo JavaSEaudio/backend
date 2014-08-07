@@ -15,17 +15,35 @@ main.controller("main", function($location, $rootScope, $scope, $http) {
         });
     };
 
+    angular.element($(window)).bind("scroll", function() {
+        console.log("!!!");
+        if($(window).scrollY +  $(window).innerHeight > $("body").height() - 100) {
+            $scope.loadMore();
+        }
+    });
+
     $scope.loadMore();
 
     $rootScope.searchQuery = "";
 
 });
 
-main.controller("audio.getbyrate", function($scope, $http) {
-    $http.get("/rest/rate/like").success(function(data) {
-        $scope.songs = data.audioDTO;
-        console.log("Songs was updated.");
-    });
+main.controller("audio.getbyrate", function($rootScope, $scope, $http) {
+
+    $scope.songs = [];
+    var counter = 1;
+
+    $rootScope.loadMore = function() {
+        $http.get("/rest/rate/like?count=5&page=" + counter).success(function(data) {
+            $scope.songs = $scope.songs.concat(data.audioDTO);
+            counter++;
+        });
+    };
+
+
+
+    $rootScope.loadMore();
+
 });
 
 
@@ -36,9 +54,16 @@ main.controller("audio.getfree", function($scope, $http) {
     });
 });
 
+main.controller("audio.buylist", function($http, $scope) {
+    $http.get("/rest/list/buy").success(function(data) {
+        $scope.songs = data.audioDTO;
+    });
+});
+
 
 //Song page
-main.controller("song", function($location, $scope, $http, $routeParams) {
+main.controller("song", function($rootScope, $location, $scope, $http, $routeParams) {
+    $rootScope.loadMore = undefined;
     $http.get("rest/audio/getbyid?id=" + $routeParams.musicId)
         .success(function(data) {
             $scope.song = data.audioDTO;
@@ -68,10 +93,20 @@ main.controller("song", function($location, $scope, $http, $routeParams) {
                     });
             }
         }
-
-
-
     });
+
+//    $http.get("/rest/spect/fft?idAudio=" + $routeParams.musicId)
+//        .success(function(data) {
+//            var maxValue = Math.max.apply(Math, data);
+//            var canvas = document.getElementById("audio-visual");
+//            var c = canvas.getContext("2d");
+//            for(var i = 0; i < 512; ++i) {
+//                c.beginPath();
+//                c.fillStyle = "#ccc";
+//                c.rect(i, canvas.height - data[i] / maxValue * canvas.height, 1, data[i] / maxValue * canvas.height);
+//                c.fill();
+//            }
+//        });
 
 });
 
@@ -89,7 +124,7 @@ main.controller("audio.edit", function($location, $scope, $http, $routeParams) {
 
     $scope.audioDelete = function(song) {
         $http.get("/rest/file/delete?id=" + song.id).success(function(data) {
-            alert("Audio was deleted!");
+            alertify.alert("Audio was deleted!");
             $location.path("/");
         });
     };
@@ -150,7 +185,7 @@ main.controller("private.audio.edit", function($routeParams, $scope, $http) {
 
     $scope.audioDelete = function(song) {
         $http.get("/rest/private/file/delete?id=" + song.id).success(function(data) {
-            alert("Audio was deleted!");
+            alertify.alert("Audio was deleted!");
             $location.path("/");
         });
     };

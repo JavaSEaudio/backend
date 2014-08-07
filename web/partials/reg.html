@@ -1,26 +1,34 @@
-<h1 class="h1">Registration</h1>
-<form action="/rest/Registration" method="POST" id="reg-form">
-    <input ng-keyup="confirmLogin(currentLogin)" ng-model="currentLogin" type="text" name="login" placeholder="Login">
-    <span style="{{'color:'+confirmPassStatusColor}}; padding-left: 10px;">{{confirmPassStatus}}</span><br>
-    <input ng-keyup="confirmPassword(passwordOne, passwordTwo)" ng-model="passwordOne" type="password" name="passwordTwo" placeholder="Password"><br>
-    <input ng-keyup="confirmPassword(passwordOne, passwordTwo)" ng-model="passwordTwo" type="password" name="passwordOne" placeholder="Password">
-    <span style="{{'color:'+confirmPasswordStatusColor}}; padding-left: 10px;">{{confirmPasswordStatus}}</span><br>
-    <input ng-keyup="confirmEmail(currentEmail)" ng-model="currentEmail" type="email" name="email" placeholder="E-mail">
-    <span style="{{'color:'+confirmEmailStatusColor}}; padding-left: 10px;">{{confirmEmailStatus}}</span><br>
-    <input type="submit" value="Registration" class="button">
-</form>
+<div class="hide-on-reg">
+    <h1 class="h1">Registration</h1>
+    <form action="/rest/Registration" method="POST" id="reg-form">
+        <input ng-keyup="confirmLogin(currentLogin)" ng-model="currentLogin" type="text" name="login" placeholder="Login">
+        <span style="{{'color:'+confirmPassStatusColor}}; padding-left: 10px;">{{confirmPassStatus}}</span><br>
+        <input ng-keyup="confirmPassword(passwordOne, passwordTwo)" ng-model="passwordOne" type="password" name="passwordTwo" placeholder="Password"><br>
+        <input ng-keyup="confirmPassword(passwordOne, passwordTwo)" ng-model="passwordTwo" type="password" name="passwordOne" placeholder="Password">
+        <span style="{{'color:'+confirmPasswordStatusColor}}; padding-left: 10px;">{{confirmPasswordStatus}}</span><br>
+        <input ng-keyup="confirmEmail(currentEmail)" ng-model="currentEmail" type="email" name="email" placeholder="E-mail">
+        <span style="{{'color:'+confirmEmailStatusColor}}; padding-left: 10px;">{{confirmEmailStatus}}</span><br>
+        <input type="submit" value="Registration" class="button">
+    </form>
+</div>
+<div class="show-on-reg" style="display:none">
+    <h1 class="h1">Congratulations! To join confirm your email!</h1>
+</div>
 
 
 <script>
    $("#reg-form").ajaxForm({
        success: function(d) {
            console.log(d);
-           alert("Успешная регистрация!");
-           window.location.replace("/");
+           alertify.success("Registration is success!");
+            $(".hide-on-reg").hide(400, function() {
+                $(".show-on-reg").show(400);
+            });
+//           window.location.replace("/");
        },
        error: function(d) {
            console.log(d);
-           alert("Ошибка, данные не верны!");
+           alertify.error("Error. Data is incorrect");
        }
    });
 </script>

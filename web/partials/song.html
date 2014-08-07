@@ -22,11 +22,10 @@
         <div class="button" ng-show="logined && song.edit" ng-click="edit(song)">Edit</div>
         <br>
 
-        <form ng-show="logined && (!song.buy || song.edit)" action="/rest/get/audio">
+        <form ng-init="ext = 'mp3'" ng-show="logined && (!song.buy || song.edit)" action="/rest/get/audio">
             <select name="ext" ng-model="ext">
-                <option value="mp3">mp3</option>
                 <option value="wav">wav</option>
-                <option value="flac">flac</option>
+                <option ng-selected="true" value="mp3">mp3</option>
                 <option value="ogg">ogg</option>
             </select>
             <input type="hidden" name="id" value="{{song.id}}">
@@ -34,21 +33,43 @@
         </form>
         </div>
 
-    <form action="/rest/comment/put" method="post">
+
+        <!--<canvas id="audio-visual" width="512" height="300">-->
+        <!--Обнови браузер, старик!-->
+    <!--</canvas>-->
+</div>
+
+
+<h1 class="h1">Comments</h1>
+<div ng-show="logined" style="padding: 15px 0">
+    <form action="/rest/comment/put" method="post" id="put-comment">
         <input type="hidden" name="audio" value="{{song.id}}">
-        <textarea name="comment" cols="30" rows="10"></textarea>
-        <input type="submit"/>
+        <textarea placeholder="Write a comment ..." name="comment" rows="3"></textarea><br>
+        <input class="button" type="submit"/>
     </form>
+</div>
 
-    <div class="comments">
-        <div class="comment clearfix" ng-repeat="comment in comments">
-            <div class="login"><a href="{{'/#/profile/user/' + comment.login}}">
-                <img ng-src="{{comment.linkAvatar}}" alt=""/>{{comment.login}}
-            </a>
+<script>
+    $("#put-comment").ajaxForm({
+        success: function(d) {
+            console.log(d);
+            var scope = angular.element("#put-comment").scope();
+            scope.comments.unshift(d.commentsDTO);
+        },
+        error: function(d) {
+            console.log(d);
+            alertify.error("Unknown Error!");
+        }
+    });
+</script>
+
+<div class="comments">
+    <div class="comment clearfix repeat-item" ng-repeat="comment in comments" >
+        <div class="login"><a href="{{'/#/profile/user/' + comment.login}}">
+            <img ng-src="{{comment.linkAvatar}}" alt=""/>{{comment.login}}
+        </a>
         </div>
-            <div ng-click="deleteComment(comment)" class="button" style="float: right">DELETE</div>
-            {{comment.comment}}
-        </div>
+        <div ng-show="(myInfo.access == 2)" ng-click="deleteComment(comment)" class="button" style="float: right">DELETE</div>
+        {{comment.comment}}
     </div>
-
 </div>

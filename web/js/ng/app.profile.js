@@ -6,11 +6,21 @@ main.controller("profile.exit", function($location, $http) {
     window.location.replace("/");
 });
 
-main.controller("profile.signin", function($scope, $http) {
+main.controller("profile.signin", function($rootScope, $location, $scope, $http) {
     console.log("signin");
     //$http.get("");
     $scope.login = function() {
-        window.location.replace("/");
+        $http.get("/rest/test/check").success(function(data) {
+            $rootScope.logined = "false" !== data;
+            if($rootScope.logined) {
+                $http.get("/rest/user/mylogin").success(function(data) {
+                    $rootScope.myInfo = data.userDTO;
+                    $location.path("/");
+                });
+            } else {
+                window.location.replace("/");
+            }
+        });
     }
 });
 

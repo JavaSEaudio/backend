@@ -45,7 +45,7 @@ public class Registration {
             return Response.status(400).build();
         }
         String massege = "Hello, " + login +
-                " you are trying to register on THE BEST STORAGE EVER, go to \nhttp://localhost:8080/rest/validation?uniq="+uniq +"   to complete the operation ";
+                " you are trying to register on THE BEST STORAGE EVER, go to \n<a href=\"http://localhost:8080/#/profile/confirm/email/"+uniq +"\">THERE</a> to complete the operation ";
         try {
             EmailSender.generateAndSendEmail(email, massege);
         } catch (MessagingException e) {}

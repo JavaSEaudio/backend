@@ -15,6 +15,18 @@ startup.directive('ngEnter', function () {
 });
 
 
+//
+//startup.directive("scroll", function () {
+//    return function(scope, element, attrs) {
+//        angular.element(element).bind("scroll", function() {
+//            console.log("Scroll")
+//            scope[attrs.scroll];
+//            scope.$apply();
+//        });
+//    };
+//});
+
+
 startup.filter("timeFilter", function() {
     return function(time) {
           var m = Math.round(time / 60); // Минуты
@@ -35,7 +47,7 @@ startup.filter("userAccessFilter", function() {
     };
 });
 
-startup.run(function($interval, $rootScope, $http, $location) {
+startup.run(function($window, $interval, $rootScope, $http, $location) {
 
     $rootScope._debug = function(e) {
         console.log(e);
@@ -45,28 +57,28 @@ startup.run(function($interval, $rootScope, $http, $location) {
         $rootScope.logined = "false" !== data;
         if($rootScope.logined) {
             $http.get("/rest/user/mylogin").success(function(data) {
-                $rootScope.myInfo = data.userDTO;//Ну и лапша-код)
+                $rootScope.myInfo = data.userDTO;
             });
         }
     });
 
     // Покупка
     $rootScope.buy = function(music) {
-        if(confirm("Are you sure?")) {
-            $http.get("/rest/buy/audio?audioID=" + music.id).success(function (data) {
-                console.log("Куплено!");
-                alert("Куплено!");
-                window.location.replace("/");
-                $http.get("/rest/user/mylogin").success(function (data) {
-                    console.log(data);
+        alertify.confirm("Are you sure?", function(e) {
+            if(e) {
+                $http.get("/rest/buy/audio?audioID=" + music.id).success(function (data) {
+                    console.log("Куплено!");
+                    alertify.success("Куплено!");
+                    window.location.replace("/");
                 });
-            });
-        }
+            }
+        });
     };
 
     $rootScope.like = function(music) {
         $http.get("/rest/like/putlike?id=" + music.id).success(function(data) {
             console.log(data);
+            music.countLike++;
             music.like = true;
         });
     };

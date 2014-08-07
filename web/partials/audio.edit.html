@@ -17,23 +17,23 @@
     <textarea name="comment" cols="30" rows="10">
         {{song.comment}}
     </textarea><br>
-    <input type="submit"/>
+    <input class="button" type="submit"/>
 </form>
 
 
 <script>
     $("#audio-edit").ajaxForm({
         success: function(d) {
-            alert("Информация обновлена!");
+            alertify.success("Information was updated!");
             console.log(d);
         },
         error: function(d) {
             console.log(d);
-            alert("Ошибка! Печаль, беда");
+            alertify.error("Error! Data is incorrect");
         }
     });
 </script>
-
+<br>
 <div class="button" ng-click="audioDelete(song)">DELETE</div>
 
 <br>
@@ -41,7 +41,7 @@
 <form id="upload-image-audio" action="{{'/rest/file/uploadImage?idA=' + song.id}}" method="POST">
     <h2 class="h2">Change audio image</h2>
     <img width="50" height="50" ng-src="{{song.linkImage}}" alt=""/><br>
-    <input type="file" name="image"><br>
+    <input type="file" accept="image/jpeg" name="image"><br>
     <input type="submit"/>
 </form>
 
@@ -49,12 +49,12 @@
 <script>
     $("#upload-image-audio").ajaxForm({
         success: function(d) {
-            alert("Информация обновлена!");
+            alertify.success("Information was updated!");
             console.log(d);
         },
         error: function(d) {
             console.log(d);
-            alert("Ошибка! Печаль, беда");
+            alertify.error("Error! Data is incorrect");
         }
     });
 </script>

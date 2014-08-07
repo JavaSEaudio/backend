@@ -109,7 +109,7 @@ public class RestorePass {
                 Factory.getInstance().getRestoreDAO().add(restoreEntity);
             }
             String massege = "Hello, " + user.getLogin() +
-                    "If you want to recover your password, go to http://localhost:8080/#/profile/pwd/"+restoreEntity.getUniq();
+                    "If you want to recover your password, go to <a href='http://localhost:8080/#/profile/pwd/"+restoreEntity.getUniq()+"'>THERE</a>";
             try {
                 EmailSender.generateAndSendEmail(email, massege);
             } catch (MessagingException e) {}

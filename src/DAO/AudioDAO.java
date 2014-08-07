@@ -7,11 +7,13 @@ import java.util.List;
 
 import DAO.util.DAO;
 import DAO.util.Factory;
+import DTO.AlbumsDTO;
 import Entity.AudioEntity;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import DAO.util.HibernateUtil;
+import rest.file.Audio;
 
 public class AudioDAO {
     private static DAO dao = Factory.getInstance().getDao();
@@ -219,10 +221,10 @@ public class AudioDAO {
         List<String> audio = new ArrayList<String>();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("SELECT artist FROM AudioEntity");
+            Query query = session.createQuery("SELECT DISTINCT artist FROM AudioEntity");
             query.setFirstResult(first);
             query.setMaxResults(second);
-            audio = (List<String>) query.uniqueResult();
+            audio = (List<String>) query.list();
             session.getTransaction().commit();
         } catch (Exception e){
             System.out.println("Trouble");
@@ -258,11 +260,31 @@ public class AudioDAO {
         List<String> audio = new ArrayList<String>();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("SELECT album FROM AudioEntity WHERE artist = :artist");
+            Query query = session.createQuery("SELECT DISTINCT album FROM AudioEntity WHERE artist = :artist");
             query.setString("artist", artist);
             query.setFirstResult(first);
             query.setMaxResults(second);
-            audio = (List<String>) query.uniqueResult();
+            audio = (List<String>) query.list();
+            session.getTransaction().commit();
+        } catch (Exception e){
+            System.out.println("Trouble");
+        } finally {
+            if (session != null && session.isOpen())
+                session.close();
+        }
+        return audio;
+    }
+
+    public List<AlbumsDTO> getAlbums(int first, int second) {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        List<AlbumsDTO> audio = new ArrayList<AlbumsDTO>();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("select distinct album, artist FROM AudioEntity ");
+            query.setFirstResult(first);
+            query.setMaxResults(second);
+
+            System.out.println(query.list());
             session.getTransaction().commit();
         } catch (Exception e){
             System.out.println("Trouble");

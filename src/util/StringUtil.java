@@ -77,7 +77,7 @@ public class StringUtil {
     }
 
     public static String parse(String data) {
-        String filter = "[[^а-яА-ЯёЁa-zA-Z0-9\\s]+$]";
+        String filter = "[[^#а-яА-ЯёЁa-zA-Z0-9\\s]+$]";
         data = data.replaceAll(filter, "");
         StringBuilder sb = new StringBuilder(data);
         int q = 0;

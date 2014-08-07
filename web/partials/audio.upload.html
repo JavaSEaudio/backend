@@ -4,37 +4,41 @@
     <input type="text" ng-model="sendAudio.artist" placeholder="Artist"><br>
     <input type="text" ng-model="sendAudio.album" placeholder="Album"><br>
     Private <input type="checkbox" name="access" value="private" ng-model="sendAudio.access"><br>
-<form id="audio-upload" action="{{'/rest/file/uploadAudio?nameAudio=' + sendAudio.nameAudio + '&artist=' + sendAudio.artist + '&album=' + sendAudio.album + '&access=' + sendAudio.access }}" method="POST" enctype="multipart/form-data">
+<form class="dropzone dz-clickable" id="audio-upload" method="POST" enctype="multipart/form-data"
+    action="{{'/rest/file/uploadAudio?nameAudio=' + sendAudio.nameAudio + '&artist=' + sendAudio.artist + '&album=' + sendAudio.album + '&access=' + sendAudio.access }}" >
     <input accept="audio/*" type="file" ng-model="sendAudio.audioFile" name="audioFile"><br>
-    <input type="submit"/>
+    <input class="button" type="submit"/>
+    <!--<div class="dz-default dz-message" style="text-align: center;">-->
+        <!--<img src="/img/cloud.png" alt=""/><br>-->
+        <!--Drop files to upload-->
+    <!--</div>-->
 </form>
 
-<!--<script>-->
-    <!--$("#audio-upload").submit(function() {-->
-
-
-        <!--$(this).ajaxSubmit({-->
-            <!--success: function(d) {-->
-                <!--alert("Залили!");-->
-                <!--console.log(d);-->
-            <!--},-->
-            <!--error: function(d) {-->
-                <!--console.log(d);-->
-                <!--alert("Ошибка! Печаль, беда");-->
-            <!--}-->
-        <!--});-->
-    <!--});-->
-<!--</script>-->
 
 <script>
+//    $("#audio-upload").dropzone({
+//        url: "/rest/file/uploadAudio",
+//        paramName: "audioFile", // The name that will be used to transfer the file
+//        maxFilesize: 100, // MB
+//        acceptedFiles: "audio/*",
+//        accept: function(file, done) {
+//            console.log(file)
+//            if (file.name == "justinbieber.jpg") {
+//                done("Naha, you don't.");
+//            }
+//            else { done("All!!"); }
+//        }
+//    });
+
+
     $("#audio-upload").ajaxForm({
         success: function (d) {
-            alert("Залили!");
+            alertify.success("Залили!");
             console.log(d);
         },
         error: function (d) {
             console.log(d);
-            alert("Ошибка! Печаль, беда");
+            alertify.error("Unknown error");
         }
     });
 </script>

@@ -8,32 +8,32 @@
 <script>
     $("#user-edit-form").ajaxForm({
         success: function(d) {
-            alert("Информация обновлена!");
+            alertify.alert("Информация обновлена!");
             console.log(d);
         },
         error: function(d) {
             console.log(d);
-            alert("Ошибка! Печаль, беда");
+            alertify.alert("Ошибка! Печаль, беда");
         }
     });
 </script>
 
 
-<form action="/rest/useredit/image" method="POST" id="image-edit">
-    Edit your userpic:<br>
-    <input type="file" name="image"><br>
+<form action="/rest/useredit/image" method="POST" id="image-edit"><br>
+    <h1 class="h1">Edit your userpic:</h1>
+    <input accept="image/jpeg" type="file" name="image"><br>
     <input type="submit"/>
 </form>
 
 <script>
     $("#image-edit").ajaxForm({
         success: function(d) {
-            alert("Картинка обновлена!");
+            alertify.alert("Картинка обновлена!");
             console.log(d);
         },
         error: function(d) {
             console.log(d);
-            alert("Ошибка! Печаль, беда");
+            alertify.alert("Ошибка! Печаль, беда");
         }
     });
 </script>

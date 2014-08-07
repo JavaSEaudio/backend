@@ -8,10 +8,13 @@
     <li>Info: {{user.information}}</li>
     <li>Status: {{user.access | userAccessFilter}}</li>
 </ul><br>
-<div class="button" ng-show="(user.id == myInfo.id) || (myInfo.access == 2)" ng-click="edit(user)">Edit user</div><br>
-<a ng-show="(myInfo.access == 2)" href="/#/admin/users" class="button">Admin panel</a>
-<br>
+<div class="button" ng-show="(user.id == myInfo.id) || (myInfo.access == 2)" ng-click="edit(user)">Edit user</div><br><br>
+<a class="button" ng-show="(user.id == myInfo.id)" href="/#/audio/buylist">Buy List</a><br><br>
 
+<a ng-show="(myInfo.access == 2)" href="/#/admin/users" class="button">Admin panel</a>
+<br><br>
+
+        <h1 class="h1">My tracks</h1>
 <table>
     <tr>
         <td>Image</td>

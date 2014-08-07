@@ -56,6 +56,7 @@ public class Audio {
                            @FormParam("count") Integer count,
                            @FormParam("page") Integer page) {
 
+        criterion = StringUtil.parse(criterion);
         if(count == null) count = 10;
         if(page == null) page = 1;
         if(count > 100) count = 100;

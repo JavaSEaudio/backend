@@ -36,11 +36,14 @@ public class FileService {
                                @QueryParam(value = "access") String access,
                                @FormDataParam("audioFile") InputStream uploadAudioStream
     ) {
+        System.out.println("BLAAAAAAAAAAAAAAAAAAAAAAYYYRRRRRRRRTTTT");
         int userid = Sessions.uid(uid);
         if (userid == -1) {
             log.info("Upload File: file can not write: sign in");
             return Response.status(402).entity("File not uploaded! Please sign in!!!").build();
         }
+
+
 
 
         if(!access.equals("true")){
