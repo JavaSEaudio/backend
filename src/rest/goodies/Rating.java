@@ -35,7 +35,7 @@ public class Rating {
             arrayList.addAll(likeDAO.getMostLikes((count * (page - 1)), count));
             System.out.println(arrayList.toString());
             for(int i = 0; i < arrayList.size(); i++){
-                audioDTOs.add(new AudioDTO(Factory.getInstance().getAudioDAO().getById(arrayList.get(i).getAudioId()), userid));
+                audioDTOs.add(new AudioDTO(Factory.getInstance().getAudioDAO().getById(arrayList.get(i).getAudioId()), userid, 0));
             }
         } catch (Exception e) {
 //            log.info("Audio Get: exception");

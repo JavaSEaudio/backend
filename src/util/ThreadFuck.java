@@ -17,5 +17,6 @@ public class ThreadFuck extends Thread {
         Convert.convertAllFile(file, id, "mp3", "C://upload//private//");
         Convert.convertAllFile(file, id, "ogg", "C://upload//private//");
         Convert.convertAllFile(file, id, "wav", "C://upload//private//");
+        new File("C://upload//private//"+id+".mp3");
     }
 }

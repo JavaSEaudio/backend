@@ -160,17 +160,13 @@ public class PrivateFile {
             try {
                 CopyFiles.copyFileUsingStream(source, destination);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
             source = new File("C://upload//private//"+privateEntity.getId()+".ogg");
             destination = new File("C://upload//audio//"+audioEntity.getId()+".ogg");
             try {
                 CopyFiles.copyFileUsingStream(source, destination);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
 //            Cut.file("C://upload//audio//"+audioEntity.getId()+".mp3");
             source.delete();
             source = new File("C://upload//privateImage//"+privateEntity.getId()+".jpg");

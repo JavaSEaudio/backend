@@ -55,13 +55,13 @@ public class TagDAO {
         return tag;
     }
 
-    public List<TagEntity> getPopularTags(int first, int second) {
+    public List<TagEntity> getPopularTags(int second) {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<TagEntity> tag = new ArrayList<TagEntity>();
         try {
             session.beginTransaction();
             Query query = session.createQuery("from TagEntity order by counts desc");
-            query.setFirstResult(first);
+            query.setFirstResult(0);
             query.setMaxResults(second);
             tag = query.list();
             session.getTransaction().commit();

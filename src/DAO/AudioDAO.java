@@ -139,13 +139,15 @@ public class AudioDAO {
         return audio;
     }
 
-    public List<AudioEntity> getByArtist(String artist) {
+    public List<AudioEntity> getByArtist(String artist, int first, int second) {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         List<AudioEntity> audio = new ArrayList<AudioEntity>();
         try {
             session.beginTransaction();
             Query query = session.createQuery("FROM AudioEntity WHERE artist LIKE :artist");
             artist = "%"+artist+"%";
+            query.setFirstResult(first);
+            query.setMaxResults(second);
             query.setString("artist", artist);
             session.getTransaction().commit();
             audio = query.list();

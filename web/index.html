@@ -64,9 +64,9 @@
 
             <div class="sidebar__box">
 				<div class="h2">Tags cloud</div>
-				#alternative, #rock, #metalcore, #deathcore, #mathcore, #djent, #Power metal, #Progressive metal, 
-				#Rap metal, #Sludge metal
-			</div>	
+				<div id="all-tags"></div>
+
+			</div>
 			<div class="sidebar__box">
 				<div class="h2">Popular</div>
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -81,14 +81,21 @@
 	</div> <!-- main -->
 
 	<footer>
-		
+		<div class="copyright">
+            Java se 8 team bionic 2014  © all rights reserved
+		</div>
 	</footer>
 
     <div id="player" ng-hide="player.active()">
         <img class="album" ng-src="{{player.music().linkImage}}" alt=""/>
         {{player.music().artist}} - {{player.music().name}}<br>
-        {{player.time | timeFilter}} / {{player.maxTime | timeFilter}}
-        <audio></audio>
+        {{player.time | timeFilter}} / {{player.maxTime | timeFilter}}<br>
+        <div style="margin-bottom:10px">
+            <div class="button" ng-click="player.prev()">PREV</div>
+            <div class="button" ng-click="player.end()">NEXT</div>
+        </div>
+
+        <audio controls></audio>
     </div>
 
 

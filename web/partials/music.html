@@ -7,7 +7,7 @@
 
 <div id="content-music">
     <div ng-repeat="music in songs" ng-animate="{enter: 'animate-enter'}" class="music clearfix repeat-item">
-        <div class="img" ng-click="play(music);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
+        <div class="img" ng-click="play(music, songs);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
         <div class="right">
             <div class="h3">
                 <a href="#/song/{{music.id}}"> <span>{{music.artist}}</span> - {{music.name}}</a>

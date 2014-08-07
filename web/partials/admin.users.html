@@ -13,10 +13,19 @@
         <td>{{user.name}}</td>
         <!--<td>{{user.email}}</td>-->
         <td>
-            <div ng-click="ban(user)" ng-hide="user.banned" class="button">Kill</div>
-            <div class="button" ng-show="user.banned" ng-click="unban(user)">Pardon</div>
+            <div ng-click="ban(user);  $event.stopPropagation();" ng-hide="user.banned" class="button">Kill</div>
+            <div class="button" ng-show="user.banned" ng-click="unban(user);  $event.stopPropagation();">Pardon</div>
         </td>
     </tr>
 </table>
 
-<a href="/rest/mail/send/" class="button">Send Mailings</a>
+<form id="admin-send-mail" action="/rest/mail/send/" method="get">
+    <input type="submit" class="button" value="Send Mailings">
+</form>
+
+<script>
+    $("#admin-send-mail").ajaxForm(function(d) {
+        console.log(d);
+        alertify.success("Messages was send.");
+    });
+</script>

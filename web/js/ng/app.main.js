@@ -7,7 +7,7 @@ main.controller("main", function($location, $rootScope, $scope, $http) {
     var counter = 1;
 
     $scope.loadMore = function() {
-        $http.get("/rest/audio/get?count=5&page=" + counter).success(function(data) {
+        $http.get("/rest/audio/get?count=10&page=" + counter).success(function(data) {
             $scope.songs = $scope.songs.concat(data.audioDTO);
             console.log($scope.songs);
             console.log("Songs was updated.");
@@ -34,7 +34,7 @@ main.controller("audio.getbyrate", function($rootScope, $scope, $http) {
     var counter = 1;
 
     $rootScope.loadMore = function() {
-        $http.get("/rest/rate/like?count=5&page=" + counter).success(function(data) {
+        $http.get("/rest/rate/like?count=10&page=" + counter).success(function(data) {
             $scope.songs = $scope.songs.concat(data.audioDTO);
             counter++;
         });
@@ -57,6 +57,7 @@ main.controller("audio.getfree", function($scope, $http) {
 main.controller("audio.buylist", function($http, $scope) {
     $http.get("/rest/list/buy").success(function(data) {
         $scope.songs = data.audioDTO;
+        console.log( $scope.songs);
     });
 });
 
@@ -94,19 +95,24 @@ main.controller("song", function($rootScope, $location, $scope, $http, $routePar
             }
         }
     });
-
-//    $http.get("/rest/spect/fft?idAudio=" + $routeParams.musicId)
-//        .success(function(data) {
-//            var maxValue = Math.max.apply(Math, data);
-//            var canvas = document.getElementById("audio-visual");
-//            var c = canvas.getContext("2d");
-//            for(var i = 0; i < 512; ++i) {
-//                c.beginPath();
-//                c.fillStyle = "#ccc";
-//                c.rect(i, canvas.height - data[i] / maxValue * canvas.height, 1, data[i] / maxValue * canvas.height);
-//                c.fill();
-//            }
-//        });
+    //FFT
+    $http.get("/rest/spect/fft?idAudio=" + $routeParams.musicId)
+        .success(function(data) {
+            var maxValue = Math.max.apply(Math, data);
+            var canvas = document.getElementsByClassName("audio-visual")[0];
+            var c = canvas.getContext("2d");
+            setInterval(function() {
+                c.clearRect(0, 0, canvas.width, canvas.height);
+                var current = $("#player audio")[0].currentTime / $("#player audio")[0].duration * 503;
+//                console.log("REDRAW", current);
+                for (var i = 0; i < 503; ++i) {
+                    c.beginPath();
+                    if (i < current) { c.fillStyle = "#2ebccd"; } else c.fillStyle = "#ccc";
+                    c.rect(i, canvas.height - data[i] / maxValue * canvas.height, 1, data[i] / maxValue * canvas.height);
+                    c.fill();
+                }
+            }, 250);
+        });
 
 });
 
@@ -149,16 +155,22 @@ main.controller("admin.users", function($http, $scope, $location) {
     };
 
     $scope.ban = function(user) {
-        if(confirm("Are you sure?")) {
-            $http.get("/rest/admin/ban/?userID=" + user.id).success(function(d) {
-                console.log("Ban function: ", d);
-            });
-        }
+        alertify.confirm("Are you sure?", function(e) {
+            if(e) {
+                $http.get("/rest/admin/ban/?userID=" + user.id).success(function(d) {
+                    console.log("Ban function: ", d);
+                    alertify.success("User was banned!");
+                    user.banned = true;
+                });
+            }
+        });
     };
 
     $scope.unban = function(user) {
         $http.get("/rest/admin/unban/?userID=" + user.id).success(function(d) {
             console.log("UnBan function: ", d);
+            user.banned = false;
+            alertify.success("User was unbanned!");
         });
     };
 

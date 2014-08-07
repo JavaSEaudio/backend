@@ -1,18 +1,19 @@
 package DTO;
 
 
-import DAO.util.Factory;
-import Entity.AudioEntity;
-import Entity.PrivateEntity;
-import rest.file.Audio;
-import rest.goodies.LikesSystem;
+        import DAO.util.Factory;
+        import Entity.AudioEntity;
+        import Entity.PrivateEntity;
+        import rest.file.Audio;
+        import rest.goodies.LikesSystem;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+        import javax.xml.bind.annotation.XmlRootElement;
+        import java.util.Date;
 
 @XmlRootElement
 public class AudioDTO {
     private int id;
+    private int number;
     private String name;
     private String artist;
     private String album;
@@ -37,23 +38,24 @@ public class AudioDTO {
     public AudioDTO(){}
 
 
-    public AudioDTO(AudioEntity audioEntity, int userid){
-         this.id = audioEntity.getId();
-         this.name = audioEntity.getName();
-         this.artist = audioEntity.getArtist();
-         this.album = audioEntity.getAlbum();
-         this.genre = audioEntity.getGenre();
-         this.comment = audioEntity.getComment();
-         this.year = audioEntity.getYear();
-         this.price = audioEntity.getPrice();
-         this.type = audioEntity.getType();
-         this.length = audioEntity.getLength();
-         this.size = audioEntity.getSize();
-         this.userid = audioEntity.getUserid();
-         this.linkTube= audioEntity.getLinkTube();
-         this.linkImage = "/rest/get/image?id="+audioEntity.getId();
-         this.linkFile = "/rest/listen?id="+audioEntity.getId();
-         this.upload_date = audioEntity.getUpload_date();
+    public AudioDTO(AudioEntity audioEntity, int userid, int number){
+        this.id = audioEntity.getId();
+        this.name = audioEntity.getName();
+        this.artist = audioEntity.getArtist();
+        this.album = audioEntity.getAlbum();
+        this.genre = audioEntity.getGenre();
+        this.comment = audioEntity.getComment();
+        this.year = audioEntity.getYear();
+        this.number = number;
+        this.price = audioEntity.getPrice();
+        this.type = audioEntity.getType();
+        this.length = audioEntity.getLength();
+        this.size = audioEntity.getSize();
+        this.userid = audioEntity.getUserid();
+        this.linkTube= audioEntity.getLinkTube();
+        this.linkImage = "/rest/get/image?id="+audioEntity.getId();
+        this.linkFile = "/rest/listen?id="+audioEntity.getId();
+        this.upload_date = audioEntity.getUpload_date();
         if(userid != -1) {
             UserDTO user = new UserDTO(Factory.getInstance().getUserDAO().getById(userid));
             if(this.price > 0) {
@@ -281,5 +283,13 @@ public class AudioDTO {
 
     public void setLinkTube(String linkTube) {
         this.linkTube = linkTube;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

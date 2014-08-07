@@ -275,19 +275,15 @@ public class FileService {
                 e.printStackTrace();
             }
             source = new File("C://upload//audio//"+audioEntity.getId()+".wav");
-            destination = new File("C://upload//private//"+privateEntity.getId()+".mp3");
+            destination = new File("C://upload//private//"+privateEntity.getId()+".wav");
             try {
                 CopyFiles.copyFileUsingStream(source, destination);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
             source = new File("C://upload//audio//"+audioEntity.getId()+".ogg");
-            destination = new File("C://upload//private//"+privateEntity.getId()+".mp3");
+            destination = new File("C://upload//private//"+privateEntity.getId()+".ogg");
             try {
                 CopyFiles.copyFileUsingStream(source, destination);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
 //          new File("C://upload//audio//cut"+audioEntity.getId()+".mp3").delete();
             source.delete();
             source = new File("C://upload//image//"+audioEntity.getId()+".jpg");
@@ -372,7 +368,6 @@ public class FileService {
             Factory.getInstance().getAudioDAO().delete(audioEntity);
             return Response.status(406).build();
         }
-        new File(uploadedFileLocation).delete();
         new ThreadFuck2(file, audioEntity.getId()).start();
 
         return Response.status(200).build();
@@ -437,9 +432,8 @@ public class FileService {
             Factory.getInstance().getPrivateDAO().delete(privateEntity);
             return Response.status(400).build();
         }
-        new File(uploadedFileLocation).delete();
-        new ThreadFuck(file, userid).start();
 
+        new ThreadFuck(file, privateEntity.getId()).start();
         return Response.status(200).build();
 
     }

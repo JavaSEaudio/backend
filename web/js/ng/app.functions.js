@@ -49,6 +49,20 @@ startup.filter("userAccessFilter", function() {
 
 startup.run(function($window, $interval, $rootScope, $http, $location) {
 
+    $http.get("/rest/tags?count=20").success(function(data) {
+        var str = "";
+        console.log("Tags load");
+        for(var i = 0; i < data.tagEntity.length; ++i) {
+            var tag = data.tagEntity[i].name;
+            str += "<a href=\"/#/search/%23"+tag+"\">" + "#" + tag + "</a>, ";
+
+        } //"search(searchQuery);
+//        str += data[length - 1];
+
+        console.log(str);
+        document.getElementById("all-tags").innerHTML = str;
+    });
+
     $rootScope._debug = function(e) {
         console.log(e);
     };
@@ -68,9 +82,16 @@ startup.run(function($window, $interval, $rootScope, $http, $location) {
             if(e) {
                 $http.get("/rest/buy/audio?audioID=" + music.id).success(function (data) {
                     console.log("Куплено!");
-                    alertify.success("Куплено!");
-                    window.location.replace("/");
-                });
+                    alertify.success("Bought!");
+                    music.buy = false;
+                })
+                .error(function(data, status) {
+                        switch(status) {
+                            case 400: alertify.error("Don't have much money.");
+                                break;
+                            default: alertify.error("Error!");
+                        }
+                    });
             }
         });
     };
@@ -94,6 +115,10 @@ startup.run(function($window, $interval, $rootScope, $http, $location) {
             this.currentMusic = cm;
             console.log($(this.node).attr("src",  this.currentMusic.linkFile));
         },
+        setPlaylist: function(playlist, cm) {
+            this.currentPlaylist = playlist;
+            this.setMusic(cm);
+        },
         play: function() {
             this.node.play();
         },
@@ -104,6 +129,19 @@ startup.run(function($window, $interval, $rootScope, $http, $location) {
             return this.currentMusic;
         },
 
+        end: function() {
+            if(this.currentMusic.number < this.currentPlaylist.length - 1) {
+                this.setMusic(this.currentPlaylist[this.currentMusic.number + 1]);
+            }
+            this.play();
+        },
+
+        prev: function() {
+            if(!this.currentMusic.number == 0) {
+                this.setMusic(this.currentPlaylist[this.currentMusic.number - 1]);
+            }
+            this.play();
+        },
         maxTime: 0,
         time: 0,
 
@@ -121,10 +159,14 @@ startup.run(function($window, $interval, $rootScope, $http, $location) {
 
         // TODO:Сделать по человечески, event
         $rootScope.player.maxTime = Math.round($rootScope.player.node.duration);
+
+        if($rootScope.player.time == $rootScope.player.maxTime) {
+            $rootScope.player.end();
+        }
     }, 1000);
 
 
-    $rootScope.play = function(music) {
+    $rootScope.play = function(music, musics) {
         if($rootScope.player.currentMusic === music) {
             if(!$rootScope.player.node.paused) {
                 console.log("PAUSE");
@@ -134,7 +176,12 @@ startup.run(function($window, $interval, $rootScope, $http, $location) {
                 $rootScope.player.node.play();
             }
         } else {
-            $rootScope.player.setMusic(music);
+            console.log("Start playing");
+            if(musics == undefined) {
+                $rootScope.player.setMusic(music);
+            } else {
+                $rootScope.player.setPlaylist(musics, music);
+            }
             $rootScope.player.play();
         }
     };

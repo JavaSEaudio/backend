@@ -64,7 +64,7 @@ public class Convert {
             audio.setSamplingRate(new Integer(44100));
 
             EncodingAttributes attrs = new EncodingAttributes();
-            attrs.setFormat("mp3");
+            attrs.setFormat(extension);
             attrs.setAudioAttributes(audio);
             Encoder encoder = new Encoder();
             try {

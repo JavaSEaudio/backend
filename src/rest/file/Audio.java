@@ -38,7 +38,7 @@ public class Audio {
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll(aDAO.getSomeAudios((count * (page - 1)), count));
-            audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid);
+            audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid, count * (page - 1));
 
         } catch (Exception e) {
             log.info("Audio Get: exception");
@@ -77,7 +77,7 @@ public class Audio {
                 for (int i = 0; i < tDAO.getByName(tags.get(0)).addAudioIdsArray().size(); i ++) {
                     audio.add(aDAO.getById(tDAO.getByName(tags.get(0)).addAudioIdsArray().get(i)));
                 }
-                audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID);
+                audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID,count * (page - 1));
                 return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
             }
             for (int i = 0; i < tags.size(); i ++) {
@@ -109,7 +109,7 @@ public class Audio {
             for (int i = 0; i < lists[0].size(); i ++) {
                 audio.add(aDAO.getById(lists[0].get(i)));
             }
-            audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID);
+            audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID, count * (page - 1));
             return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
 
         } else {
@@ -170,7 +170,7 @@ public class Audio {
             } catch (Exception e) {
                 log.info("Audio Search: exception");
             }
-            audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID);
+            audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio,userID, count * (page - 1));
             System.out.println(audioDTOs);
             if (audioDTOs.size() == 0) {
                 criterion = StringUtil.fromRusToEng(criterion);
@@ -230,7 +230,7 @@ public class Audio {
                     }
                     audio2 = lists[0];
                 }
-                audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio2,userID2);
+                audioDTOs = (ArrayList<AudioDTO>)GetListDTO.getListAudioDTO(audio2,userID2, count * (page - 1));
                 return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).status(201).build();
             }
             return Response.ok(new GenericEntity<ArrayList<AudioDTO>>((ArrayList<AudioDTO>)audioDTOs){}).build();
@@ -334,7 +334,7 @@ public class Audio {
         } catch(Exception e) {
             log.info("Audio ByID: exception");
         }
-        AudioDTO audioDTO = new AudioDTO(audio, userid);
+        AudioDTO audioDTO = new AudioDTO(audio, userid, 0);
         return Response.ok().entity(audioDTO).build();
     }
 
@@ -352,7 +352,7 @@ public class Audio {
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
             audio.addAll(aDAO.getFree((count * (page - 1)), count));
-            audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid);
+            audioDTOs = (ArrayList<AudioDTO>) GetListDTO.getListAudioDTO(audio, userid, count * (page - 1));
             log.info("Audio Free: success");
         } catch (Exception e) {
             log.info("Audio Free: exception");

@@ -1,5 +1,11 @@
 <div class="music clearfix" >
+
+    <canvas class="audio-visual" id="audio-visual" width="512" height="70">
+        Обнови браузер, старик!
+    </canvas>
+
     <h2><span>{{song.artist}}</span> - {{song.name}}</h2>
+
     <div class="img" ng-click="play(song)"><img ng-src="{{song.linkImage}}" height="152" width="152" alt=""></div>
     <div class="right">
         <ul>
@@ -18,26 +24,22 @@
                 </a>
             </li>
         </ul>
-        <div class="button" ng-show="logined && (song.buy)" ng-click="buy(song);">BUY</div>
-        <div class="button" ng-show="logined && song.edit" ng-click="edit(song)">Edit</div>
+
         <br>
-
-        <form ng-init="ext = 'mp3'" ng-show="logined && (!song.buy || song.edit)" action="/rest/get/audio">
-            <select name="ext" ng-model="ext">
-                <option value="wav">wav</option>
-                <option ng-selected="true" value="mp3">mp3</option>
-                <option value="ogg">ogg</option>
-            </select>
-            <input type="hidden" name="id" value="{{song.id}}">
-            <input class="button" type="submit" value="DOWNLOAD">
-        </form>
         </div>
-
-
-        <!--<canvas id="audio-visual" width="512" height="300">-->
-        <!--Обнови браузер, старик!-->
-    <!--</canvas>-->
 </div>
+
+<div class="button" ng-show="logined && (song.buy)" ng-click="buy(song);">BUY</div>
+<div class="button" ng-show="logined && song.edit" ng-click="edit(song)">Edit</div>
+<form style="display: inline-block" ng-init="ext = 'mp3'" ng-show="logined && (!song.buy || song.edit)" action="/rest/get/audio">
+    <select name="ext" ng-model="ext">
+        <option value="wav">wav</option>
+        <option ng-selected="true" value="mp3">mp3</option>
+        <option value="ogg">ogg</option>
+    </select>
+    <input type="hidden" name="id" value="{{song.id}}">
+    <input class="button" type="submit" value="DOWNLOAD">
+</form>
 
 
 <h1 class="h1">Comments</h1>

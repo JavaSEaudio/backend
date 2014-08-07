@@ -12,17 +12,19 @@ public class GetListDTO {
     public GetListDTO(){}
 
 
-    public static List<AudioDTO> getListAudioDTO(List<AudioEntity> userEntity, int userid) {
+    public static List<AudioDTO> getListAudioDTO(List<AudioEntity> userEntity, int userid, int number) {
         ArrayList<AudioDTO> result = new ArrayList<AudioDTO>();
         for(AudioEntity aEntity : userEntity) {
-            AudioDTO aDro = new AudioDTO(aEntity, userid);
+            AudioDTO aDro = new AudioDTO(aEntity, userid, number);
             if(!aDro.isLoad()) {
                 result.add(aDro);
+                number++;
             } else {
                 if(aDro.getUserid() == userid){
                     result.add(aDro);
                 }
             }
+
         }
         return result;
     }

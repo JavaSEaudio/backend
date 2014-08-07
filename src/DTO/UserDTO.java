@@ -18,10 +18,7 @@ public class UserDTO {
     private int[] mylist;
     private boolean banned;
 
-
-
     public UserDTO(){}
-
 
     public UserDTO(UserEntity user) {
         this.id = user.getId();

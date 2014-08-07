@@ -1,14 +1,13 @@
 package Entity;
 
-import DAO.util.HibernateUtil;
-import org.hibernate.*;
 import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
-import javax.persistence.Query;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@XmlRootElement
 @Table(name = "tags")
 public class TagEntity {
 

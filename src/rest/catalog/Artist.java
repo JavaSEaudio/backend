@@ -53,9 +53,9 @@ public class Artist {
 
         try {
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-            if(artist == null) {
-                albumDTO = aDAO.getAlbums(count * (page - 1), count);
-            }
+//            if(artist == null) {
+//                albumDTO = aDAO.getAlbums(count * (page - 1), count);
+//            }
             albumDTO = GetListDTO.getListAlbumsDTO(
                     aDAO.getbyArtistAlbum(artist, count * (page - 1), count), artist
             );
@@ -78,13 +78,21 @@ public class Artist {
         if(page == null) page = 1;
         if(count > 100) count = 100;
         List<AudioDTO> audioDTO = new ArrayList<AudioDTO>();
-        try {
+        if(album == null){
             AudioDAO aDAO = Factory.getInstance().getAudioDAO();
-            audioDTO = GetListDTO.getListAudioDTO(aDAO.getbyAlbumTracks(
-                    album, artist, count * (page - 1), count
-            ), userid);
+            audioDTO = GetListDTO.getListAudioDTO(aDAO.getByArtist(
+                    artist, count * (page - 1), count
+            ), userid, count * (page - 1));
+        } else {
+            try {
+                AudioDAO aDAO = Factory.getInstance().getAudioDAO();
+                audioDTO = GetListDTO.getListAudioDTO(aDAO.getbyAlbumTracks(
+                        album, artist, count * (page - 1), count
+                ), userid, count * (page - 1));
 
-        } catch(Exception e) {}
+            } catch (Exception e) {
+            }
+        }
         return Response.ok(new GenericEntity<ArrayList<AudioDTO>>
                 ((ArrayList<AudioDTO>)audioDTO){}).build();
     }

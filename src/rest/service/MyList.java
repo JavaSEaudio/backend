@@ -35,7 +35,7 @@ public class MyList {
         ArrayList<AudioDTO> arrayList;
         ArrayList<AudioDTO> list =
                 (ArrayList<AudioDTO>)
-                        GetListDTO.getListAudioDTO(Factory.getInstance().getAudioDAO().getByUserId(id), id);
+                        GetListDTO.getListAudioDTO(Factory.getInstance().getAudioDAO().getByUserId(id), id, count * (page - 1));
         if(count * (page-1) >= list.size())
             return Response.ok(null).build();
         if(count * page >= list.size()){
@@ -60,8 +60,10 @@ public class MyList {
         UserDTO userDTO = new UserDTO(Factory.getInstance().getUserDAO().getById(userid));
         List<AudioDTO> list = new LinkedList<AudioDTO>();
 
+        int i = 0;
         for(int id : userDTO.getBuyListArray()) {
-            list.add(new AudioDTO(Factory.getInstance().getAudioDAO().getById(id), userid));
+            list.add(new AudioDTO(Factory.getInstance().getAudioDAO().getById(id), userid, i));
+            i++;
         }
         ArrayList<AudioDTO> arrayList;
         if(count * (page-1) >= list.size())

@@ -6,6 +6,8 @@ import DTO.CommentsDTO;
 import DTO.GetListDTO;
 import Entity.AudioEntity;
 import Entity.CommentsEntity;
+import util.StringUtil;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
@@ -21,6 +23,10 @@ public class CommentSystem {
     public Response putComment(@CookieParam("name") String uid,
                                @FormParam(value = "comment") String comment,
                                @FormParam(value = "audio") int id){
+        comment = StringUtil.parse(comment);
+        if(comment == null || comment.equals("") || comment.equals(" ")){
+            return Response.status(403).entity("not valid").build();
+        }
         int userid = Sessions.uid(uid);
         if(userid == -1){
             return Response.status(400).entity("logged in pls").build();

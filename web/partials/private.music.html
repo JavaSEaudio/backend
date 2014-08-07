@@ -2,7 +2,7 @@
 
 <div id="content-music">
     <div class="music clearfix" ng-repeat="music in songs">
-        <div class="img" ng-click="play(music);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
+        <div class="img" ng-click="play(music, songs);"><img ng-src="{{music.linkImage}}" height="152" width="152" alt=""></div>
         <div class="right">
             <div class="h3">
                 <a href="#/private/song/{{music.id}}"> <span>{{music.artist}}</span> - {{music.name}}</a>
